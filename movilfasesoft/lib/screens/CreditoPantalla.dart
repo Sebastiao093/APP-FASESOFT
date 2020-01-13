@@ -6,7 +6,7 @@ import 'dart:convert';
 
 
 class CreditoPantalla extends StatefulWidget {
-  static const routedname = "/PantallaConvenios";
+  static const routedname = "/PantallaCreditos";
   @override
   _CreditoPantallaState createState() => _CreditoPantallaState();
 }
@@ -14,12 +14,21 @@ class CreditoPantalla extends StatefulWidget {
 class _CreditoPantallaState extends State<CreditoPantalla> {
   
   static var correo = "shgarcia@asesoftware.com";
-  String url = "http://localhost:7001/fasesoft-web/webresources/servicios/fascreditos/historial/$correo";
+  String _url = '173.16.0.35:7001';
 
-  Future obtenerData() async {
-    http.Response response = await http.get("url");
+  Future<List<dynamic>> obtenerData() async {
+  final urlfin = Uri.http(_url,'fasesoft-web/webresources/servicios/fascreditos/historial/shgarcia@asesoftware.com');
+  print(urlfin);
+  final response = await http.get(urlfin);
+
+  if (response.statusCode == 200) {
     debugPrint(response.body);
+    final decodedData = json.decode(response.body);
+    return decodedData;
+  } else {
+    throw Exception('error');
   }
+}
 
   @override
   void initState() { 
