@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movilfasesoft/screens/AsistenciaQR.dart';
-import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
-import 'package:movilfasesoft/screens/CreditoPantalla.dart';
-import 'package:movilfasesoft/screens/Votaciones.dart';
 import './screens/PantallaInicial.dart';
+import 'routes/routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -35,14 +32,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: PantallaCategorias(),
       initialRoute: '/',
-      routes: {
-        '/':(ctx)=>PantallaInicial(),
-        PantallaInicial.routedname: (ctx) => PantallaInicial(),
-        PantallaQr.routedname:(ctx) => PantallaQr(),
-        PantallaVotaciones.routedname:(ctx) => PantallaVotaciones(),
-        CreditoPantalla.routedname:(ctx)=>CreditoPantalla(),
-        ConvenioPantalla.routedname:(ctx)=>ConvenioPantalla() 
-      },
+      routes: getAplicaciones(),
       onGenerateRoute: (settings){
         print(settings.arguments);
         return MaterialPageRoute(
@@ -55,21 +45,5 @@ class MyApp extends StatelessWidget {
         );
       },
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('comidas'),
-        ),
-        body: Text('contenido'));
   }
 }
