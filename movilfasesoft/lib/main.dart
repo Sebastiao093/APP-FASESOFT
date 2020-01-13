@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movilfasesoft/screens/AsistenciaQR.dart';
+import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
+import 'package:movilfasesoft/screens/CreditoPantalla.dart';
+import 'package:movilfasesoft/screens/Votaciones.dart';
 import './screens/PantallaInicial.dart';
 
 void main() => runApp(MyApp());
@@ -33,7 +37,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/':(ctx)=>PantallaInicial(),
-        PantallaInicial.routedname: (ctx) => PantallaInicial(),         
+        PantallaInicial.routedname: (ctx) => PantallaInicial(),
+        PantallaQr.routedname:(ctx) => PantallaQr(),
+        PantallaVotaciones.routedname:(ctx) => PantallaVotaciones(),
+        CreditoPantalla.routedname:(ctx)=>CreditoPantalla(),
+        ConvenioPantalla.routedname:(ctx)=>ConvenioPantalla() 
       },
       onGenerateRoute: (settings){
         print(settings.arguments);
