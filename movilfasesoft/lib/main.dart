@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movilfasesoft/screens/Inicial.dart';
+import './screens/PantallaInicial.dart';
 
 void main() => runApp(MyApp());
 
