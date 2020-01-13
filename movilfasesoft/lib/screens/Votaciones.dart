@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movilfasesoft/widgets/WidgetPregunta.dart';
 import '../models/Respuesta.dart';
 import '../widgets/temporalPreguntas.dart';
 import '../models/Pregunta.dart';
@@ -6,9 +7,10 @@ import '../models/Pregunta.dart';
 List<Pregunta> conversionAclases(List<Map<String, Object>> preguntasEntrada) {
    return  preguntasEntrada.map((preguntaIndex) {
     return Pregunta(
+      id: preguntaIndex['id'],
       pregunta: preguntaIndex['laPregunta'],
-      respuestas:  (preguntaIndex['lasRespuestas'] as List<String>).map((aux) {
-      return Respuesta(respuesta: aux);
+      respuestas:  (preguntaIndex['lasRespuestas'] as List<Map<String,Object>>).map((aux) {
+      return Respuesta(id:aux['id']  ,respuesta: aux['titulo']);
     }).toList(),
     );
   }).toList();
@@ -23,7 +25,7 @@ class PantallaVotaciones extends StatefulWidget {
 class _PantallaVotacionesState extends State<PantallaVotaciones> {
   //final Future<List<dynamic>> preguntasAvotar;
   //PantallaVotaciones({Key key, this.preguntasAvotar}) : super(key: key);
-  final List<Pregunta> preguntasAvotar = conversionAclases(preguntasConstantes);
+  final List<Pregunta> _preguntasAvotar = conversionAclases(preguntasConstantes);
 
   @override
   Widget build(BuildContext context) {
@@ -31,29 +33,7 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
       appBar: AppBar(
         title: Text('Pantalla Votaciones'),
       ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: preguntasAvotar.length,
-          itemBuilder: (context, index) {
-            return Card(
-              elevation: 5,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    preguntasAvotar.elementAt(index).pregunta,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Column(children: preguntasAvotar.elementAt(index).respuestas.map((respuestaUnitaria){
-                    return Text(respuestaUnitaria.respuesta);
-                  }).toList(),)
-
-                ],
-              ),
-            );
-          },
-        ),
-      ),
+      body: WidgetPregunta(_preguntasAvotar),
     );
   }
 }
