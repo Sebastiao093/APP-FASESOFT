@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import './respuesta.dart';
+import './Respuesta.dart';
 
 class Pregunta {
 final String pregunta;
 final List<Respuesta> respuestas;
+//final String respuestas;
 
 Pregunta({
  @required this.pregunta,
