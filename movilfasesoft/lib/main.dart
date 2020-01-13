@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movilfasesoft/screens/Inicial.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,20 +31,18 @@ class MyApp extends StatelessWidget {
       //home: PantallaCategorias(),
       initialRoute: '/',
       routes: {
-        '/':(ctx)=>PantallaCategorias(),
-        PantallaCategoriaItem.routedname: (ctx) => PantallaCategoriaItem(),         
-        //'/categorias-detalle': (ctx) => PantallaCategoriaItem(),
-        PantallaComidaDetalle.routeName: (ctx)=> PantallaComidaDetalle(),
+        '/':(ctx)=>PantallaInicial(),
+        PantallaInicial.routedname: (ctx) => PantallaInicial(),         
       },
       onGenerateRoute: (settings){
         print(settings.arguments);
         return MaterialPageRoute(
-          builder: (ctx) => PantallaCategorias()
+          builder: (ctx) => PantallaInicial()
         );
       },
       onUnknownRoute: (settings){
         return MaterialPageRoute(
-          builder: (ctx) => PantallaCategorias()
+          builder: (ctx) => PantallaInicial()
         );
       },
     );
