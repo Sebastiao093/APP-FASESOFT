@@ -16,7 +16,7 @@ class Credito {
   final String idtipodecredito;
   final String descripcion;
   final num numeroCuotas;
-  final DateTime fechaSolicitud;
+  final String fechaSolicitud;
   final num mora;
 
   Credito(
@@ -45,7 +45,7 @@ class Credito {
       nombretipodecredito: json['tipo'],
       idtipodecredito: json['tipoId'],
       descripcion: json['descripcion'],
-      //fechaSolicitud: json['fechaSolicitud'],
+      fechaSolicitud: json['fechaSolicitud'],
       mora: json['mora'],
       numeroCuotas: json['cuotas'],
     );
