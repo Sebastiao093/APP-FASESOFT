@@ -15,6 +15,7 @@ Pregunta({
 
 factory Pregunta.fromJson(Map<String, dynamic> json) {
     return Pregunta(
+      id: json['id'],
       pregunta: json['laPregunta'],
       respuestas: json['lasRespuestas']
     );
