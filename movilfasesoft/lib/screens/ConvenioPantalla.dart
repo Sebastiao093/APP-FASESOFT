@@ -17,15 +17,21 @@ class _ConvenioPantallaState extends State<ConvenioPantalla> {
   
   static var correo = "shgarcia@asesoftware.com";
   String _url = '173.16.0.35:7001';
+  List userData;
 
   Future<List<dynamic>> obtenerData() async {
   final urlfin = Uri.http(_url,'fasesoft-web/webresources/servicios/fasconvenios/misconvenios',{'correo':'shgarcia@asesoftware.com'});
-  print(urlfin);
+  //print(urlfin);
   final response = await http.get(urlfin);
 
   if (response.statusCode == 200) {
     debugPrint(response.body);
     final decodedData = json.decode(response.body);
+
+    setState(() {
+        userData = decodedData["data"];
+      });
+
     return decodedData;
   } else {
     throw Exception('error');
