@@ -45,7 +45,7 @@ class Credito {
       nombretipodecredito: json['tipo'],
       idtipodecredito: json['tipoId'],
       descripcion: json['descripcion'],
-      fechaSolicitud: json['fechaSolicitud'],
+      //fechaSolicitud: json['fechaSolicitud'],
       mora: json['mora'],
       numeroCuotas: json['cuotas'],
     );

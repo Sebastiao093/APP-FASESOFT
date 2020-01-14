@@ -8,7 +8,7 @@ class Convenio {
   final num numeroCuotas;
   final num mora;
   final int idtipoconvenio;
-  final DateTime fechaSolicitud;
+  final String fechaSolicitud;
   //final DateTime fecha_inicio_pago;
   final num cuotasPendientes;
   final num cuotasIntereses;
