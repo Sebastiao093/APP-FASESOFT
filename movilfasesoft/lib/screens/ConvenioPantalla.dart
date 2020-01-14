@@ -16,7 +16,7 @@ class ConvenioPantalla extends StatefulWidget {
 class _ConvenioPantallaState extends State<ConvenioPantalla> {
   
   static var correo = "shgarcia@asesoftware.com";
-  String _url = '173.16.0.35:7001';
+  String _url = '173.16.0.84:7001';
   List userData;
 
   Future<List<dynamic>> obtenerData() async {

@@ -13,8 +13,10 @@ class CreditoPantalla extends StatefulWidget {
 
 class _CreditoPantallaState extends State<CreditoPantalla> {
   static var correo = "shgarcia@asesoftware.com";
-  String _url = '173.16.0.35:7001';
+  String _url = '173.16.0.84:7001';
   List userData;
+  int _ultimoItem = 0;
+
 
   Future<List<dynamic>> obtenerData() async {
     final urlfin = Uri.http(_url,
@@ -49,20 +51,29 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
       appBar: AppBar(
         title: Text('Creditos'),
       ),
-      body: _cargarCreditos(),
+      body: Center(
+      child: _cargarCreditos( userData),
+      ),
     );
   }
 
-  Widget _cargarCreditos(){
-
+  Widget _cargarCreditos(List<Credito> userData){
     return ListView.builder(
       itemCount: userData == null ? 0 : userData.length,
       itemBuilder: (BuildContext context, int index){
         
         return Card(
-
+          elevation: 10.0,
+          margin: EdgeInsets.all(10),
+          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
           child: Column(
             children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(userData.elementAt(index).correo),
+                ],
+              )
               
 
             ],
@@ -83,6 +94,13 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
     return dato.map((aux){
       return Credito.fromJson(aux);
     }).toList();
+  }
+
+  void _agregar5(){
+    for (var i = 1; i < 5; i++) {
+      _ultimoItem++;
+      userData.add('');
+    }
   }
 
 
