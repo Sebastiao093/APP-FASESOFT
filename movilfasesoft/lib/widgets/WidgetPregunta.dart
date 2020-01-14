@@ -11,14 +11,11 @@ class WidgetPregunta extends StatefulWidget {
 }
 
 class _WidgetPreguntaState extends State<WidgetPregunta> {
-  List<int> respuestasMarcadas = List<int>();
-  bool hab = true;
+  Map<int, int> _respuestasMarcadas = Map<int, int>();
 
-  void _seleccionarRespuesta(Respuesta respuesta) {
-     
+  void _seleccionarRespuesta(int indPregunta, Respuesta respuesta) {
     setState(() {
-      print(respuestasMarcadas);
-      this.respuestasMarcadas.add(respuesta.id);
+      _respuestasMarcadas[indPregunta] = respuesta.id;
     });
   }
 
@@ -38,16 +35,24 @@ class _WidgetPreguntaState extends State<WidgetPregunta> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
                 Column(
-                  children:widget.preguntasAvotar
+                  children: widget.preguntasAvotar
                       .elementAt(index)
                       .respuestas
                       .map((respuestaUnitaria) {
-                    return InkWell(
-                      onTap: () => _seleccionarRespuesta(respuestaUnitaria),
-                      child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 20),
-                          child: Text(respuestaUnitaria.respuesta)),
-                    );
+                    Color colorVal = Colors.white;
+                    if (_respuestasMarcadas[
+                            widget.preguntasAvotar.elementAt(index).id] ==
+                        respuestaUnitaria.id) {
+                      colorVal = Colors.red;
+                    }
+                    return validacionRespuestas(
+                        _respuestasMarcadas[
+                                widget.preguntasAvotar.elementAt(index).id] ==
+                            null,
+                        widget.preguntasAvotar.elementAt(index).id,
+                        respuestaUnitaria,
+                        _seleccionarRespuesta,
+                        colorVal);
                   }).toList(),
                 )
               ],
@@ -57,4 +62,28 @@ class _WidgetPreguntaState extends State<WidgetPregunta> {
       ),
     );
   }
+}
+
+Widget validacionRespuestas(bool condicion, int index,
+    Respuesta respuestaUnitaria, Function seleccionarRespuesta, Color color) {
+  return condicion
+      ? InkWell(
+          onTap: () => seleccionarRespuesta(index, respuestaUnitaria),
+          child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              margin: EdgeInsets.symmetric(vertical: 5),
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 150),
+              child: Text(respuestaUnitaria.respuesta)),
+        )
+      : Container(
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          margin: EdgeInsets.symmetric(vertical: 5),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 150),
+          child: Text(respuestaUnitaria.respuesta));
 }
