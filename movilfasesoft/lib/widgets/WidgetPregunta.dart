@@ -76,7 +76,7 @@ Widget validacionRespuestas(bool condicion, int index,
           child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(21),
               ),
               margin: EdgeInsets.symmetric(vertical: 5),
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 150),
