@@ -38,7 +38,7 @@ class Convenio {
 
   factory Convenio.fromJson(Map<String, dynamic> json) {
     return Convenio(
-      idConvenio: json['idCredito'],
+      idConvenio: json['idConvenio'],
       saldo: json['saldo'],
       estado: json['estado'],
       numeroCuotas: json['numeroCuotas'],
