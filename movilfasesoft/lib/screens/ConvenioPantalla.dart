@@ -4,7 +4,6 @@ import 'package:movilfasesoft/models/Convenio.dart';
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:movilfasesoft/models/Credito.dart';
 
 class ConvenioPantalla extends StatefulWidget {
 

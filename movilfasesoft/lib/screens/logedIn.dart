@@ -14,13 +14,13 @@ void irVotaciones(BuildContext ctx) {
   Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname);
 }
 
-void irCreditos(BuildContext ctx) {
-  Navigator.of(ctx).pushNamed(CreditoPantalla.routedname);
+void irCreditos(BuildContext ctx, UsuarioAres usuarioAres) {
+  Navigator.of(ctx).pushNamed(CreditoPantalla.routedname, arguments: usuarioAres);
 }
 
 
-void irConvenios(BuildContext ctx) {
-  Navigator.of(ctx).pushNamed(ConvenioPantalla.routedname);
+void irConvenios(BuildContext ctx, UsuarioAres usuarioAres) {
+  Navigator.of(ctx).pushNamed(ConvenioPantalla.routedname, arguments: usuarioAres);
 }
 
 void irQr(BuildContext ctx) {
@@ -91,11 +91,11 @@ Logedin(user){
           ),
           RaisedButton(
             child: Text('Credito'),
-            onPressed: () => irCreditos(context),
+            onPressed: () => irCreditos(context, usuarioAres),
           ),
           RaisedButton(
             child: Text('Convenios'),
-            onPressed: () => irConvenios(context),
+            onPressed: () => irConvenios(context, usuarioAres),
           ),
           RaisedButton(
             child: Text('QR'),
