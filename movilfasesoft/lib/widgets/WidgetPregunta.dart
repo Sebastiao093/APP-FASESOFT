@@ -11,11 +11,20 @@ class WidgetPregunta extends StatefulWidget {
 }
 
 class _WidgetPreguntaState extends State<WidgetPregunta> {
-  Map<int, int> _respuestasMarcadas = Map<int, int>();
+  Map<int, String> _respuestasMarcadas = Map<int, String>();
+  final _textoIngreso = TextEditingController();
 
-  void _seleccionarRespuesta(int indPregunta, Respuesta respuesta) {
+  void _seleccionarRespuesta(int idPregunta, String respuesta) {
     setState(() {
-      _respuestasMarcadas[indPregunta] = respuesta.id;
+      _respuestasMarcadas[idPregunta] = respuesta;
+    });
+  }
+
+  void _submitData(int idPregunta, TextEditingController textoIngreso) {
+    //final String tituloIngresado = tituloControlador.text;
+
+    setState(() {
+      _respuestasMarcadas[idPregunta] = textoIngreso.text;
     });
   }
 
@@ -43,22 +52,21 @@ class _WidgetPreguntaState extends State<WidgetPregunta> {
                       .elementAt(index)
                       .respuestas
                       .map((respuestaUnitaria) {
-                    Color colorVal = Colors.white;
-                    if (_respuestasMarcadas[
-                            widget.preguntasAvotar.elementAt(index).id] ==
-                        respuestaUnitaria.id) {
-                      colorVal = Theme.of(context).primaryColorLight;
-                    }
-                    return validacionRespuestas(
-                        _respuestasMarcadas[
-                                widget.preguntasAvotar.elementAt(index).id] ==
-                            null,
+                    return mostrarRespuesta(
+                        widget.preguntasAvotar
+                                .elementAt(index)
+                                .respuestas
+                                .length ==
+                            1,
+                        context,
+                        _respuestasMarcadas,
                         widget.preguntasAvotar.elementAt(index).id,
                         respuestaUnitaria,
                         _seleccionarRespuesta,
-                        colorVal);
+                        _textoIngreso,
+                        _submitData);
                   }).toList(),
-                )
+                ),
               ],
             ),
           );
@@ -68,11 +76,42 @@ class _WidgetPreguntaState extends State<WidgetPregunta> {
   }
 }
 
-Widget validacionRespuestas(bool condicion, int index,
+Widget mostrarRespuesta(
+    bool tipoRespuesta,
+    BuildContext ctx,
+    Map<int, String> respuestasMarcadas,
+    int idPregunta,
+    Respuesta respuestaUnitaria,
+    Function seleccionarRespuesta,
+    TextEditingController textoIngreso,
+    Function submitData) {
+  return tipoRespuesta
+      ? respuestaAbierta(ctx, textoIngreso, submitData, textoIngreso.text == '',
+          respuestaUnitaria, idPregunta)
+      : respuestaOpciones(ctx, respuestasMarcadas, idPregunta,
+          respuestaUnitaria, seleccionarRespuesta);
+}
+
+Widget respuestaOpciones(
+    BuildContext ctx,
+    Map<int, String> respuestasMarcadas,
+    int idPregunta,
+    Respuesta respuestaUnitaria,
+    Function seleccionarRespuesta) {
+  Color colorVal = Colors.white;
+  if (respuestasMarcadas[idPregunta] == respuestaUnitaria.id.toString()) {
+    colorVal = Theme.of(ctx).primaryColorLight;
+  }
+  return validacionRespuestasOpciones(respuestasMarcadas[idPregunta] == null,
+      idPregunta, respuestaUnitaria, seleccionarRespuesta, colorVal);
+}
+
+Widget validacionRespuestasOpciones(bool condicion, int idPregunta,
     Respuesta respuestaUnitaria, Function seleccionarRespuesta, Color color) {
   return condicion
       ? InkWell(
-          onTap: () => seleccionarRespuesta(index, respuestaUnitaria),
+          onTap: () =>
+              seleccionarRespuesta(idPregunta, respuestaUnitaria.id.toString()),
           child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -88,6 +127,42 @@ Widget validacionRespuestas(bool condicion, int index,
             borderRadius: BorderRadius.circular(50),
           ),
           margin: EdgeInsets.symmetric(vertical: 5),
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 150),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 150),
           child: Text(respuestaUnitaria.respuesta));
+}
+
+Widget respuestaAbierta(
+    BuildContext ctx,
+    TextEditingController textoIngreso,
+    Function submitData,
+    bool condicion,
+    Respuesta respuestaUnitaria,
+    int idPregunta) {
+  return condicion
+      ? Container(
+          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          padding: EdgeInsets.symmetric(
+            vertical: 20,
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              labelText: 'por favor responda',
+            ),
+            controller: textoIngreso,
+            onSubmitted: (_) => submitData(idPregunta, textoIngreso),
+          ),
+        )
+      : Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: Theme.of(ctx).primaryColorLight,
+          ),
+          
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 150),
+          child: Text(
+            textoIngreso.text,
+            textAlign: TextAlign.center,
+          ),
+        );
+  ;
 }
