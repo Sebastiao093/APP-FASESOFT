@@ -26,6 +26,11 @@ dependencies:
   cupertino_icons: ^0.1.2
   majascan: ^0.3.5
 
+
+
+
+  aad_oauth: "^0.1.7"
+  corsac_jwt: ^0.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
