@@ -21,7 +21,7 @@ import 'package:flutter/material.dart';
                       CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 50.0,
-                        child: Image(image: AssetImage('movilfasesoft\assets\icons\fasesoftLogo.png')),
+                        child: Image(image: AssetImage('assets/icons/fasesoftLogo.png')),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 10.0),
