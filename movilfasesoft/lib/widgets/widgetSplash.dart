@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 
   Widget splashScreen(){
     
-    return Container(
-      color: Colors.white70,
-        child:Stack(
+    return Stack(
         fit: StackFit.expand,
         children: <Widget>[
           Container(
@@ -23,7 +21,7 @@ import 'package:flutter/material.dart';
                       CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 50.0,
-                        child: Image(image: AssetImage('assets\icons\fasesoftLogo.png')),
+                        child: Image(image: AssetImage('movilfasesoft\assets\icons\fasesoftLogo.png')),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 10.0),
@@ -63,6 +61,5 @@ import 'package:flutter/material.dart';
             ],
           )
         ],
-      )
-    );
+      );
   }

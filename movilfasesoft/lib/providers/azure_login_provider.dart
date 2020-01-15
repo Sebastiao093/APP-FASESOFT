@@ -20,6 +20,7 @@ class UserLogin{
     final AadOAuth oauth = AadOAuth(config);//Configuracion de la instancia para AZURE ACTIVE DIRECTORY
 
       Future<String> azureLogin(context) async {
+           
       
           final h =MediaQuery.of(context).size.height;
           final w=MediaQuery.of(context).size.width;

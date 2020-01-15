@@ -27,6 +27,17 @@ void irQr(BuildContext ctx) {
   Navigator.of(ctx).pushNamed(PantallaQr.routedname);
 }
 
+String nombre(user){
+  String resultado;
+  try{
+    resultado=user.nombre;
+    return resultado;
+  }catch(e){
+    return 'error';
+  }
+
+}
+
 class Logedin extends StatelessWidget {
 UsuarioAres usuarioAres = new UsuarioAres();
 String user='';
@@ -52,7 +63,7 @@ Logedin(user){
            child: ListView(
            children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: !snapshot.hasError ? Text(this.usuarioAres.nombre+' '+this.usuarioAres.apellido) :Text('error recibiendo usuario'),
+              accountName:  Text(nombre(this.usuarioAres)),
               accountEmail: Text(user),
               currentAccountPicture: Icon(Icons.account_circle),
             ),
@@ -88,6 +99,7 @@ Logedin(user){
            RaisedButton(
             child: Text('Votaciones'),
             onPressed: () => irVotaciones(context),
+          
           ),
           RaisedButton(
             child: Text('Credito'),
