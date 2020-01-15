@@ -14,8 +14,8 @@ void irVotaciones(BuildContext ctx) {
   Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname);
 }
 
-void irCreditos(BuildContext ctx) {
-  Navigator.of(ctx).pushNamed(CreditoPantalla.routedname);
+void irCreditos(BuildContext ctx,String user) {
+  Navigator.of(ctx).pushNamed(CreditoPantalla.routedname,arguments: user);
 }
 
 
@@ -47,7 +47,7 @@ Logedin(user){
  
 
   Widget build(BuildContext context){
-
+   
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context,snapshot){
@@ -55,7 +55,6 @@ Logedin(user){
           return CircularProgressIndicator();
         }else{
           this.usuarioAres=snapshot.data;
-          
           return Scaffold(
           appBar:AppBar(title: Text('Fasesoft Mobile'),) ,
           drawer: SafeArea(
@@ -103,7 +102,7 @@ Logedin(user){
           ),
           RaisedButton(
             child: Text('Credito'),
-            onPressed: () => irCreditos(context),
+            onPressed: ()=>irCreditos(context,user),
           ),
           RaisedButton(
             child: Text('Convenios'),

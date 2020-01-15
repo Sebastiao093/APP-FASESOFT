@@ -3,24 +3,24 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:movilfasesoft/models/Credito.dart';
+import 'package:movilfasesoft/models/usuario.dart';
 
 class CreditoPantalla extends StatefulWidget {
   static const routedname = "/PantallaCreditos";
   static var correo = "shgarcia@asesoftware.com";
 
   @override
-  _CreditoPantallaState createState() => _CreditoPantallaState(userData: obtenerData());
+  _CreditoPantallaState createState() => _CreditoPantallaState();
 }
 
-Future<List<dynamic>> obtenerData() async {
-  String correo = "shgarcia@asesoftware.com";
-  String _url = '173.16.0.35:7001';
-    final urlfin = Uri.http(_url,'fasesoft-web/webresources/servicios/fascreditos/historial/shgarcia@asesoftware.com');
+Future<List<dynamic>> obtenerData(String correo) async {
+  print(correo);
+  String _url = '173.16.0.84:7001';
+    final urlfin = Uri.http(_url,'fasesoft-web/webresources/servicios/fascreditos/historial/'+ correo);
     //print(urlfin);
     final response = await http.get(urlfin);
 
     if (response.statusCode == 200) {
-      debugPrint(response.body);
       final decodedData = json.decode(response.body);
       
       return decodedData;
@@ -31,12 +31,12 @@ Future<List<dynamic>> obtenerData() async {
 
 class _CreditoPantallaState extends State<CreditoPantalla> {
 
-  Future<List<dynamic>> userData;
-
-  _CreditoPantallaState({this.userData});
+  
 
   @override
   Widget build(BuildContext context) {
+    String usuarioCorreo = ModalRoute.of(context).settings.arguments as String; 
+    Future<List<dynamic>> userData = obtenerData(usuarioCorreo);
     return Scaffold(
       appBar: AppBar(
         title: Text('Creditos'),
