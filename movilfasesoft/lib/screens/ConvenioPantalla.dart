@@ -59,7 +59,24 @@ class _ConvenioPantallaState extends State<ConvenioPantalla> {
 
 Widget ElementosCartas(Convenio elemento) {
 
-        return Text(elemento.fechaSolicitud);
+        return Card(
+          elevation: 10.0,
+          margin: EdgeInsets.all(10.0),
+          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0)),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text(elemento.idtipoconvenio.toString()),
+                  Text(elemento.descripcion)
+                ],
+              ),
+              Text(elemento.fechaSolicitud.substring(1,9)),
+              Text(elemento.estado)
+            ],
+          ),
+        );
   }
 
 Widget contenido1(Future<List<dynamic>> elementos) {
