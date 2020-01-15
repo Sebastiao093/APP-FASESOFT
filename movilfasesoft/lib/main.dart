@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import './screens/PantallaInicial.dart';
+import 'mixis/mixis_block_screen.dart';
 import 'routes/routes.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget  with PortraitModeMixin {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'App Fasesoft',
