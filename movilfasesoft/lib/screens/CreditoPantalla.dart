@@ -14,7 +14,7 @@ class CreditoPantalla extends StatefulWidget {
 
 Future<List<dynamic>> obtenerData() async {
   String correo = "shgarcia@asesoftware.com";
-  String _url = '173.16.0.84:7001';
+  String _url = '173.16.0.35:7001';
     final urlfin = Uri.http(_url,'fasesoft-web/webresources/servicios/fascreditos/historial/shgarcia@asesoftware.com');
     //print(urlfin);
     final response = await http.get(urlfin);
@@ -62,7 +62,7 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                   Text(elemento.descripcion)
                 ],
               ),
-              Text(elemento.fechaSolicitud.substring(1,9)),
+              Text(elemento.fechaSolicitud.substring(0,10)),
               Text(elemento.estado)
             ],
           ),
