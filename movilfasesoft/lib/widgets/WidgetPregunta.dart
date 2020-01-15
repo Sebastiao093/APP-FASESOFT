@@ -20,7 +20,7 @@ class _WidgetPreguntaState extends State<WidgetPregunta> {
     });
   }
 
-  void _submitData(int idPregunta, TextEditingController textoIngreso) {
+  void _submitTexto(int idPregunta, TextEditingController textoIngreso) {
     //final String tituloIngresado = tituloControlador.text;
 
     setState(() {
@@ -28,49 +28,80 @@ class _WidgetPreguntaState extends State<WidgetPregunta> {
     });
   }
 
+  void presionarBoton(){
+    if (_respuestasMarcadas.length != widget.preguntasAvotar.length){
+      print('nomarco');
+      return;
+    }
+    print(_respuestasMarcadas);
+    print('ya marco');
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ListView.builder(
-        itemCount: widget.preguntasAvotar.length,
-        itemBuilder: (context, index) {
-          return Card(
-            elevation: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    widget.preguntasAvotar.elementAt(index).pregunta,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                    textAlign: TextAlign.center,
+    return  SingleChildScrollView(
+          child: Column(
+        children: <Widget>[
+          Container(
+            height: 500,
+            width: 500,
+            child: ListView.builder(
+              itemCount: widget.preguntasAvotar.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.preguntasAvotar.elementAt(index).pregunta,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Column(
+                        children: widget.preguntasAvotar
+                            .elementAt(index)
+                            .respuestas
+                            .map((respuestaUnitaria) {
+                          return mostrarRespuesta(
+                              widget.preguntasAvotar
+                                      .elementAt(index)
+                                      .respuestas
+                                      .length ==
+                                  1,
+                              context,
+                              _respuestasMarcadas,
+                              widget.preguntasAvotar.elementAt(index).id,
+                              respuestaUnitaria,
+                              _seleccionarRespuesta,
+                              _textoIngreso,
+                              _submitTexto);
+                        }).toList(),
+                      ),
+                    ],
                   ),
-                ),
-                Column(
-                  children: widget.preguntasAvotar
-                      .elementAt(index)
-                      .respuestas
-                      .map((respuestaUnitaria) {
-                    return mostrarRespuesta(
-                        widget.preguntasAvotar
-                                .elementAt(index)
-                                .respuestas
-                                .length ==
-                            1,
-                        context,
-                        _respuestasMarcadas,
-                        widget.preguntasAvotar.elementAt(index).id,
-                        respuestaUnitaria,
-                        _seleccionarRespuesta,
-                        _textoIngreso,
-                        _submitData);
-                  }).toList(),
-                ),
-              ],
-            ),
-          );
-        },
+                );
+              },
+            ), 
+            
+          ),
+        Container(width: 300,height: 60,margin: EdgeInsets.symmetric(vertical: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+        ),
+          child: RaisedButton(
+            child: Text('enviar respuestas',textAlign: TextAlign.center,),
+            color: Theme.of(context).primaryColor,
+            onPressed: presionarBoton,
+            disabledColor: Theme.of(context).primaryColorLight,
+            elevation: 20,
+            disabledElevation: 10,
+          ),
+        )],
       ),
     );
   }
@@ -164,5 +195,5 @@ Widget respuestaAbierta(
             textAlign: TextAlign.center,
           ),
         );
-  ;
+
 }
