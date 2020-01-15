@@ -20,7 +20,7 @@ class PantallaInicial extends StatelessWidget {
   Widget build(BuildContext context) {
 
   final conectado=checkConection();
-    if(conectado){
+    if(true){
 
       return  Center(
           child:FutureBuilder(
