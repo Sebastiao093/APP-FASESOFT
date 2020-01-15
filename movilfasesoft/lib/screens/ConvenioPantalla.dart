@@ -18,8 +18,8 @@ class ConvenioPantalla extends StatefulWidget {
 
 Future<List<dynamic>> obtenerData() async {
    String correo = "shgarcia@asesoftware.com";
-  String _url = '173.16.0.84:7001';
-  final urlfin = Uri.http(_url,'fasesoft-web/webresources/servicios/fasconvenios/misconvenios',{'correo':'shgarcia@asesoftware.com'});
+  String _url = '173.16.0.35:7001';
+  final urlfin = Uri.http(_url,'fasesoft-web/webresources/servicios/fasconvenios/misconvenios',{'correo':'asalgado@asesoftware.com'});
   //print(urlfin);
   final response = await http.get(urlfin);
 
@@ -51,7 +51,7 @@ class _ConvenioPantallaState extends State<ConvenioPantalla> {
       appBar: AppBar(
         title: Text('Convenios'),
       ),
-      body:   contenido1(userData),
+      body:  contenido1(userData),
 
     );
   }
@@ -59,7 +59,24 @@ class _ConvenioPantallaState extends State<ConvenioPantalla> {
 
 Widget ElementosCartas(Convenio elemento) {
 
-        return Text(elemento.fechaSolicitud);
+        return Card(
+          elevation: 10.0,
+          margin: EdgeInsets.all(10.0),
+          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0)),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text(elemento.idtipoconvenio.toString()),
+                  Text(elemento.idConvenio.toString())
+                ],
+              ),
+              Text(elemento.fechaSolicitud.substring(0,10)),
+              Text(elemento.estado)
+            ],
+          ),
+        );
   }
 
 Widget contenido1(Future<List<dynamic>> elementos) {
@@ -78,7 +95,15 @@ Widget contenido1(Future<List<dynamic>> elementos) {
               return ElementosCartas(elemento);
             },
           );
-        } else if (auxElementos.hasError) {
+        } else if (!auxElementos.hasData) {
+          return Card(
+          child: Column(
+            children: <Widget>[
+              Text('No tienes Convenios con nosotros, adquiere uno con nosotros')
+            ],
+          ),
+        );
+        } else if (auxElementos.hasError){
           return Text('${auxElementos.error}');
         }
         return CircularProgressIndicator();
