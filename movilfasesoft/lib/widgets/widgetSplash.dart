@@ -44,6 +44,11 @@ import 'package:flutter/material.dart';
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircularProgressIndicator(),
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 50.0,
+                        child: Image(image: AssetImage('assets/icons/fasesoftLogo.png')),
+                      ),
                       Padding(
                         padding: EdgeInsets.only(top: 20.0),
                       ),
