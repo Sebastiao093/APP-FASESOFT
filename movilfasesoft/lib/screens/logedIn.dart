@@ -8,6 +8,7 @@ import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
 import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
 import 'package:movilfasesoft/screens/CreditoPantalla.dart';
+import 'package:movilfasesoft/screens/PerfilPantalla.dart';
 import 'package:movilfasesoft/screens/Votaciones.dart';
 
 
@@ -21,13 +22,18 @@ void irCreditos(BuildContext ctx,String user) {
 }
 
 
-void irConvenios(BuildContext ctx) {
-  Navigator.of(ctx).pushNamed(ConvenioPantalla.routedname);
+void irConvenios(BuildContext ctx, String user) {
+  Navigator.of(ctx).pushNamed(ConvenioPantalla.routedname, arguments: user);
 }
 
 void irQr(BuildContext ctx) {
   Navigator.of(ctx).pushNamed(PantallaQr.routedname);
 }
+
+void irPerfil(BuildContext ctx,String correo){
+  Navigator.of(ctx).pushNamed(PerfilPantalla.routedname,arguments: correo);
+}
+
 
 String nombre(user){
   String resultado;
@@ -84,6 +90,7 @@ Logedin(user){
              onTap: (){ UserLogin().logOut(context); } ,
                           
            ),
+           _DetallesAhorro(user)
 
            
             
@@ -111,13 +118,17 @@ Logedin(user){
           ),
           RaisedButton(
             child: Text('Convenios'),
-            onPressed: () => irConvenios(context),
+            onPressed: () => irConvenios(context, user),
           ),
           RaisedButton(
             child: Text('QR'),
             onPressed: () => irQr(context),
           ),
-          _DetallesAhorro(user)
+          RaisedButton(
+            child: Text('Perfil'),
+            onPressed: () => irPerfil(context,user),
+          ),
+
   ],
 )
           
