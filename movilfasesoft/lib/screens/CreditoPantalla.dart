@@ -15,7 +15,7 @@ class CreditoPantalla extends StatefulWidget {
 
 Future<List<dynamic>> obtenerData(String correo) async {
   print(correo);
-  String _url = '173.16.0.84:7001';
+  String _url = '173.16.0.35:7001';
     final urlfin = Uri.http(_url,'fasesoft-web/webresources/servicios/fascreditos/historial/'+ correo);
     //print(urlfin);
     final response = await http.get(urlfin);
@@ -87,7 +87,15 @@ Widget contenido1(Future<List<dynamic>> elementos) {
           );
         } else if (auxElementos.hasError) {
           return Text('${auxElementos.error}');
-        }
+        } else if (!auxElementos.hasData) {
+          return Card(
+          child: Column(
+            children: <Widget>[
+              Text('No tienes Creditos con nosotros, adquiere uno con nosotros')
+            ],
+          ),
+        );
+        } 
         return CircularProgressIndicator();
       },
     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/PerfilPantalla.dart';
 import '../screens/AsistenciaQR.dart';
 import '../screens/ConvenioPantalla.dart';
 import '../screens/CreditoPantalla.dart';
@@ -13,7 +14,8 @@ return <String,WidgetBuilder>{
         PantallaQr.routedname:(ctx) => PantallaQr(),
         PantallaVotaciones.routedname:(ctx) => PantallaVotaciones(),
         CreditoPantalla.routedname:(ctx)=>CreditoPantalla(),
-        ConvenioPantalla.routedname:(ctx)=>ConvenioPantalla() 
+        ConvenioPantalla.routedname:(ctx)=>ConvenioPantalla(),
+        PerfilPantalla.routedname:(ctx)=>PerfilPantalla() 
       };
 
 }
