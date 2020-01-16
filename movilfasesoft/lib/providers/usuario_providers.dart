@@ -7,7 +7,7 @@ import 'package:movilfasesoft/models/usuario.dart';
 class UserProvider {
   final List<ListTile> usuario1 =List();
 
-  String _url='173.16.0.100:7001';
+  String _url='173.16.0.35:7001';
 
   getusername(String user1){
     getUser(user1).then((onValue){

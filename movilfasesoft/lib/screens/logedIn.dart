@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movilfasesoft/models/ahorro.dart';
 
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
+import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
 import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
@@ -82,6 +84,9 @@ Logedin(user){
              onTap: (){ UserLogin().logOut(context); } ,
                           
            ),
+
+           
+            
            ],
           
            )
@@ -112,6 +117,7 @@ Logedin(user){
             child: Text('QR'),
             onPressed: () => irQr(context),
           ),
+          _DetallesAhorro(user)
   ],
 )
           
@@ -123,4 +129,41 @@ Logedin(user){
 
 
   }
+
+
+ Widget _DetallesAhorro(String correo)  {
+ FasAhorroProviders provider=FasAhorroProviders();
+
+   return 
+   
+   FutureBuilder(
+            future: provider.getAhorroPermanente(correo),
+            builder: (context,snapshot){
+              if(snapshot.hasData){
+                 String aporte='pailas';
+                  String monto='no hay lucas';
+                  if(snapshot.data!=null){    
+                      Ahorros ahorro=snapshot.data;
+                      aporte=ahorro.aporte.toString();
+                      monto=ahorro.monto.toString();
+
+                  }
+
+                  return ListTile(
+                    title: Text('acumulado '+monto),
+                    subtitle: Text('aporte '+aporte),
+                  );
+
+              }else{
+
+                return CircularProgressIndicator(backgroundColor:  Colors.red,);
+              }
+
+            },
+
+   );
+     
+      }
+
+  
 }
