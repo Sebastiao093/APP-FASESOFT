@@ -1,7 +1,8 @@
 
+
 import 'package:flutter/material.dart';
 
-  Widget splashScreen(){
+  Widget firstScreen(context){
     
     return Scaffold(
       body:Stack(
@@ -28,7 +29,7 @@ import 'package:flutter/material.dart';
                         padding: EdgeInsets.only(top: 10.0),
                       ),
                       Text(
-                        'Fasesoft Mobile',
+                        'Welcome to Fasesoft Mobile',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -43,7 +44,13 @@ import 'package:flutter/material.dart';
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    CircularProgressIndicator(),
+                    OutlineButton(
+                      child: Text('Iniciar Sesion'),
+                      onPressed: (){Navigator.pushNamed(context,'/login');},
+                      borderSide: BorderSide(color: Colors.blue,width: 3),
+                      textColor: Colors.blue,
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(top: 20.0),
                     ),

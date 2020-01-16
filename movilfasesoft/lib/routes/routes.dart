@@ -8,6 +8,7 @@ import '../screens/PantallaInicial.dart';
 Map <String,WidgetBuilder> getAplicaciones(){
 return <String,WidgetBuilder>{
         '/':(ctx)=>PantallaInicial(),
+        '/login':(ctx)=> LoginPage(),
         PantallaInicial.routedname: (ctx) => PantallaInicial(),
         PantallaQr.routedname:(ctx) => PantallaQr(),
         PantallaVotaciones.routedname:(ctx) => PantallaVotaciones(),
