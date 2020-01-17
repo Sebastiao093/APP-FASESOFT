@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
+import 'package:movilfasesoft/widgets/NoConectionScreen.dart';
 import 'package:movilfasesoft/widgets/firstScreenWidget.dart';
 import 'package:movilfasesoft/widgets/widgetSplash.dart';
 import 'logedIn.dart';
@@ -27,17 +28,22 @@ class LoginPage extends StatelessWidget {
            builder: (context,snapshot){
             
              if(ConnectionState.done!=snapshot.connectionState){
-               return splashScreen();
+               return splashScreen(context);
              }else{
                
                print(snapshot.data);
-               if(UserLogin().isloged()){
+               if(UserLogin().isloged()&& snapshot.data!='error'&& snapshot.data!='NR'&& snapshot.data!='NA'&&snapshot.hasData){
                  return Logedin(snapshot.data);
                  }
+                 if(snapshot.data=='NA'){
+                 return noConectionScreen(context,'El usuario no esta afiliado a Fasesoft'); 
+                 }
+                 if(snapshot.data=='NR'){
+                 return noConectionScreen(context,'El usuario no se encuentra\n      en la base de datos'); 
+                 }
                if(snapshot.data=='error'){
-                 return Scaffold(body: Center(child: Text('error check your conection'),),
-                 floatingActionButton: FloatingActionButton(child: Icon(Icons.ac_unit),backgroundColor: Colors.red,onPressed: (){Navigator.pushNamed(context,'/login');},),);
-               }else{
+                 return noConectionScreen(context,'Error en la Conexion'); 
+                 }else{
                  return LoginPage();
                }
              }

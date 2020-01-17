@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movilfasesoft/models/ahorro.dart';
 
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
+import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
 import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
@@ -45,6 +47,7 @@ String nombre(user){
 }
 
 class Logedin extends StatelessWidget {
+
 UsuarioAres usuarioAres = new UsuarioAres();
 String user='';
 Logedin(user){
@@ -53,79 +56,20 @@ Logedin(user){
  
 
   Widget build(BuildContext context){
-   
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context,snapshot){
         if(snapshot.connectionState!=ConnectionState.done){
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }else{
           this.usuarioAres=snapshot.data;
           return Scaffold(
           appBar:AppBar(title: Text('Fasesoft Mobile'),) ,
           drawer: SafeArea(
-          child:Drawer(
-           child: ListView(
-           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName:  Text(nombre(this.usuarioAres)),
-              accountEmail: Text(user),
-              currentAccountPicture: Icon(Icons.account_circle),
-            ),
-            ListTile(
-             leading: Icon(Icons.center_focus_weak),
-             title: Text('Qr de asistencia'),
-             onTap: (){Navigator.pushReplacementNamed(context,'/qr',arguments: user);} ,             
-           ),
-           ListTile(
-             leading: Icon(Icons.person),
-             title: Text('Detalle de cuenta'),
-             onTap: (){Navigator.pushReplacementNamed(context,'/detail',arguments: user);} ,             
-           ),
-           ListTile(
-             leading: Icon(Icons.close),
-             title: Text('Cerrar sesion',style: TextStyle(color: Colors.redAccent),),
-             onTap: (){ UserLogin().logOut(context); } ,
-                          
-           ),
-           ],
-          
-           )
-
+          child:  _drawer(context),
          ),
-         ),
-          body: GridView.count(
-  primary: false,
-  padding: const EdgeInsets.all(20),
-  crossAxisSpacing: 10,
-  mainAxisSpacing: 10,
-  crossAxisCount: 2,
-  children: <Widget>[
-           RaisedButton(
-            child: Text('Votaciones'),
-            onPressed: () => irVotaciones(context),
+          body: _DetallesAhorro(user),
           
-          ),
-          RaisedButton(
-            child: Text('Credito'),
-            onPressed: ()=>irCreditos(context,user),
-          ),
-          RaisedButton(
-            child: Text('Convenios'),
-            onPressed: () => irConvenios(context, user),
-          ),
-          RaisedButton(
-            child: Text('QR'),
-            onPressed: () => irQr(context),
-          ),
-          RaisedButton(
-            child: Text('Perfil'),
-            onPressed: () => irPerfil(context,user),
-          ),
-  ],
-)
-          
-      
         );
         }
       },
@@ -133,4 +77,170 @@ Logedin(user){
 
 
   }
+
+
+Widget _drawer(BuildContext context){
+
+  return Drawer(
+           child: ListView(
+           children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName:  Text(nombre(this.usuarioAres)),
+              accountEmail: Text(user),
+              currentAccountPicture: Icon(Icons.account_circle),
+            ),
+          
+           ListTile(
+             leading: Icon(Icons.person,  color: Colors.blue),
+             title: Text('Detalle de perfil'),
+             onTap: () => irPerfil(context,user),             
+           ),
+
+           ListTile(
+            leading: Icon(Icons.business_center, color: Colors.blue),
+            title: Text('Creditos'),
+            onTap: () => irCreditos(context,user),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.storage, color: Colors.blue),
+            title: Text('Convenios'),
+            onTap: () => irConvenios(context, user),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.question_answer, color: Colors.blue),
+            title: Text('Votaciones'),
+            onTap: () => irVotaciones(context),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.filter_center_focus, color: Colors.blue),
+            title: Text('Asistencia'),
+            onTap: () => irQr(context),
+          ),
+           ListTile(
+             leading: Icon(Icons.close),
+             title: Text('Cerrar sesion',style: TextStyle(color: Colors.redAccent),),
+             onTap: (){ UserLogin().logOut(context); } ,
+                          
+           ),  
+           ],
+          
+           )
+
+         );
+
+}
+
+
+ Widget _DetallesAhorro(String correo) {
+ FasAhorroProviders provider=FasAhorroProviders();
+   return  FutureBuilder(
+            future: provider.getAhorroPermanente(correo),
+            builder: (context,snapshot){
+              if(snapshot.hasData){
+                 String aporte='pailas';
+                  String monto='no hay lucas';
+                  if(snapshot.data!=null){    
+                     return _Ahorros(context,snapshot.data);
+                  }
+                  return ListTile(
+                    title: Text('acumulado '+monto),
+                    subtitle: Text('aporte '+aporte),
+                  );
+
+              }else{
+
+                return 
+                Center( child :CircularProgressIndicator() );
+              }
+
+            },
+
+   );
+     }
+
+ Widget _Ahorros(BuildContext context,Ahorros ahorro) {
+         Size size= MediaQuery.of(context).size;
+          return  Container(
+                  padding: EdgeInsets.all(30.0),
+                    child: Column(
+                        children: <Widget>[
+                            Container(
+                                height: size.height/3,
+                                child: Card(
+                                  elevation: 4.0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 20.0,
+                                        horizontal: 30.0
+                                    ),
+                                    child: Column( 
+                                            children: <Widget>[
+                                                Center(
+                                                     heightFactor:3.0,
+                                                     child :Text('DETALLES DE CUENTA ')
+                                                ),
+                                                Divider(),
+                                                Container(
+                                                  margin:EdgeInsets.symmetric(
+                                                      vertical: 10.0
+                                                  ),
+                                                  child: Column(
+                                                      children: <Widget>[
+                                                          Align(
+                                                              alignment: Alignment.topLeft,
+                                                              child: Text('AHORROS')
+                                                          ),
+                                                          Align(
+                                                              alignment: Alignment.topRight,
+                                                              child: Text('\$ '+ahorro.monto.toString())
+                                                          ),
+
+                                                      ],
+                                                  ),
+                                                ),
+                                                Divider(),
+                                                Container(
+                                                  margin:EdgeInsets.only(
+                                                      top: 10.0
+                                                  ),
+                                                  child: Column(
+                                                      children: <Widget>[
+                                                          Align(
+                                                              alignment: Alignment.topLeft,
+                                                              child: Text('APORTE MENSUAL')
+                                                          ),
+                                                          Align(
+                                                              alignment: Alignment.topRight,
+                                                              child: Text('\$ '+ahorro.aporte.toString())
+                                                          ),
+                                                          Divider()
+
+                                                      ],
+                                                  ),
+                                                )
+
+                                                ,
+                                            ],
+                                            
+                                    ),
+                                  ),
+                                ),
+                            ),
+                            Container(
+
+                            )
+
+                        ],
+
+                    ),
+
+          );
+
+        
+        }
+
+  
 }
