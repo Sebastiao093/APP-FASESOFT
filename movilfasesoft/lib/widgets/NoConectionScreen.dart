@@ -1,8 +1,9 @@
 
+
 import 'package:flutter/material.dart';
 
-  Widget splashScreen(context){
-     
+  Widget noConectionScreen(context,texto){
+    
     return Scaffold(
       body:Stack(
         fit: StackFit.expand,
@@ -44,7 +45,20 @@ import 'package:flutter/material.dart';
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                   CircularProgressIndicator(),
+                    Text(
+                        texto,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22.0),
+                      ),
+                    OutlineButton(
+                      child: Text('Regresar'),
+                      onPressed: (){Navigator.pushNamed(context,'/');},
+                      borderSide: BorderSide(color: Colors.blue,width: 3),
+                      textColor: Colors.blue,
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(top: 20.0),
                     ),

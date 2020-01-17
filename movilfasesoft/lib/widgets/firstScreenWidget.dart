@@ -20,20 +20,21 @@ import 'package:flutter/material.dart';
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 50.0,
-                        child: Image(image: AssetImage('assets/icons/fasesoftLogo.png')),
+                      Image(
+                        // backgroundColor: Colors.white,
+                        // radius: 50.0,
+                        image: AssetImage('assets/icons/fasesoftLogoBarra.png'),
+                        width: MediaQuery.of(context).size.width*.8,
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 10.0),
                       ),
                       Text(
-                        'Welcome to Fasesoft Mobile',
+                        'Mobile',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 24.0),
+                            fontSize: 26.0),
                       )
                     ],
                   ),
