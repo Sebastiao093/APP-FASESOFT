@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/widgets/NoConectionScreen.dart';
 import 'package:movilfasesoft/widgets/firstScreenWidget.dart';
@@ -33,7 +34,10 @@ class LoginPage extends StatelessWidget {
                
                print(snapshot.data);
                if(UserLogin().isloged()&& snapshot.data!='error'&& snapshot.data!='NR'&& snapshot.data!='NA'&&snapshot.hasData){
-                 return Logedin(snapshot.data);
+                 SchedulerBinding.instance.addPostFrameCallback((_) {
+                           Navigator.pushReplacementNamed(context,'/loged');
+                        });
+                 return  Container();
                  }
                  if(snapshot.data=='NA'){
                  return noConectionScreen(context,'El usuario no esta afiliado a Fasesoft'); 
@@ -56,3 +60,4 @@ class LoginPage extends StatelessWidget {
   }
 
 }
+

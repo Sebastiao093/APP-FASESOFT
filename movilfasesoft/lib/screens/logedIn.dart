@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movilfasesoft/main.dart';
 import 'package:movilfasesoft/models/ahorro.dart';
 
 import 'package:movilfasesoft/models/usuario.dart';
@@ -49,13 +50,12 @@ String nombre(user){
 class Logedin extends StatelessWidget {
 
 UsuarioAres usuarioAres = new UsuarioAres();
-String user='';
-Logedin(user){
-  this.user= user as String;
-}
+
+final String user=MyApp.correoUsuario;
  
 
   Widget build(BuildContext context){
+    
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context,snapshot){
@@ -64,7 +64,10 @@ Logedin(user){
         }else{
           this.usuarioAres=snapshot.data;
           return Scaffold(
-          appBar:AppBar(title: Text('Fasesoft Mobile'),) ,
+          appBar:AppBar(
+            title: ImageIcon( AssetImage('assets/icons/fasesoftLogoBarra.png'), size: 150.0,),
+            centerTitle: true,
+          ) ,
           drawer: SafeArea(
           child:  _drawer(context),
          ),

@@ -6,6 +6,7 @@ import 'routes/routes.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget  with PortraitModeMixin {
+  static String correoUsuario='';
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

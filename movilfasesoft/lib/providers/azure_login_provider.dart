@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
+import 'package:movilfasesoft/main.dart';
 
 
 class UserLogin {
@@ -48,6 +49,7 @@ class UserLogin {
           
           if(decodedData.isNotEmpty){
             if(decodedData[0]['estado']=='AFILIADO'){
+              MyApp.correoUsuario=correo;
               return correo;
             }else{
               print('no afiliado');
@@ -58,17 +60,7 @@ class UserLogin {
             return 'NR';
           }
         
-        //   if(!(estado==null)){
-        //     if(estado=='AFILIADO'){
-        //       print('ok');
-        //     }else{print('notok');}
-            
-        //   }else{print('noexiste');}
-          
-        // } else {
-        //   print('error en http');
-        // }
-        //return correo;
+
       }
       }
     } on SocketException catch (_) {
@@ -79,6 +71,7 @@ class UserLogin {
   }
 
   logOut(context) {
+    MyApp.correoUsuario='';
     oauth.logout();
     Navigator.pushReplacementNamed(context, '/');
   }

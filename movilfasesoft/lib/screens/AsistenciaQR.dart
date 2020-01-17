@@ -10,6 +10,7 @@ class PantallaQr extends StatelessWidget {
         title: Text('QR Asistencia'),
         centerTitle: true,
         actions: <Widget>[
+      
           Container(
             child: ImageIcon( AssetImage('assets/icons/fasesoftLogo.png'), size: 100.0,)
           )
