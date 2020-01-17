@@ -27,7 +27,7 @@ Widget _infoUsuario(BuildContext context, String correo){
       body: FutureBuilder(
         future: cargarUsuario(correo),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-         final data=snapshot.data;
+      
           if (snapshot.hasData){
             return _detalleUsuario(snapshot.data);
           }else{
@@ -62,32 +62,56 @@ Future <UsuarioAres> cargarUsuario(String correo) async{
  
  Widget _detalleUsuario(UsuarioAres user){
  
-   return Column(
+   return Container(
+   
+     child: Center(
+       child: Card(
+         shape: RoundedRectangleBorder(
+           borderRadius: BorderRadius.circular(15.0)
+         ),
+          elevation: 15.0,
+           
+       
+       child: Column(
+         mainAxisSize: MainAxisSize.min,
+         mainAxisAlignment: MainAxisAlignment.center,
+        
          children: <Widget>[
-           
            ListTile(
-             title: Text('Nombre: ' + user.nombre +' ' +user.apellido),
-                        
+             leading: Icon(Icons.person),
            ),
-           ListTile(
-             title: Text('Identificación: ' + user.identificacion),
-           ),
-           ListTile(
-             title: Text('Correo: '+ user.correo),
-           ),
-           ListTile(
-             title: Text('Dirección: '+user.direccion),
-           ),
-           ListTile(
-             title: Text('Teléfono: '+user.telefono),
-           ),  
-           
+             ListTile(
+               
+               title: Text('Nombre:'),
+               subtitle: Text(user.nombre +' ' +user.apellido),
+                          
+             ),
+             ListTile(
+               
+               title: Text('Identificación:'),
+               subtitle: Text(user.identificacion),
+             ),
+             ListTile(
+               title: Text('Correo:'),
+               subtitle: Text(user.correo),
+             ),
+             ListTile(
+               title: Text('Dirección:'),
+               subtitle: Text(user.direccion),
+             ),
+             ListTile(
+               title: Text('Teléfono:'),
+               subtitle: Text(user.telefono),
+             ), 
          ],
- 
-       );
+       ),
+       ),
+      
+     ),
+   );
+     
+    
  }
  
  }
  
- class UsuarioProvider {
-}

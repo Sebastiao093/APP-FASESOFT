@@ -78,7 +78,7 @@ Logedin(user){
           
            ListTile(
              leading: Icon(Icons.person,  color: Colors.blue),
-             title: Text('Detalle de cuenta'),
+             title: Text('Detalle de perfil'),
              onTap: () => irPerfil(context,user),             
            ),
 
