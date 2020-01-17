@@ -47,6 +47,7 @@ String nombre(user){
 }
 
 class Logedin extends StatelessWidget {
+
 UsuarioAres usuarioAres = new UsuarioAres();
 String user='';
 Logedin(user){
@@ -74,16 +75,36 @@ Logedin(user){
               accountEmail: Text(user),
               currentAccountPicture: Icon(Icons.account_circle),
             ),
-            ListTile(
-             leading: Icon(Icons.center_focus_weak),
-             title: Text('Qr de asistencia'),
-             onTap: (){Navigator.pushReplacementNamed(context,'/qr',arguments: user);} ,             
-           ),
+          
            ListTile(
-             leading: Icon(Icons.person),
+             leading: Icon(Icons.person,  color: Colors.blue),
              title: Text('Detalle de cuenta'),
-             onTap: (){Navigator.pushReplacementNamed(context,'/detail',arguments: user);} ,             
+             onTap: () => irPerfil(context,user),             
            ),
+
+           ListTile(
+            leading: Icon(Icons.business_center, color: Colors.blue),
+            title: Text('Creditos'),
+            onTap: () => irCreditos(context,user),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.storage, color: Colors.blue),
+            title: Text('Convenios'),
+            onTap: () => irConvenios(context, user),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.question_answer, color: Colors.blue),
+            title: Text('Votaciones'),
+            onTap: () => irVotaciones(context),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.filter_center_focus, color: Colors.blue),
+            title: Text('Asistencia'),
+            onTap: () => irQr(context),
+          ),
            ListTile(
              leading: Icon(Icons.close),
              title: Text('Cerrar sesion',style: TextStyle(color: Colors.redAccent),),
