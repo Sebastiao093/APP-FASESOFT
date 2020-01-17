@@ -56,18 +56,32 @@ Logedin(user){
  
 
   Widget build(BuildContext context){
-   
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context,snapshot){
         if(snapshot.connectionState!=ConnectionState.done){
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }else{
           this.usuarioAres=snapshot.data;
           return Scaffold(
           appBar:AppBar(title: Text('Fasesoft Mobile'),) ,
           drawer: SafeArea(
-          child:Drawer(
+          child:  _drawer(context),
+         ),
+          body: _DetallesAhorro(user),
+          
+        );
+        }
+      },
+    );
+
+
+  }
+
+
+Widget _drawer(BuildContext context){
+
+  return Drawer(
            child: ListView(
            children: <Widget>[
             UserAccountsDrawerHeader(
@@ -110,77 +124,27 @@ Logedin(user){
              title: Text('Cerrar sesion',style: TextStyle(color: Colors.redAccent),),
              onTap: (){ UserLogin().logOut(context); } ,
                           
-           ),
-           _DetallesAhorro(user)
-
-           
-            
+           ),  
            ],
           
            )
 
-         ),
-         ),
-          body: GridView.count(
-  primary: false,
-  padding: const EdgeInsets.all(20),
-  crossAxisSpacing: 10,
-  mainAxisSpacing: 10,
-  crossAxisCount: 2,
-  children: <Widget>[
-           RaisedButton(
-            child: Text('Votaciones'),
-            onPressed: () => irVotaciones(context),
-          
-          ),
-          RaisedButton(
-            child: Text('Credito'),
-            onPressed: ()=>irCreditos(context,user),
-          ),
-          RaisedButton(
-            child: Text('Convenios'),
-            onPressed: () => irConvenios(context, user),
-          ),
-          RaisedButton(
-            child: Text('QR'),
-            onPressed: () => irQr(context),
-          ),
-          RaisedButton(
-            child: Text('Perfil'),
-            onPressed: () => irPerfil(context,user),
-          ),
+         );
 
-  ],
-)
-          
-      
-        );
-        }
-      },
-    );
+}
 
 
-  }
-
-
- Widget _DetallesAhorro(String correo)  {
+ Widget _DetallesAhorro(String correo) {
  FasAhorroProviders provider=FasAhorroProviders();
-
-   return 
-   
-   FutureBuilder(
+   return  FutureBuilder(
             future: provider.getAhorroPermanente(correo),
             builder: (context,snapshot){
               if(snapshot.hasData){
                  String aporte='pailas';
                   String monto='no hay lucas';
                   if(snapshot.data!=null){    
-                      Ahorros ahorro=snapshot.data;
-                      aporte=ahorro.aporte.toString();
-                      monto=ahorro.monto.toString();
-
+                     return _Ahorros(context,snapshot.data);
                   }
-
                   return ListTile(
                     title: Text('acumulado '+monto),
                     subtitle: Text('aporte '+aporte),
@@ -188,14 +152,95 @@ Logedin(user){
 
               }else{
 
-                return CircularProgressIndicator(backgroundColor:  Colors.red,);
+                return 
+                Center( child :CircularProgressIndicator() );
               }
 
             },
 
    );
-     
-      }
+     }
+
+ Widget _Ahorros(BuildContext context,Ahorros ahorro) {
+         Size size= MediaQuery.of(context).size;
+          return  Container(
+                  padding: EdgeInsets.all(30.0),
+                    child: Column(
+                        children: <Widget>[
+                            Container(
+                                height: size.height/3,
+                                child: Card(
+                                  elevation: 4.0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 20.0,
+                                        horizontal: 30.0
+                                    ),
+                                    child: Column( 
+                                            children: <Widget>[
+                                                Center(
+                                                     heightFactor:3.0,
+                                                     child :Text('DETALLES DE CUENTA ')
+                                                ),
+                                                Divider(),
+                                                Container(
+                                                  margin:EdgeInsets.symmetric(
+                                                      vertical: 10.0
+                                                  ),
+                                                  child: Column(
+                                                      children: <Widget>[
+                                                          Align(
+                                                              alignment: Alignment.topLeft,
+                                                              child: Text('AHORROS')
+                                                          ),
+                                                          Align(
+                                                              alignment: Alignment.topRight,
+                                                              child: Text('\$ '+ahorro.monto.toString())
+                                                          ),
+
+                                                      ],
+                                                  ),
+                                                ),
+                                                Divider(),
+                                                Container(
+                                                  margin:EdgeInsets.only(
+                                                      top: 10.0
+                                                  ),
+                                                  child: Column(
+                                                      children: <Widget>[
+                                                          Align(
+                                                              alignment: Alignment.topLeft,
+                                                              child: Text('APORTE MENSUAL')
+                                                          ),
+                                                          Align(
+                                                              alignment: Alignment.topRight,
+                                                              child: Text('\$ '+ahorro.aporte.toString())
+                                                          ),
+                                                          Divider()
+
+                                                      ],
+                                                  ),
+                                                )
+
+                                                ,
+                                            ],
+                                            
+                                    ),
+                                  ),
+                                ),
+                            ),
+                            Container(
+
+                            )
+
+                        ],
+
+                    ),
+
+          );
+
+        
+        }
 
   
 }
