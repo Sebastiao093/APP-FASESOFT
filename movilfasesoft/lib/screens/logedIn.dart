@@ -11,6 +11,7 @@ import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
 import 'package:movilfasesoft/screens/CreditoPantalla.dart';
 import 'package:movilfasesoft/screens/PerfilPantalla.dart';
 import 'package:movilfasesoft/screens/Votaciones.dart';
+import 'package:movilfasesoft/utils/numberFormat.dart';
 
 void irVotaciones(BuildContext ctx) {
   Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname);
@@ -122,6 +123,7 @@ class Logedin extends StatelessWidget {
   }
 
   Widget _DetallesAhorro(String correo) {
+    
     FasAhorroProviders provider = FasAhorroProviders();
     return FutureBuilder(
       future: provider.getAhorroPermanente(correo),
@@ -185,7 +187,7 @@ class Logedin extends StatelessWidget {
                                           Align(
                                               alignment: Alignment.topRight,
                                               child: Text(
-                                                '\$ ' + ahorro.monto.toString(),
+                                                '\$ ' + numberFormat(ahorro.monto.toDouble()),
                                                 style: TextStyle(
                                                     color: Colors.blue,
                                                     fontWeight:
@@ -206,7 +208,7 @@ class Logedin extends StatelessWidget {
                                               alignment: Alignment.topRight,
                                               child: Text(
                                                 '\$ ' +
-                                                    ahorro.aporte.toString(),
+                                                   numberFormat(ahorro.aporte.toDouble()),
                                                 style: TextStyle(
                                                     color: Colors.blue,
                                                     fontWeight:
