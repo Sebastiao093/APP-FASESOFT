@@ -171,7 +171,7 @@ Widget _drawer(BuildContext context){
                     child: Column(
                         children: <Widget>[
                             Container(
-                                height: size.height/3,
+                                // height: size.height/3,
                                 child: Card(
                                   elevation: 4.0,
                                   child: Container(
