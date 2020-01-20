@@ -46,7 +46,7 @@ class LoginPage extends StatelessWidget {
                  return noConectionScreen(context,'El usuario no se encuentra\n      en la base de datos'); 
                  }
                if(snapshot.data=='error'){
-                 return noConectionScreen(context,'Error en la Conexion'); 
+                 return noConectionScreen(context,'Error en la conexión'); 
                  }else{
                  return LoginPage();
                }

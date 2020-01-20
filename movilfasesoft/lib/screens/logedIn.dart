@@ -172,17 +172,72 @@ class Logedin extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 10.0),
                       child: Column(
                         children: <Widget>[
-                          Align(
-                              alignment: Alignment.topLeft,
-                              child: Text('AHORROS')),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                '\$ ' + ahorro.monto.toString(),
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold),
-                              )),
+                            Container(
+                                // height: size.height/3,
+                                child: Card(
+                                  elevation: 4.0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 20.0,
+                                        horizontal: 30.0
+                                    ),
+                                    child: Column( 
+                                            children: <Widget>[
+                                                Center(
+                                                     heightFactor:3.0,
+                                                     child :Text('DETALLES DE CUENTA ')
+                                                ),
+                                                Divider(),
+                                                Container(
+                                                  margin:EdgeInsets.symmetric(
+                                                      vertical: 10.0
+                                                  ),
+                                                  child: Column(
+                                                      children: <Widget>[
+                                                          Align(
+                                                              alignment: Alignment.topLeft,
+                                                              child: Text('AHORROS')
+                                                          ),
+                                                          Align(
+                                                              alignment: Alignment.topRight,
+                                                              child: Text('\$ '+ahorro.monto.toString())
+                                                          ),
+
+                                                      ],
+                                                  ),
+                                                ),
+                                                Divider(),
+                                                Container(
+                                                  margin:EdgeInsets.only(
+                                                      top: 10.0
+                                                  ),
+                                                  child: Column(
+                                                      children: <Widget>[
+                                                          Align(
+                                                              alignment: Alignment.topLeft,
+                                                              child: Text('APORTE MENSUAL')
+                                                          ),
+                                                          Align(
+                                                              alignment: Alignment.topRight,
+                                                              child: Text('\$ '+ahorro.aporte.toString())
+                                                          ),
+                                                          Divider()
+
+                                                      ],
+                                                  ),
+                                                )
+
+                                                ,
+                                            ],
+                                            
+                                    ),
+                                  ),
+                                ),
+                            ),
+                            Container(
+
+                            )
+
                         ],
                       ),
                     ),
