@@ -16,17 +16,14 @@ class ConvenioPantalla extends StatefulWidget {
 }
 
 Future<List<dynamic>> obtenerData(String correo) async {
-  print(correo);
   String _url = '173.16.0.35:7001';
   final urlfin = Uri.http(
       _url,
       'fasesoft-web/webresources/servicios/fasconvenios/misconvenios',
       {'correo': correo});
-  //print(urlfin);
   final response = await http.get(urlfin);
 
   if (response.statusCode == 200) {
-    debugPrint(response.body);
     final decodedData = json.decode(response.body);
 
     return decodedData;
@@ -62,19 +59,13 @@ Widget ElementosCartas(Convenio elemento, BuildContext ctx) {
       child: Column(
         children: <Widget>[
           Column(
-            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Column(
-                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     traerTipoConvenio(elemento, ctx),
                   ]),
               Column(
-                //mainAxisAlignment: MainAxisAlignment.start,
-                //crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  //Text(elemento.fechaSolicitud.substring(0, 10)),
                 ],
               )
             ],
@@ -91,7 +82,7 @@ Widget contenido1(Future<List<dynamic>> elementos, BuildContext ctx) {
       future: elementos,
       builder: (context, auxElementos) {
         if (auxElementos.hasData) {
-          //Elemento element = new Elemento(auxElementos.data.first as Map<String,Dynamic>);
+          
           return ListView.builder(
             itemCount: auxElementos.data.length,
             itemBuilder: (context, index) {
@@ -101,16 +92,7 @@ Widget contenido1(Future<List<dynamic>> elementos, BuildContext ctx) {
               return ElementosCartas(elemento, ctx);
             },
           );
-        } /*else if (!auxElementos.hasData) {
-          return Card(
-            child: Column(
-              children: <Widget>[
-                Text(
-                    'No tienes Convenios con nosotros, adquiere uno con nosotros')
-              ],
-            ),
-          );
-        }*/
+        }
         else if (auxElementos.hasError) {
           return Text('${auxElementos.error}');
         }
@@ -137,7 +119,7 @@ Widget traerTipoConvenio(Convenio convenio, BuildContext ctx) {
             itemBuilder: (context, index) {
               var elemento = new TipoConvenio.fromJson(
                   auxElementos.data.elementAt(index) as Map<String, dynamic>);
-              //ConvenioPantalla.elementoTipoConvenio.add(elemento);
+              
               return Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -147,7 +129,7 @@ Widget traerTipoConvenio(Convenio convenio, BuildContext ctx) {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text(elemento.tipo),
-                      Text(convenio.fechaSolicitud.substring(0,10))
+                      Text(convenio.fechaSolicitud.substring(0, 10))
                     ],
                   ),
                   Column(
@@ -168,7 +150,6 @@ Widget traerTipoConvenio(Convenio convenio, BuildContext ctx) {
                           },
                         )
                       ])
-                  //Text(elemento.descripcion),
                 ],
               );
             },
@@ -182,19 +163,8 @@ Widget traerTipoConvenio(Convenio convenio, BuildContext ctx) {
   );
 }
 
-Widget ElementosCartas2(TipoConvenio elemento) {
-  return Column(
-    children: <Widget>[
-      Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <Widget>[
-        Text(elemento.tipo.toString()),
-        Text(elemento.descripcion.toString()),
-      ])
-    ],
-  );
-}
-
 Future<List<dynamic>> obtenerIdConvenioData(String idTipoConvenio) async {
-  print(idTipoConvenio);
+  
   String _url = '173.16.0.35:7001';
   final urlfintipoconvenio = Uri.http(
       _url,
@@ -203,7 +173,7 @@ Future<List<dynamic>> obtenerIdConvenioData(String idTipoConvenio) async {
   final response = await http.get(urlfintipoconvenio);
 
   if (response.statusCode == 200) {
-    debugPrint(response.body);
+    
     final decodedidTipoData = json.decode(response.body);
 
     return decodedidTipoData;

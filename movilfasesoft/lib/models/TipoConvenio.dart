@@ -10,17 +10,15 @@ class TipoConvenio {
   final num cuotasMaximas;
 
   TipoConvenio(
-    {
-      @required this.idTipoConvenio,
+      {@required this.idTipoConvenio,
       this.tipo,
       this.descripcion,
       this.estado,
       this.urlConvenio,
       this.tasa,
-      this.cuotasMaximas
-    });
+      this.cuotasMaximas});
 
-    factory TipoConvenio.fromJson(Map<String, dynamic> json) {
+  factory TipoConvenio.fromJson(Map<String, dynamic> json) {
     return TipoConvenio(
       idTipoConvenio: json['idTipoConvenio'],
       tipo: json['tipo'],
