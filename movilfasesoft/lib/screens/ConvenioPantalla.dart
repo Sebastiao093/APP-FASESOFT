@@ -9,8 +9,7 @@ import 'package:movilfasesoft/models/TipoConvenio.dart';
 class ConvenioPantalla extends StatefulWidget {
   static const routedname = "/PantallaConvenios";
   static var correo = "shgarcia@asesoftware.com";
-  static TipoConvenio elementoTipoConvenio;
-  
+  static List<TipoConvenio> elementoTipoConvenio;
 
   @override
   _ConvenioPantallaState createState() => _ConvenioPantallaState();
@@ -62,30 +61,23 @@ Widget ElementosCartas(Convenio elemento, BuildContext ctx) {
       margin: EdgeInsets.all(25.0),
       child: Column(
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Column(
+            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[              
-              traerTipoConvenio(elemento.idtipoconvenio.toString()),
-
-              Text(elemento.fechaSolicitud.substring(0, 10)),
-                ]
-                ), RaisedButton(
-                  padding: EdgeInsets.all(7.0),
-                  elevation: 7.0, 
-                  child: Text(elemento.estado),
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                  color: getColor(elemento.estado.toString()),
-                  onPressed: (){
-                    mostrarAlerta(ctx,elemento);
-                  },
-                  )
-              
-            ]
-            ,
+                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    traerTipoConvenio(elemento, ctx),
+                  ]),
+              Column(
+                //mainAxisAlignment: MainAxisAlignment.start,
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  //Text(elemento.fechaSolicitud.substring(0, 10)),
+                ],
+              )
+            ],
           ),
         ],
       ),
@@ -106,7 +98,7 @@ Widget contenido1(Future<List<dynamic>> elementos, BuildContext ctx) {
               var elemento = new Convenio.fromJson(
                   auxElementos.data.elementAt(index) as Map<String, dynamic>);
 
-              return ElementosCartas(elemento,ctx);
+              return ElementosCartas(elemento, ctx);
             },
           );
         } /*else if (!auxElementos.hasData) {
@@ -118,7 +110,8 @@ Widget contenido1(Future<List<dynamic>> elementos, BuildContext ctx) {
               ],
             ),
           );
-        }*/else if (auxElementos.hasError) {
+        }*/
+        else if (auxElementos.hasError) {
           return Text('${auxElementos.error}');
         }
         return CircularProgressIndicator();
@@ -127,12 +120,13 @@ Widget contenido1(Future<List<dynamic>> elementos, BuildContext ctx) {
   );
 }
 
-Widget traerTipoConvenio(String idTipoConvenio) {
+Widget traerTipoConvenio(Convenio convenio, BuildContext ctx) {
+  String idTipoConvenio = convenio.idtipoconvenio.toString();
   Future<List<dynamic>> idTipoData = obtenerIdConvenioData(idTipoConvenio);
 
   return Container(
-    height: 40,
-    width: 70,
+    height: 45,
+    width: 400,
     child: Center(
         child: FutureBuilder<List<dynamic>>(
       future: idTipoData,
@@ -143,12 +137,37 @@ Widget traerTipoConvenio(String idTipoConvenio) {
             itemBuilder: (context, index) {
               var elemento = new TipoConvenio.fromJson(
                   auxElementos.data.elementAt(index) as Map<String, dynamic>);
-              ConvenioPantalla.elementoTipoConvenio = elemento;
-              return Column(
+              //ConvenioPantalla.elementoTipoConvenio.add(elemento);
+              return Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Text(elemento.tipo),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text(elemento.tipo),
+                      Text(convenio.fechaSolicitud.substring(0,10))
+                    ],
+                  ),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        RaisedButton(
+                          padding: EdgeInsets.all(7.0),
+                          elevation: 7.0,
+                          child: Text(convenio.estado),
+                          textColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          color: getColor(convenio.estado.toString()),
+                          onPressed: () {
+                            mostrarAlerta(ctx, convenio, elemento);
+                          },
+                        )
+                      ])
                   //Text(elemento.descripcion),
                 ],
               );
@@ -157,7 +176,7 @@ Widget traerTipoConvenio(String idTipoConvenio) {
         } else if (auxElementos.hasError) {
           return Text('${auxElementos.error}');
         }
-        return Text('gf');
+        return Text('');
       },
     )),
   );
@@ -194,78 +213,73 @@ Future<List<dynamic>> obtenerIdConvenioData(String idTipoConvenio) async {
 }
 
 Color getColor(elemento) {
-
-    if ( elemento=='REGISTRADO' ) {
-     return Colors.blue;
-    } else if(elemento=='APROBADO'){
+  if (elemento == 'REGISTRADO') {
+    return Colors.blue;
+  } else if (elemento == 'APROBADO') {
     return Colors.green;
-    } else if(elemento=='RECHAZADO'){
-     return Colors.red;
-    } else if(elemento=='FINALIZADO'){
-     return Colors.grey;
-    } else if(elemento=='CANCELADO'){
-      return Colors.green[200];
-    } else return Colors.black;
+  } else if (elemento == 'RECHAZADO') {
+    return Colors.red;
+  } else if (elemento == 'FINALIZADO') {
+    return Colors.grey;
+  } else if (elemento == 'CANCELADO') {
+    return Colors.green[200];
+  } else
+    return Colors.black;
+}
 
-  }
-
-  void mostrarAlerta(BuildContext ctx, Convenio elemento){
-
-    showDialog(
+void mostrarAlerta(
+    BuildContext ctx, Convenio elemento, TipoConvenio tipoconvenio) {
+  showDialog(
       context: ctx,
       barrierDismissible: true,
-      builder: (context){
-
+      builder: (context) {
         return AlertDialog(
-          title: Text(ConvenioPantalla.elementoTipoConvenio.tipo.toString(),style: TextStyle(color: Colors.blue),),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          titleTextStyle: TextStyle(
-               fontSize: 24,
-               fontFamily: 'RobotoCondensed',
+            title:
+                Text((tipoconvenio.tipo), style: TextStyle(color: Colors.blue)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            titleTextStyle: TextStyle(
+              fontSize: 24,
+              fontFamily: 'RobotoCondensed',
               fontWeight: FontWeight.bold,
-             ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cerrar'),
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-          content: Column(
-            mainAxisSize: MainAxisSize.min, 
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[ 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text('Fecha: '+elemento.fechaSolicitud.substring(0,10)),
-                ],
-
-              ),Divider(color: Colors.blue),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      title: Text('Descripción: '+ ConvenioPantalla.elementoTipoConvenio.descripcion.toString()),
-                      subtitle: Text('Estado: '+ elemento.estado.toLowerCase()),
-                )]),
-              ),Divider(color: Colors.blue),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text('Cuotas: ' + elemento.numeroCuotas .toString()),
-                ],
-                
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Cerrar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               )
-
             ],
-          
-          )
-          
-        );
-      }
-
-    );
-
-  }
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text('Fecha: ' + elemento.fechaSolicitud.substring(0, 10)),
+                  ],
+                ),
+                Divider(color: Colors.blue),
+                Container(
+                  child: Column(children: <Widget>[
+                    ListTile(
+                      title: Text('Descripción: ' +
+                          tipoconvenio.descripcion.toString()),
+                      subtitle:
+                          Text('Estado: ' + elemento.estado.toLowerCase()),
+                    )
+                  ]),
+                ),
+                Divider(color: Colors.blue),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text('Cuotas: ' + elemento.numeroCuotas.toString()),
+                  ],
+                )
+              ],
+            ));
+      });
+}
