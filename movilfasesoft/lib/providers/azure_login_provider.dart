@@ -41,7 +41,7 @@ class UserLogin {
         var correo= decodedToken.getClaim('upn');
 
         final url = Uri.http(_url,'fasesoft-web/webresources/servicios/fasusuarios/afiliadoPorCorreo/' + correo);
-        print(url);
+        //print(url);
         final resp = await http.get(url);
 
         if (resp.statusCode == HttpStatus.ok) {
@@ -52,11 +52,11 @@ class UserLogin {
               MyApp.correoUsuario=correo;
               return correo;
             }else{
-              print('no afiliado');
+              //print('no afiliado');
               return 'NA';
             }
           }else{
-            print('no registrado');
+            //print('no registrado');
             return 'NR';
           }
         

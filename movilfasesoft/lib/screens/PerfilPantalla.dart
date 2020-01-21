@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 
+
 class PerfilPantalla extends StatelessWidget {
   static const routedname = "/PantallaPerfil";
   String correo;

@@ -5,11 +5,6 @@ class Credito {
   final num tasaReal;
   final num monto;
   final num saldo;
-  //final DateTime fecha_inicio;  nullable
-  //final DateTime fecha_desembolso; nullable
-  //final DateTime fecha_inicio_pago; nullable
-  //final int cuotas_pendientes;
-  //final num pagare;
   final String estado;
   final String correo;
   final String nombretipodecredito;
@@ -33,7 +28,6 @@ class Credito {
       this.mora,
       this.numeroCuotas});
 
-
   factory Credito.fromJson(Map<String, dynamic> json) {
     return Credito(
       idCredito: json['idCredito'],
@@ -51,4 +45,3 @@ class Credito {
     );
   }
 }
- 
