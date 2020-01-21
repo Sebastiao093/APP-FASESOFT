@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:majascan/majascan.dart';
+import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 
 class PantallaQr extends StatefulWidget {
@@ -55,16 +56,24 @@ class _PantallaQrState extends State<PantallaQr> {
         FloatingActionButton(
           child: Icon(Icons.filter_center_focus),
           //onPressed: _scanQR,
-          onPressed: () {lectura();} ,
+          onPressed: () {cargarInfoAsistente('asalgado@asesoftware.com');} ,
         ),
       ],
     );
   }
 
-  Future<List<dynamic>> lectura(){
+  /*Future<List<dynamic>> lectura(){
     //final infoAsistenteProvider = new InfoAsistenteProvider();
-    Future<List<dynamic>> data = infoAsistenteProvider.getInfoAsistente('asalgado@asesoftware.com');
+    String data = infoAsistenteProvider.getInfoAsistente('asalgado@asesoftware.com');
     return data;
+  }*/
+
+  Future<InfoAsistente> cargarInfoAsistente(String correo) async  {
+    final infoasistenteprovider = InfoAsistenteProvider();
+
+    InfoAsistente infoAsistente = await infoasistenteprovider.getInfoAsistente(correo);
+    print(infoAsistente.estado.toString());
+    return infoAsistente;
   }
 
 
