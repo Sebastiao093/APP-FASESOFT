@@ -3,20 +3,15 @@ import 'package:flutter/material.dart';
 class Convenio {
   final int idConvenio;
   final num saldo;
-  //final fecha_inicio_convenio; nullable
   final String estado;
   final num numeroCuotas;
   final num mora;
   final int idtipoconvenio;
   final String fechaSolicitud;
-  //final DateTime fecha_inicio_pago;
   final num cuotasPendientes;
   final num cuotasIntereses;
   final num cuotaSeguro;
   final num cuotaAporte;
-  //final String url_imagen;
-  //final String principal;
-  //final String contrato;
   final num monto;
   String nombre;
   String descripcion;
@@ -35,7 +30,6 @@ class Convenio {
       this.cuotaAporte,
       this.monto});
 
-
   factory Convenio.fromJson(Map<String, dynamic> json) {
     return Convenio(
       idConvenio: json['idConvenio'],
@@ -52,5 +46,4 @@ class Convenio {
       monto: json['monto'],
     );
   }
-
 }
