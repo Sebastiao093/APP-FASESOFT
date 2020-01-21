@@ -21,7 +21,7 @@ class UserProvider {
     
     }
      Future<UsuarioAres> getUser(String user1) async{
-    print('entro');
+    //print('entro');
     UsuarioAres user;
 
     final url= Uri.http(_url,'fasesoft-web/webresources/servicios/fasafiliados/detalleUsuarioAres/'+user1);
