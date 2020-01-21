@@ -35,13 +35,14 @@ class InfoAsistente {
   this.nombre,
   });
      
-  factory InfoAsistente.fromJsonMap( Map<String, dynamic> json){
+  factory InfoAsistente.fromJson( Map<String, dynamic> json){
     return InfoAsistente(
       apellido    : json['apellido'],
-      correo      : json['estado'],
+      correo      : json['correo'],
+      estado      : json['estado'],
       idAsamblea  : json['idAsamblea'],
       idAsistente : json['idAsistente'],
-      idUsuario   : json['IdUsuario'],
+      idUsuario   : json['idUsuario'],
       nombre      : json['nombre'],
     );
   }

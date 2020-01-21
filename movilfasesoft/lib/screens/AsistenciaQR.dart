@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:majascan/majascan.dart';
+import 'package:movilfasesoft/models/infoAsistente.dart';
+import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 
 class PantallaQr extends StatefulWidget {
   static const routedname = "/PantallaQr";
@@ -13,6 +15,7 @@ class PantallaQr extends StatefulWidget {
 class _PantallaQrState extends State<PantallaQr> {
 
   String _valorAsistencia = '';
+  final infoAsistenteProvider = new InfoAsistenteProvider();
   
   @override
   void initState() { 
@@ -52,11 +55,27 @@ class _PantallaQrState extends State<PantallaQr> {
       children: <Widget>[
         FloatingActionButton(
           child: Icon(Icons.filter_center_focus),
-          onPressed: _scanQR,
+          //onPressed: _scanQR,
+          onPressed: () {cargarInfoAsistente('asalgado@asesoftware.com');} ,
         ),
       ],
     );
   }
+
+  /*Future<List<dynamic>> lectura(){
+    //final infoAsistenteProvider = new InfoAsistenteProvider();
+    String data = infoAsistenteProvider.getInfoAsistente('asalgado@asesoftware.com');
+    return data;
+  }*/
+
+  Future<InfoAsistente> cargarInfoAsistente(String correo) async  {
+    final infoasistenteprovider = InfoAsistenteProvider();
+
+    InfoAsistente infoAsistente = await infoasistenteprovider.getInfoAsistente(correo);
+    print(infoAsistente.estado.toString());
+    return infoAsistente;
+  }
+
 
   Future _scanQR() async {
 
