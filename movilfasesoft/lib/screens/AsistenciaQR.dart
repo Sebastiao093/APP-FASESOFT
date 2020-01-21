@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:majascan/majascan.dart';
@@ -55,8 +58,7 @@ class _PantallaQrState extends State<PantallaQr> {
       children: <Widget>[
         FloatingActionButton(
           child: Icon(Icons.filter_center_focus),
-          //onPressed: _scanQR,
-          onPressed: () {cargarInfoAsistente('asalgado@asesoftware.com');} ,
+          onPressed:  _scanQR,
         ),
       ],
     );
@@ -70,9 +72,11 @@ class _PantallaQrState extends State<PantallaQr> {
 
   Future<InfoAsistente> cargarInfoAsistente(String correo) async  {
     final infoasistenteprovider = InfoAsistenteProvider();
-
     InfoAsistente infoAsistente = await infoasistenteprovider.getInfoAsistente(correo);
     print(infoAsistente.estado.toString());
+    infoAsistente.estado = 'SIASI';
+    print(infoAsistente.estado.toString());
+    
     return infoAsistente;
   }
 
@@ -89,6 +93,7 @@ class _PantallaQrState extends State<PantallaQr> {
 	      flashlightEnable: true
       );
       setState(() => this._valorAsistencia = futureString);
+      cargarInfoAsistente(futureString);
     } on PlatformException catch (e) {
       if (e.code == MajaScan.CameraAccessDenied) {
         setState(() => 'El usuario rechazo permisos de uso de cámara');
@@ -108,4 +113,20 @@ class _PantallaQrState extends State<PantallaQr> {
       print('Tenemos informacion');
     }
   }
+
+void enviarCambioEstadoPut(Map<String, Object> dato) async {
+    String url =
+        "http://173.16.0.84:7001/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
+
+    var response = await http.put(
+      Uri.encodeFull(url),
+      body: json.encode(dato),
+      headers: {
+        "content-type": "application/json",
+        "accept": "application/json",
+      },
+    );
+    print(response.body);
+  }
+
 }
