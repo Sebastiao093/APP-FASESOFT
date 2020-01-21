@@ -10,12 +10,7 @@ import 'package:corsac_jwt/corsac_jwt.dart';
 import 'package:movilfasesoft/main.dart';
 
 class UserLogin {
-<<<<<<< HEAD
-  
-  String _url='173.16.0.90:7001';
-=======
   String _url = '173.16.0.84:7001';
->>>>>>> 8f315b6c4801020377f6290b85ba3d2826a7540c
   static Config config = new Config(
       "bf208dcb-97e8-4d43-bd72-323680bef25c", //tenand id
       "19d6b921-44b0-42df-946f-d14bf3392cbf", //client id
