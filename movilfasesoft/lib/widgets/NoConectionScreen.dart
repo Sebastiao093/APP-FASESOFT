@@ -56,7 +56,7 @@ import 'package:movilfasesoft/providers/azure_login_provider.dart';
                     OutlineButton(
                       child: Text('Regresar'),
                       onPressed: (){
-                        UserLogin().logOut(context);
+                        if(texto == 'El usuario no esta afiliado a Fasesoft' ){ UserLogin().logOut(context) ;}
                         Navigator.pushNamed(context,'/');},
                       borderSide: BorderSide(color: Colors.blue,width: 3),
                       textColor: Colors.blue,
