@@ -8,7 +8,6 @@ import 'package:movilfasesoft/models/TipoConvenio.dart';
 
 class ConvenioPantalla extends StatefulWidget {
   static const routedname = "/PantallaConvenios";
-  static var correo = "shgarcia@asesoftware.com";
   static List<TipoConvenio> elementoTipoConvenio;
 
   @override
