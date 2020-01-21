@@ -11,7 +11,7 @@ class UserProvider {
   final List<ListTile> usuario1 =List();
 
 
-  String _url='173.16.0.185:7001';
+  String _url='173.16.0.84:7001';
 
   getusername(String user1){
     getUser(user1).then((onValue){
@@ -21,7 +21,7 @@ class UserProvider {
     
     }
      Future<UsuarioAres> getUser(String user1) async{
-    print('entro');
+    //print('entro');
     UsuarioAres user;
 
     final url= Uri.http(_url,'fasesoft-web/webresources/servicios/fasafiliados/detalleUsuarioAres/'+user1);

@@ -8,7 +8,6 @@ import 'package:movilfasesoft/models/TipoConvenio.dart';
 
 class ConvenioPantalla extends StatefulWidget {
   static const routedname = "/PantallaConvenios";
-  static var correo = "shgarcia@asesoftware.com";
   static List<TipoConvenio> elementoTipoConvenio;
 
   @override
@@ -165,11 +164,12 @@ Widget traerTipoConvenio(Convenio convenio, BuildContext ctx) {
 
 Future<List<dynamic>> obtenerIdConvenioData(String idTipoConvenio) async {
   
-  String _url = '173.16.0.35:7001';
+  String _url = '173.16.0.84:7001';
   final urlfintipoconvenio = Uri.http(
       _url,
       'fasesoft-web/webresources/servicios/fastiposconvenio/test/' +
           idTipoConvenio);
+          print(urlfintipoconvenio);
   final response = await http.get(urlfintipoconvenio);
 
   if (response.statusCode == 200) {

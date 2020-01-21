@@ -106,7 +106,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
               ),
             );
           } else if (auxPreguntas.hasError) {
-            return Text('${auxPreguntas.error}');
+            return Text('recargue por favor');//Text('${auxPreguntas.error}');
           }
           return CircularProgressIndicator();
         },

@@ -6,7 +6,7 @@ import 'package:movilfasesoft/models/ahorro.dart';
 
 class FasAhorroProviders{
 
-  final String dominio='173.16.0.35:7001';
+  final String dominio='173.16.0.84:7001';
   final String path='fasesoft-web/webresources/servicios/fasahorros/';
 
 
