@@ -55,11 +55,27 @@ class PerfilPantalla extends StatelessWidget {
     return Container(
       child: Padding(
         padding: EdgeInsets.all(30.0),
-        child: Container(
+        child: 
+        ListView.builder(
+          itemCount: 1,
+          itemBuilder: (BuildContext context, int index) {
+          return _detalles(user);
+         },
+        ),
+       
+      ),
+    );
+  }
+
+
+Widget _detalles(UsuarioAres user){
+
+  return   Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             color: Colors.blue,
           ),
+          
           child: Card(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
@@ -70,7 +86,8 @@ class PerfilPantalla extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  ListTile(
+                
+                      ListTile(
                     leading: Icon(
                       Icons.person,
                       color: Colors.blue,
@@ -101,12 +118,14 @@ class PerfilPantalla extends StatelessWidget {
                     title: Text('Teléfono:'),
                     subtitle: Text(user.telefono),
                   ),
+                    
+                  
                 ],
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
+        );
+
+}
+
 }
