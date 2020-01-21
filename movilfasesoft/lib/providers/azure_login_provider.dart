@@ -12,7 +12,7 @@ import 'package:movilfasesoft/main.dart';
 
 class UserLogin {
   
-  String _url='173.16.0.84:7001';
+  String _url='173.16.0.185:7001';
   static Config config = new Config(
       "bf208dcb-97e8-4d43-bd72-323680bef25c", //tenand id
       "19d6b921-44b0-42df-946f-d14bf3392cbf", //client id
@@ -30,7 +30,7 @@ class UserLogin {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        // print('connected');
+         print('connected');
         await oauth.login();
 
         String accessToken = await oauth.getAccessToken();
@@ -64,7 +64,7 @@ class UserLogin {
       }
       }
     } on SocketException catch (_) {
-      //print('not connected');
+      print('not connected');
       return 'error';
     }
     //solicitar inicio de sesion

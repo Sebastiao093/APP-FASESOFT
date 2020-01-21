@@ -77,14 +77,15 @@ class Logedin extends StatelessWidget {
   Widget _drawer(BuildContext context) {
     return Drawer(
         child: ListView(
-      children: <Widget>[Center(child: 
+      children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(nombre(this.usuarioAres)),
             accountEmail: Text(user),
             currentAccountPicture: Icon(Icons.account_circle,
             size: 80,color: Colors.white70,),
+            
           ),
-        ),
+        
         ListTile(
           leading: Icon(Icons.person, color: Colors.blue),
           title: Text('Detalle de perfil'),
