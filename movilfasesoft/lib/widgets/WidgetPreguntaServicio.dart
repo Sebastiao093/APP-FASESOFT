@@ -26,7 +26,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
         "correo": MyApp.correoUsuario,
         "fkasistencia": 14333,
         "idrespuesta": respuesta,
-        "fkVotacion": "$idPregunta"
+        "FKVOTACION": "$idPregunta"
       });
     });
   }
@@ -40,7 +40,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
         "correo": "cagarzon@asesoftware.com",
         "fkasistencia": 14333,
         "idrespuesta":textoIngreso.text,
-        "fkVotacion": "$idPregunta"
+        "FKVOTACION": "$idPregunta"
       });
     });
   }
