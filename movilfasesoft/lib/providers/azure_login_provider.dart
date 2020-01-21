@@ -9,10 +9,8 @@ import 'package:aad_oauth/model/config.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
 import 'package:movilfasesoft/main.dart';
 
-
 class UserLogin {
-  
-  String _url='173.16.0.185:7001';
+  String _url = '173.16.0.84:7001';
   static Config config = new Config(
       "bf208dcb-97e8-4d43-bd72-323680bef25c", //tenand id
       "19d6b921-44b0-42df-946f-d14bf3392cbf", //client id
@@ -25,53 +23,60 @@ class UserLogin {
   Future<String> azureLogin(context) async {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+    var conexion=false;
     oauth.setWebViewScreenSize(
         Rect.fromCenter(center: Offset(w / 2, h / 2), height: h, width: w));
     try {
-      final result = await InternetAddress.lookup('google.com');
+      final result = await InternetAddress.lookup('www.google.com');
+
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-         print('connected');
-        await oauth.login();
+        //print('connected');
+        conexion=true;
+      }
+    } on SocketException catch (er) {
+      //print(er);
+      print('not connected');
+      return 'error';
+    }
+    if(conexion){
+      await oauth.login();
 
         String accessToken = await oauth.getAccessToken();
         //solicitar token como string
         var decodedToken = new JWT.parse(
             accessToken); //Decodificar token usando libreria corsac jwt
         //print(decodedToken.getClaim('upn'));//solicitar el claim 'upn' que es el id de correo en este caso.
-        var correo= decodedToken.getClaim('upn');
+        var correo = decodedToken.getClaim('upn');
 
-        final url = Uri.http(_url,'fasesoft-web/webresources/servicios/fasusuarios/afiliadoPorCorreo/' + correo);
+        final url = Uri.http(
+            _url,
+            'fasesoft-web/webresources/servicios/fasusuarios/afiliadoPorCorreo/' +
+                correo);
         //print(url);
         final resp = await http.get(url);
 
         if (resp.statusCode == HttpStatus.ok) {
           final decodedData = json.decode(resp.body);
-          
-          if(decodedData.isNotEmpty){
-            if(decodedData[0]['estado']=='AFILIADO'){
-              MyApp.correoUsuario=correo;
+
+          if (decodedData.isNotEmpty) {
+            if (decodedData[0]['estado'] == 'AFILIADO') {
+              MyApp.correoUsuario = correo;
               return correo;
-            }else{
+            } else {
               //print('no afiliado');
               return 'NA';
             }
-          }else{
+          } else {
             //print('no registrado');
             return 'NR';
           }
-        
-
-      }
-      }
-    } on SocketException catch (_) {
-      print('not connected');
-      return 'error';
+        }
     }
     //solicitar inicio de sesion
   }
 
   logOut(context) {
-    MyApp.correoUsuario='';
+    MyApp.correoUsuario = '';
     oauth.logout();
     Navigator.pushReplacementNamed(context, '/');
   }

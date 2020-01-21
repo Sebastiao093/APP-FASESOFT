@@ -11,7 +11,7 @@ class UserProvider {
   final List<ListTile> usuario1 =List();
 
 
-  String _url='173.16.0.185:7001';
+  String _url='173.16.0.84:7001';
 
   getusername(String user1){
     getUser(user1).then((onValue){
