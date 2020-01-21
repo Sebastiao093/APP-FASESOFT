@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movilfasesoft/widgets/WidgetPreguntaServicio.dart';
-import '../models/Respuesta.dart';
-import '../widgets/temporalPreguntas.dart';
-import '../models/Pregunta.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -81,7 +78,7 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
 
   void enviarRespuestasPost(Map<String, dynamic> datoAenviar) async {
     String url =
-        "http://173.16.0.84:7001/fasesoft-web/webresources/servicios/fasasambleas";
+        "http://173.16.0.84:7001/fasesoft-web/webresources/servicios/respuestaUsuario/agregar";
 
     var response = await http
         .post(Uri.encodeFull(url), body: json.encode(datoAenviar), headers: {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movilfasesoft/models/Pregunta.dart';
 import 'package:movilfasesoft/models/Respuesta.dart';
-
+import '../main.dart';
 class WidgetPreguntaServicio extends StatefulWidget {
   final int idAsamblea;
   final Function obtenerPreguntas;
@@ -16,11 +16,18 @@ class WidgetPreguntaServicio extends StatefulWidget {
 
 class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   Map<int, String> _respuestasMarcadas = Map<int, String>();
+  List<Map<String, Object>> _jsonEnvio = List<Map<String, Object>>();
   final _textoIngreso = TextEditingController();
 
   void _seleccionarRespuesta(int idPregunta, String respuesta) {
     setState(() {
       _respuestasMarcadas[idPregunta] = respuesta;
+      _jsonEnvio.add({
+        "correo": MyApp.correoUsuario,
+        "fkasistencia": 14333,
+        "idrespuesta": respuesta,
+        "fkVotacion": "$idPregunta"
+      });
     });
   }
 
@@ -29,6 +36,12 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
 
     setState(() {
       _respuestasMarcadas[idPregunta] = textoIngreso.text;
+      _jsonEnvio.add({
+        "correo": "cagarzon@asesoftware.com",
+        "fkasistencia": 14333,
+        "idrespuesta":textoIngreso.text,
+        "fkVotacion": "$idPregunta"
+      });
     });
   }
 
@@ -77,13 +90,13 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                     ),
                     color: Theme.of(context).primaryColor,
                     onPressed: () {
-                      print(_respuestasMarcadas);
-                      if (_respuestasMarcadas.length != _numeroPreguntas) {
-                        print('nomarco');
-                        return;
+                      if (_respuestasMarcadas.length != _numeroPreguntas) 
+                      {return;}                     
+                      
+                      for(var i = 0; i < _jsonEnvio.length; i++) {
+                        widget.enviarRespuestas(_jsonEnvio.elementAt(i));
+                        print(_jsonEnvio.elementAt(i));
                       }
-                      print(_respuestasMarcadas);
-                      print('ya marco');
                     },
                     disabledColor: Theme.of(context).primaryColorLight,
                     elevation: 20,
@@ -111,8 +124,13 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(preguntaUnit.pregunta,textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold),),
-        Container(padding: EdgeInsets.symmetric(vertical: 2),
+        Text(
+          preguntaUnit.pregunta,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 2),
           width: double.infinity,
           height: 200,
           child: FutureBuilder<List<dynamic>>(
