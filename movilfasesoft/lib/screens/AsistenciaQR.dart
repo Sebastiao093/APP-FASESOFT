@@ -18,7 +18,6 @@ class PantallaQr extends StatefulWidget {
 class _PantallaQrState extends State<PantallaQr> {
 
   String _valorAsistencia = '';
-  final infoAsistenteProvider = new InfoAsistenteProvider();
   
   @override
   void initState() { 
@@ -74,9 +73,22 @@ class _PantallaQrState extends State<PantallaQr> {
     final infoasistenteprovider = InfoAsistenteProvider();
     InfoAsistente infoAsistente = await infoasistenteprovider.getInfoAsistente(correo);
     print(infoAsistente.estado.toString());
-    infoAsistente.estado = 'SIASI';
     print(infoAsistente.estado.toString());
-    
+
+    Map<String, Object> mapAsistente = {
+      'correo'      : infoAsistente.correo,
+      'estado'      : 'SIASI',
+      'idAsamblea'  : infoAsistente.idAsamblea,
+      'idAsistente' : infoAsistente.idAsistente,
+      'idUsuario'   : infoAsistente.idUsuario,
+      'nombre'      : infoAsistente.nombre,
+      'apellido'    : infoAsistente.apellido,
+    };
+
+    enviarCambioEstadoPut(mapAsistente);
+
+    print(infoAsistente.estado.toString());
+
     return infoAsistente;
   }
 
@@ -92,8 +104,8 @@ class _PantallaQrState extends State<PantallaQr> {
         qRScannerColor: Colors.deepPurple,
 	      flashlightEnable: true
       );
-      setState(() => this._valorAsistencia = futureString);
       cargarInfoAsistente(futureString);
+      setState(() => this._valorAsistencia = 'Registrado');
     } on PlatformException catch (e) {
       if (e.code == MajaScan.CameraAccessDenied) {
         setState(() => 'El usuario rechazo permisos de uso de cámara');
@@ -115,8 +127,7 @@ class _PantallaQrState extends State<PantallaQr> {
   }
 
 void enviarCambioEstadoPut(Map<String, Object> dato) async {
-    String url =
-        "http://173.16.0.84:7001/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
+    String url = "http://173.16.0.84:7001/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
 
     var response = await http.put(
       Uri.encodeFull(url),
