@@ -40,6 +40,7 @@ class LoginPage extends StatelessWidget {
                  return  Container();
                  }
                  if(snapshot.data=='NA'){
+                   //if(UserLogin().isloged()){UserLogin().logOut(context);}
                  return noConectionScreen(context,'El usuario no esta afiliado a Fasesoft'); 
                  }
                  if(snapshot.data=='NR'){
