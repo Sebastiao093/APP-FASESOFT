@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 class InfoAsistenteProvider {
-  final String dominio='173.16.0.57:7001';
+  final String dominio='173.16.0.84:7001';
   final String path='fasesoft-web/webresources/servicios/fasasistentes/';
   
   String fecha = DateFormat.y().format(DateTime.now());
