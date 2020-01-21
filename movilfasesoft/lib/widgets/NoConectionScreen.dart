@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:movilfasesoft/providers/azure_login_provider.dart';
 
   Widget noConectionScreen(context,texto){
     
@@ -54,7 +55,9 @@ import 'package:flutter/material.dart';
                       ),
                     OutlineButton(
                       child: Text('Regresar'),
-                      onPressed: (){Navigator.pushNamed(context,'/');},
+                      onPressed: (){
+                        UserLogin().logOut(context);
+                        Navigator.pushNamed(context,'/');},
                       borderSide: BorderSide(color: Colors.blue,width: 3),
                       textColor: Colors.blue,
                       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
