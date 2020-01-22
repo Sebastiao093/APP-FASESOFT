@@ -92,10 +92,9 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                     onPressed: () {
                       if (_respuestasMarcadas.length != _numeroPreguntas) 
                       {return;}                     
-                      
                       for(var i = 0; i < _jsonEnvio.length; i++) {
                         widget.enviarRespuestas(_jsonEnvio.elementAt(i));
-                        print(_jsonEnvio.elementAt(i));
+                        //print(_jsonEnvio.elementAt(i));
                       }
                     },
                     disabledColor: Theme.of(context).primaryColorLight,
