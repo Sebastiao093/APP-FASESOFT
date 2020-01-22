@@ -25,7 +25,7 @@ class UserLogin {
     final w = MediaQuery.of(context).size.width;
     var conexion=false;
     oauth.setWebViewScreenSize(
-        Rect.fromCenter(center: Offset(w / 2, h / 2), height: h, width: w));
+        Rect.fromCenter(center: Offset(w / 2, (h/ 2)+h*.05), height: h*.9, width: w));
     try {
       final result = await InternetAddress.lookup('www.google.com');
 
