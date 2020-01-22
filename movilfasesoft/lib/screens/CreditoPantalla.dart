@@ -100,6 +100,8 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
             );
           } else if (auxElementos.hasError) {
             return Text('${auxElementos.error}');
+          } else if (auxElementos == []) {
+            return Text('No tienes Créditos con nosotros');
           }
           return CircularProgressIndicator();
         },
