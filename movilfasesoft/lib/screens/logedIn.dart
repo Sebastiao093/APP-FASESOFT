@@ -169,6 +169,7 @@ class Logedin extends StatelessWidget {
                   children: <Widget>[
                     Image(
                       image: AssetImage('assets/icons/ahorroLogo.png'),
+                      //Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
                     ),
                     Center(
                         heightFactor: 3.0, child: Text('DETALLES DE CUENTA ')),
