@@ -127,7 +127,7 @@ class _PantallaQrState extends State<PantallaQr> {
   }
 
 void enviarCambioEstadoPut(Map<String, Object> dato) async {
-    String url = "http://173.16.0.84:7001/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
+    String url = "http://sarapdev.eastus.cloudapp.azure.com:7002/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
 
     var response = await http.put(
       Uri.encodeFull(url),
