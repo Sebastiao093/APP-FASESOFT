@@ -57,7 +57,9 @@ class _PantallaQrState extends State<PantallaQr> {
       children: <Widget>[
         FloatingActionButton(
           child: Icon(Icons.filter_center_focus),
-          onPressed:  _scanQR,
+          onPressed:  () {
+            cargarInfoAsistente("asalgado@asesoftware.com");
+            }
         ),
       ],
     );
@@ -104,7 +106,8 @@ class _PantallaQrState extends State<PantallaQr> {
         qRScannerColor: Colors.deepPurple,
 	      flashlightEnable: true
       );
-      cargarInfoAsistente(futureString);
+      //cargarInfoAsistente(futureString);
+      
       setState(() => this._valorAsistencia = 'Registrado');
     } on PlatformException catch (e) {
       if (e.code == MajaScan.CameraAccessDenied) {
@@ -127,7 +130,7 @@ class _PantallaQrState extends State<PantallaQr> {
   }
 
 void enviarCambioEstadoPut(Map<String, Object> dato) async {
-    String url = "http://173.16.0.84:7001/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
+    String url = "http://173.16.0.35:7001/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
 
     var response = await http.put(
       Uri.encodeFull(url),
