@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:movilfasesoft/models/Pregunta.dart';
 import 'package:movilfasesoft/models/Respuesta.dart';
 import '../main.dart';
+import '../providers/votaciones_providers.dart';
 class WidgetPreguntaServicio extends StatefulWidget {
   final int idAsamblea;
-  final Function obtenerPreguntas;
-  final Function obtenerRespuestas;
-  final Function enviarRespuestas;
-  WidgetPreguntaServicio(this.idAsamblea, this.obtenerPreguntas,
-      this.obtenerRespuestas, this.enviarRespuestas);
+  WidgetPreguntaServicio(this.idAsamblea);
 
   @override
   _WidgetPreguntaState createState() => _WidgetPreguntaState();
@@ -48,7 +45,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   @override
   Widget build(BuildContext context) {
     Future<List<dynamic>> _preguntas =
-        widget.obtenerPreguntas('${widget.idAsamblea}');
+        Votaciones_providers.solicitarPreguntasPorVotacion('${widget.idAsamblea}');
     return imprimirPreguntas(_preguntas);
   }
 
@@ -93,7 +90,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                       if (_respuestasMarcadas.length != _numeroPreguntas) 
                       {return;}                     
                       for(var i = 0; i < _jsonEnvio.length; i++) {
-                        widget.enviarRespuestas(_jsonEnvio.elementAt(i));
+                       Votaciones_providers.enviarRespuestasPost(_jsonEnvio.elementAt(i));
                         //print(_jsonEnvio.elementAt(i));
                       }
                     },
@@ -118,7 +115,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
     BuildContext ctx,
   ) {
     Future<List<dynamic>> respuestas =
-        widget.obtenerRespuestas('${preguntaUnit.id}');
+        Votaciones_providers.solicitarRespuestasPorPregunta('${preguntaUnit.id}');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
