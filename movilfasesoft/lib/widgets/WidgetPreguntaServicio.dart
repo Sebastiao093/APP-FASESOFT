@@ -14,6 +14,8 @@ class WidgetPreguntaServicio extends StatefulWidget {
 class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   Map<int, String> _respuestasMarcadas = Map<int, String>();
   List<Map<String, Object>> _jsonEnvio = List<Map<String, Object>>();
+  bool _envioRespuestas=true;
+
   final _textoIngreso = TextEditingController();
 
   void _seleccionarRespuesta(int idPregunta, String respuesta) {
@@ -25,6 +27,16 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
         "idrespuesta": respuesta,
         "FKVOTACION": "$idPregunta"
       });
+    });
+  }
+
+  void cancelarBoton(List<Map<String, Object>> jsonEnvio){
+     for(var i = 0; i < jsonEnvio.length; i++) {
+                       Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i));
+                        //print(_jsonEnvio.elementAt(i));
+                      }
+    setState(() {
+      _envioRespuestas=false;
     });
   }
 
@@ -80,7 +92,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                       },
                     ),
                   ),
-                  botonEnvio(_respuestasMarcadas.length == _numeroPreguntas,context,_jsonEnvio)
+                  botonEnvio(_respuestasMarcadas.length == _numeroPreguntas,context,_jsonEnvio,cancelarBoton,_envioRespuestas)
                                   ],
                                 ),
                               );
@@ -146,24 +158,20 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                   
                   
 }
-Widget  botonEnvio(bool condicion,BuildContext context,List<Map<String, Object>> jsonEnvio ) {
-return condicion?RaisedButton(
+Widget  botonEnvio(bool condicion,BuildContext context,List<Map<String, Object>> jsonEnvio,Function enviarCancelar,bool cancel ) {
+return condicion&cancel?RaisedButton(
                     child: Text(
                       'enviar respuestas',
                       textAlign: TextAlign.center,
                     ),
                     color: Theme.of(context).primaryColor,
                     onPressed: () {
-                                       
-                      for(var i = 0; i < jsonEnvio.length; i++) {
-                       Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i));
-                        //print(_jsonEnvio.elementAt(i));
-                      }
+                       enviarCancelar( jsonEnvio) ;                   
                     },
                     disabledColor: Theme.of(context).primaryColorLight,
                     elevation: 20,
                     disabledElevation: 10,
-                  ):Text(' Por favor \n responder todas las preguntas',textAlign: TextAlign.center,);
+                  ):cancel?Text(' Por favor \n responder todas las preguntas',textAlign: TextAlign.center,):Text("ya respondio todo",textAlign: TextAlign.center,);
 
 }
 Widget mostrarRespuesta(

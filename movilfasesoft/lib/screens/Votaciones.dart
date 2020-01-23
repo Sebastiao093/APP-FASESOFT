@@ -6,7 +6,7 @@ import 'package:movilfasesoft/widgets/WidgetPreguntaServicio.dart';
 import '../providers/votaciones_providers.dart';
 
 class PantallaVotaciones extends StatefulWidget {
-  static const routedname = "/PantallaVotaciones";
+  static const routedname = "/PantallaVotaciones"; 
   @override
   _PantallaVotacionesState createState() => _PantallaVotacionesState();
 }
