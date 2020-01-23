@@ -8,12 +8,14 @@ import 'package:http/http.dart' as http;
 class Votaciones_providers{
 
 
-   static Future<int> solicitarAsambleaActual() async {
+   static Future<List<String>> solicitarAsambleaActual() async {
     String url =
-        "http://sarapdev.eastus.cloudapp.azure.com:7001/fasesoft-web/webresources/servicios/fasasambleas/AsambleaActual";
+        "http://localhost:7001/fasesoft-web/webresources/servicios/fasasambleas/asambleactual";
     final response = await http.get(url);
+    print(response.statusCode);
     if (response.statusCode == 200) {
-      return json.decode(response.body)['idAsamblea'];
+      print(json.decode(response.body));
+      return json.decode(response.body);
     } else {
       throw Exception('error');
     }

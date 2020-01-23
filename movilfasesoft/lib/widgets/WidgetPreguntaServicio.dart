@@ -4,7 +4,7 @@ import 'package:movilfasesoft/models/Respuesta.dart';
 import '../main.dart';
 import '../providers/votaciones_providers.dart';
 class WidgetPreguntaServicio extends StatefulWidget {
-  final int idAsamblea;
+  final String idAsamblea;
   WidgetPreguntaServicio(this.idAsamblea);
 
   @override
@@ -34,7 +34,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
     setState(() {
       _respuestasMarcadas[idPregunta] = textoIngreso.text;
       _jsonEnvio.add({
-        "correo": "cagarzon@asesoftware.com",
+        "correo":  MyApp.correoUsuario,
         "fkasistencia": 14333,
         "idrespuesta":textoIngreso.text,
         "FKVOTACION": "$idPregunta"
@@ -45,7 +45,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   @override
   Widget build(BuildContext context) {
     Future<List<dynamic>> _preguntas =
-        Votaciones_providers.solicitarPreguntasPorVotacion('${widget.idAsamblea}');
+        Votaciones_providers.solicitarPreguntasPorVotacion(widget.idAsamblea);
+
     return imprimirPreguntas(_preguntas);
   }
 
@@ -70,7 +71,6 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                         var preguntaUnitaria = new Pregunta.fromJson(
                             auxPreguntas.data.elementAt(index)
                                 as Map<String, dynamic>);
-
                         return Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Card(
@@ -80,88 +80,92 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                       },
                     ),
                   ),
-                  RaisedButton(
+                  botonEnvio(_respuestasMarcadas.length == _numeroPreguntas,context,_jsonEnvio)
+                                  ],
+                                ),
+                              );
+                            } else if (auxPreguntas.hasError) {
+                              return Text('recargue por favor');//Text('${auxPreguntas.error}');
+                            }
+                            return CircularProgressIndicator();
+                          },
+                        ),
+                      );
+                    }
+                  
+                    Widget imprimirVotos(
+                      Pregunta preguntaUnit,
+                      BuildContext ctx,
+                    ) {
+                      Future<List<dynamic>> respuestas =
+                          Votaciones_providers.solicitarRespuestasPorPregunta('${preguntaUnit.id}');
+                  
+                      return  Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            preguntaUnit.pregunta,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 2),
+                            width: double.infinity,
+                            height: 200,
+                            child: FutureBuilder<List<dynamic>>(
+                              future: respuestas,
+                              builder: (context, auxrespuestas) {
+                                if (auxrespuestas.hasData) {
+                                  return ListView.builder(
+                                    itemCount: auxrespuestas.data.length,
+                                    itemBuilder: (context, index) {
+                                      var respuestaUnitaria = new Respuesta.fromJson(
+                                          auxrespuestas.data.elementAt(index)
+                                              as Map<String, dynamic>);
+                                      return mostrarRespuesta(
+                                          auxrespuestas.data.length == 1,
+                                          ctx,
+                                          _respuestasMarcadas,
+                                          preguntaUnit.id,
+                                          respuestaUnitaria,
+                                          _seleccionarRespuesta,
+                                          _textoIngreso,
+                                          _submitTexto); //
+                                    },
+                                  );
+                                } else if (auxrespuestas.hasError) {
+                                  return Text('${auxrespuestas.error}');
+                                }
+                                return CircularProgressIndicator();
+                              },
+                            ),
+                          )
+                        ],
+                      );
+                    }
+                  
+                  
+}
+Widget  botonEnvio(bool condicion,BuildContext context,List<Map<String, Object>> jsonEnvio ) {
+return condicion?RaisedButton(
                     child: Text(
                       'enviar respuestas',
                       textAlign: TextAlign.center,
                     ),
                     color: Theme.of(context).primaryColor,
                     onPressed: () {
-                      if (_respuestasMarcadas.length != _numeroPreguntas) 
-                      {return;}                     
-                      for(var i = 0; i < _jsonEnvio.length; i++) {
-                       Votaciones_providers.enviarRespuestasPost(_jsonEnvio.elementAt(i));
+                                       
+                      for(var i = 0; i < jsonEnvio.length; i++) {
+                       Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i));
                         //print(_jsonEnvio.elementAt(i));
                       }
                     },
                     disabledColor: Theme.of(context).primaryColorLight,
                     elevation: 20,
                     disabledElevation: 10,
-                  )
-                ],
-              ),
-            );
-          } else if (auxPreguntas.hasError) {
-            return Text('recargue por favor');//Text('${auxPreguntas.error}');
-          }
-          return CircularProgressIndicator();
-        },
-      ),
-    );
-  }
+                  ):Text(' Por favor \n responder todas las preguntas',textAlign: TextAlign.center,);
 
-  Widget imprimirVotos(
-    Pregunta preguntaUnit,
-    BuildContext ctx,
-  ) {
-    Future<List<dynamic>> respuestas =
-        Votaciones_providers.solicitarRespuestasPorPregunta('${preguntaUnit.id}');
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          preguntaUnit.pregunta,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 2),
-          width: double.infinity,
-          height: 200,
-          child: FutureBuilder<List<dynamic>>(
-            future: respuestas,
-            builder: (context, auxrespuestas) {
-              if (auxrespuestas.hasData) {
-                return ListView.builder(
-                  itemCount: auxrespuestas.data.length,
-                  itemBuilder: (context, index) {
-                    var respuestaUnitaria = new Respuesta.fromJson(
-                        auxrespuestas.data.elementAt(index)
-                            as Map<String, dynamic>);
-                    return mostrarRespuesta(
-                        auxrespuestas.data.length == 1,
-                        ctx,
-                        _respuestasMarcadas,
-                        preguntaUnit.id,
-                        respuestaUnitaria,
-                        _seleccionarRespuesta,
-                        _textoIngreso,
-                        _submitTexto); //
-                  },
-                );
-              } else if (auxrespuestas.hasError) {
-                return Text('${auxrespuestas.error}');
-              }
-              return CircularProgressIndicator();
-            },
-          ),
-        )
-      ],
-    );
-  }
 }
-
 Widget mostrarRespuesta(
     bool tipoRespuesta,
     BuildContext ctx,
