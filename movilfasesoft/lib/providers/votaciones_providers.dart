@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 
 class Votaciones_providers{
 
-  static bool envioRespuestas=false;
 
    static Future<List<String>> solicitarAsambleaActual() async {
     String url =

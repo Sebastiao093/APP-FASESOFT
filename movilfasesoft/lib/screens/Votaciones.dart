@@ -6,14 +6,19 @@ import 'package:movilfasesoft/widgets/WidgetPreguntaServicio.dart';
 import '../providers/votaciones_providers.dart';
 
 class PantallaVotaciones extends StatefulWidget {
-  static const routedname = "/PantallaVotaciones"; 
+  static const routedname = "/PantallaVotaciones";
   @override
   _PantallaVotacionesState createState() => _PantallaVotacionesState();
 }
 
 class _PantallaVotacionesState extends State<PantallaVotaciones> {
   String idAsambleaActual;
+  int idAsistente;
   bool hayAsamblea=true;
+
+ void redraw(){
+     setState(() {});         
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -22,6 +27,7 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
       this.hayAsamblea =!(aux==null);
       print(hayAsamblea);
       this.idAsambleaActual=aux.idAsamblea.toString();
+      this.idAsistente=aux.idAsistente;
     });
 
     return Scaffold(
@@ -30,17 +36,15 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.refresh),
-              onPressed: () {
-                setState(() {});
-              },
+              onPressed:redraw,
             ),
           ],
         ),
-        body:condicionInicial(hayAsamblea,idAsambleaActual),
+        body:condicionInicial(hayAsamblea,idAsambleaActual,idAsistente),
         );
   }
 }
 
-Widget condicionInicial(bool condicion,String id){
-return condicion? WidgetPreguntaServicio(id):Text('No hay asambleas para este año');
+Widget condicionInicial(bool condicion,String id, int idAs){
+return condicion? WidgetPreguntaServicio(id,idAs):Text('No hay asambleas para este año');
 }
