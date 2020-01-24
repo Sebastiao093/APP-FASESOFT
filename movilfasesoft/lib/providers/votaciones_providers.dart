@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class Votaciones_providers{
 
   //static String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
-    static String dominio = 'sarapdev.eastus.cloudapp.azure.com:7001';
+    static String dominio = '173.16.0.84:7001';
 
    static Future<List<String>> solicitarAsambleaActual() async {
     String url =

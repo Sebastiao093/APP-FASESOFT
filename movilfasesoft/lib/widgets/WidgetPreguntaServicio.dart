@@ -75,8 +75,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: 500,
-                    width: 500,
+                    height: MediaQuery.of(context).size.height*0.7,
+                    width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
                       itemCount: auxPreguntas.data.length,
                       itemBuilder: (context, index) {
@@ -114,18 +114,24 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                       Future<List<dynamic>> respuestas =
                           Votaciones_providers.solicitarRespuestasPorPregunta('${preguntaUnit.id}');
                   
+                    return LayoutBuilder(builder:(ctx,constrains){
+
                       return  Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            preguntaUnit.pregunta,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Container(
+                            height:constrains.maxHeight*0.3 ,
+                            width:constrains.maxWidth ,
+                            child: Text(
+                              preguntaUnit.pregunta,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(vertical: 2),
-                            width: double.infinity,
-                            height: 200,
+                            height: constrains.maxHeight*0.7,
+                            width: constrains.maxWidth,
                             child: FutureBuilder<List<dynamic>>(
                               future: respuestas,
                               builder: (context, auxrespuestas) {
@@ -142,15 +148,19 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                                            _textosDeIngreso[preguntaUnit.id.toString()]=textoIngreso; 
                                         }
 
-                                      return mostrarRespuesta(
-                                          auxrespuestas.data.length == 1,
-                                          ctx,
-                                          _respuestasMarcadas,
-                                          preguntaUnit.id,
-                                          respuestaUnitaria,
-                                          _seleccionarRespuesta,
-                                          _textosDeIngreso[preguntaUnit.id.toString()],
-                                          _submitTexto, idAsistente); //
+                                      return Container(
+                                      height:constrains.maxHeight*0.7/auxrespuestas.data.length ,
+                                      width:constrains.maxWidth ,
+                                        child: mostrarRespuesta(
+                                            auxrespuestas.data.length == 1,
+                                            ctx,
+                                            _respuestasMarcadas,
+                                            preguntaUnit.id,
+                                            respuestaUnitaria,
+                                            _seleccionarRespuesta,
+                                            _textosDeIngreso[preguntaUnit.id.toString()],
+                                            _submitTexto, idAsistente),
+                                      ); //
                                     },
                                   );
                                 } else if (auxrespuestas.hasError) {
@@ -162,6 +172,9 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                           )
                         ],
                       );
+
+
+                    });
                     }
                   
                   
@@ -224,23 +237,27 @@ Widget validacionRespuestasOpciones(bool condicion, int idPregunta,
                 borderRadius: BorderRadius.circular(21),
               ),
               margin: EdgeInsets.symmetric(vertical: 5),
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-              child: Text(
-                respuestaUnitaria.respuesta,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              child: FittedBox(
+                              child: Text(
+                  respuestaUnitaria.respuesta,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               )),
         )
       : Container(
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(21),
           ),
           margin: EdgeInsets.symmetric(vertical: 5),
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 150),
-          child: Text(respuestaUnitaria.respuesta,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold)));
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+          child: FittedBox(
+                      child: Text(respuestaUnitaria.respuesta,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+          ));
 }
 
 Widget respuestaAbierta(

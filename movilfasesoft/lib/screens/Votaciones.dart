@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movilfasesoft/main.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/widgets/WidgetPreguntaServicio.dart';
-import '../providers/votaciones_providers.dart';
+
 
 class PantallaVotaciones extends StatefulWidget {
   static const routedname = "/PantallaVotaciones";
@@ -30,8 +29,7 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
       this.idAsistente=aux.idAsistente;
     });
 
-    return Scaffold(
-        appBar: AppBar(
+    final appBar = AppBar(
           title: Text('Pantalla Votaciones'),
           actions: <Widget>[
             IconButton(
@@ -39,7 +37,10 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
               onPressed:redraw,
             ),
           ],
-        ),
+        );
+
+    return Scaffold(
+        appBar:appBar,
         body:condicionInicial(hayAsamblea,idAsambleaActual,idAsistente),
         );
   }
