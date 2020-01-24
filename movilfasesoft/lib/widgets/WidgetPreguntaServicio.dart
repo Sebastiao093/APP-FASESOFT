@@ -63,7 +63,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
     return imprimirPreguntas(_preguntas, widget.idAsistente);
   }
 
-  Widget imprimirPreguntas(Future<List<dynamic>> preguntas, idAsistente) {
+  Widget imprimirPreguntas(Future<List<dynamic>> preguntas,int idAsistente) {
     int _numeroPreguntas;
     return Center(
       child: FutureBuilder<List<dynamic>>(

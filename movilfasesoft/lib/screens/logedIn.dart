@@ -39,8 +39,6 @@ bool get valorValidacion{
    Future<InfoAsistente> infoAsistente = InfoAsistenteProvider().getInfoAsistente( "cagarzon@asesoftware.com");
     infoAsistente.then((aux){
      Logedin.boolHayAsambleaActual =!(aux==null);
-     print("leyo el correo?");
-     print(aux.correo);
      if(Logedin.boolHayAsambleaActual){
      Logedin.boolAsistio=(aux.estado=='SIASI');
      }else{
@@ -48,14 +46,15 @@ bool get valorValidacion{
      }
 
     });
-
     if(Logedin.boolHayAsambleaPast&!Logedin.boolHayAsambleaActual&Logedin.boolContesto){
       Logedin.boolContesto=false;
     }
     Logedin.boolHayAsambleaPast=Logedin.boolHayAsambleaActual;
 
-  
-return Logedin.boolAsistio&!Logedin.boolContesto&Logedin.boolHayAsambleaActual;;
+  //print( Logedin.boolAsistio);
+  //print(!Logedin.boolContesto);
+  //print(Logedin.boolHayAsambleaActual);
+return Logedin.boolAsistio&!Logedin.boolContesto&Logedin.boolHayAsambleaActual;
 }
 
 String nombre(user) {
@@ -74,10 +73,11 @@ class Logedin extends StatelessWidget {
   static bool boolHayAsambleaPast=false;
   static bool boolHayAsambleaActual=false;
   static bool boolAsistio=false;
-  
   final String user = MyApp.correoUsuario;
 
   Widget build(BuildContext context) {
+    
+  print(valorValidacion);
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context, snapshot) {

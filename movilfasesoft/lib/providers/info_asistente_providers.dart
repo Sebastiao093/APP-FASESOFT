@@ -6,7 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/infoAsistente.dart';
 
 class InfoAsistenteProvider {
-  final String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
+ 
+ 
+ // final String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
+  final String dominio = 'sarapdev.eastus.cloudapp.azure.com:7001';
   final String path='fasesoft-web/webresources/servicios/fasasistentes/';
   
   String fecha = DateFormat.y().format(DateTime.now());
