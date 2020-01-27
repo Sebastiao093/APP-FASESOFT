@@ -57,7 +57,7 @@ class UserLogin {
             accessToken); //Decodificar token usando libreria corsac jwt
         //print(decodedToken.getClaim('upn'));//solicitar el claim 'upn' que es el id de correo en este caso.
         var correo = decodedToken.getClaim('upn');
-
+          MyApp.token=accessToken;
         final url = Uri.http(
             _url,
             'fasesoft-web/webresources/servicios/fasusuarios/afiliadoPorCorreo/' +
@@ -73,8 +73,9 @@ class UserLogin {
               MyApp.correoUsuario = correo;
               var msGraph = MsGraph(accessToken);
               var me=await msGraph.me.get();
+              print('--------------------------------------');
               print(me); //get me
-
+              print('--------------------------------------');
               return correo;
             } else {
               //print('no afiliado');

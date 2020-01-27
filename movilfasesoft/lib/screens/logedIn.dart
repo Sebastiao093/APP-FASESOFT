@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movilfasesoft/main.dart';
 import 'package:movilfasesoft/models/ahorro.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
-
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
@@ -13,7 +13,9 @@ import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
 import 'package:movilfasesoft/screens/CreditoPantalla.dart';
 import 'package:movilfasesoft/screens/PerfilPantalla.dart';
 import 'package:movilfasesoft/screens/Votaciones.dart';
+import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 void irVotaciones(BuildContext ctx) {
   Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname);
@@ -142,6 +144,16 @@ class Logedin extends StatelessWidget {
           onTap: () => irQr(context),
         ),
         ListTile(
+          leading: Icon(Icons.center_focus_weak),
+          title: Text(
+            'Generar QR ',
+            style: TextStyle(color: Colors.blueAccent),
+          ),
+          onTap: () {
+           Navigator.of(context).pushNamed('/qr');
+          },
+        ),
+        ListTile(
           leading: Icon(Icons.close),
           title: Text(
             'Cerrar sesion',
@@ -151,6 +163,7 @@ class Logedin extends StatelessWidget {
             UserLogin().logOut(context);
           },
         ),
+        
       ],
     ));
   }
@@ -179,7 +192,9 @@ class Logedin extends StatelessWidget {
 
   Widget _Ahorros(BuildContext context, Ahorros ahorro) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return ListView( children: <Widget>[
+      
+      Container(
       padding: EdgeInsets.all(30.0),
       child: Column(
         children: <Widget>[
@@ -244,7 +259,12 @@ class Logedin extends StatelessWidget {
                                           color: Colors.blue,
                                           fontWeight: FontWeight.bold),
                                     )),
-                                Divider()
+                                Divider(),
+                                GestureDetector(
+                                  child: Text(MyApp.token),
+                                  onLongPress:(){
+                                    Clipboard.setData(new ClipboardData(text: MyApp.token));
+                                  },)
                               ],
                             ),
                           ),
@@ -259,6 +279,8 @@ class Logedin extends StatelessWidget {
           Container()
         ],
       ),
+    )
+    ],
     );
   }
 }
