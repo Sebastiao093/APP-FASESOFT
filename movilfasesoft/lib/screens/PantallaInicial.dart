@@ -27,13 +27,16 @@ class LoginPage extends StatelessWidget {
          child:FutureBuilder(
            future: UserLogin().azureLogin(context),
            builder: (context,snapshot){
-            
-             if(ConnectionState.done!=snapshot.connectionState){
+            print('hola: ');
+            print(snapshot.data);
+          
+             if(snapshot.connectionState!=ConnectionState.done){
+               print(snapshot.connectionState);
                return splashScreen(context);
-             }else{
-               
-               print(snapshot.data);
-               if(UserLogin().isloged()&& snapshot.data!='error'&& snapshot.data!='NR'&& snapshot.data!='NA'&&snapshot.hasData){
+             }
+             
+                if(UserLogin().isloged()&& snapshot.data!='error'&& snapshot.data!='NR'&& snapshot.data!='NA'&&snapshot.hasData){
+                 
                  SchedulerBinding.instance.addPostFrameCallback((_) {
                            Navigator.pushReplacementNamed(context,'/loged');
                         });
@@ -41,17 +44,32 @@ class LoginPage extends StatelessWidget {
                  }
                  if(snapshot.data=='NA'){
                    //if(UserLogin().isloged()){UserLogin().logOut(context);}
+                  
                  return noConectionScreen(context,'El usuario no esta afiliado a Fasesoft'); 
+                  
                  }
                  if(snapshot.data=='NR'){
+                   
                  return noConectionScreen(context,'El usuario no se encuentra\n      en la base de datos'); 
                  }
                if(snapshot.data=='error'){
+                
                  return noConectionScreen(context,'Error en la conexión'); 
+  
                  }else{
-                 return LoginPage();
-               }
-             }
+                   try{
+                     return LoginPage();
+                   }catch(e){
+                      return splashScreen(context);
+                   }
+
+                 }
+                 
+             
+                 //return PantallaInicial();
+                 
+           
+             
            },
 
          )
@@ -59,6 +77,5 @@ class LoginPage extends StatelessWidget {
       );
     
   }
-
+ 
 }
-

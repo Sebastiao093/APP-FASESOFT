@@ -11,8 +11,8 @@ import 'package:movilfasesoft/main.dart';
 import 'package:msgraph/msgraph.dart';
 
 class UserLogin {
-   //String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
-    String _url = '173.16.0.84:7001';
+   String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
+    //String _url = '173.16.0.84:7001';
   static Config config = new Config(
       "bf208dcb-97e8-4d43-bd72-323680bef25c", //tenand id
       "19d6b921-44b0-42df-946f-d14bf3392cbf", //client id
@@ -40,10 +40,18 @@ class UserLogin {
       print('not connected');
       return 'error';
     }
+    String accessToken;
     if(conexion){
-      await oauth.login();
+      try{
+          await oauth.login();
+           accessToken= await oauth.getAccessToken();
+      }
+      catch(e){
 
-        String accessToken = await oauth.getAccessToken();
+      }
+      
+
+       
         //solicitar token como string
         var decodedToken = new JWT.parse(
             accessToken); //Decodificar token usando libreria corsac jwt
@@ -66,7 +74,7 @@ class UserLogin {
               var msGraph = MsGraph(accessToken);
               var me=await msGraph.me.get();
               print(me); //get me
-              
+
               return correo;
             } else {
               //print('no afiliado');
