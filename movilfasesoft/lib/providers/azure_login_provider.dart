@@ -8,6 +8,7 @@ import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
 import 'package:movilfasesoft/main.dart';
+import 'package:msgraph/msgraph.dart';
 
 class UserLogin {
   String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
@@ -61,6 +62,10 @@ class UserLogin {
           if (decodedData.isNotEmpty) {
             if (decodedData[0]['estado'] == 'AFILIADO') {
               MyApp.correoUsuario = correo;
+              var msGraph = MsGraph(accessToken);
+              var me=await msGraph.me.get();
+              print(me); //get me
+              
               return correo;
             } else {
               //print('no afiliado');

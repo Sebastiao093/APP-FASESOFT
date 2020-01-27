@@ -45,7 +45,7 @@ String nombre(user) {
 
 class Logedin extends StatelessWidget {
   UsuarioAres usuarioAres = new UsuarioAres();
-
+  
   final String user = MyApp.correoUsuario;
 
   Widget build(BuildContext context) {
@@ -56,6 +56,7 @@ class Logedin extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } else {
           this.usuarioAres = snapshot.data;
+          
           return Scaffold(
             appBar: AppBar(
               title: ImageIcon(
