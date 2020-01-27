@@ -11,7 +11,8 @@ import 'package:movilfasesoft/main.dart';
 import 'package:msgraph/msgraph.dart';
 
 class UserLogin {
-  String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
+   //String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
+    String _url = '173.16.0.84:7001';
   static Config config = new Config(
       "bf208dcb-97e8-4d43-bd72-323680bef25c", //tenand id
       "19d6b921-44b0-42df-946f-d14bf3392cbf", //client id

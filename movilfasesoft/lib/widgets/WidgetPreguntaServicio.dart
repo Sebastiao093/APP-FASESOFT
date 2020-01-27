@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movilfasesoft/models/Pregunta.dart';
 import 'package:movilfasesoft/models/Respuesta.dart';
+import 'package:movilfasesoft/screens/logedIn.dart';
 import '../main.dart';
 import '../providers/votaciones_providers.dart';
 class WidgetPreguntaServicio extends StatefulWidget {
   final String idAsamblea;
-  WidgetPreguntaServicio(this.idAsamblea);
+  final  int idAsistente;
+  WidgetPreguntaServicio(this.idAsamblea,this.idAsistente);
 
   @override
   _WidgetPreguntaState createState() => _WidgetPreguntaState();
@@ -14,16 +16,15 @@ class WidgetPreguntaServicio extends StatefulWidget {
 class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   Map<int, String> _respuestasMarcadas = Map<int, String>();
   List<Map<String, Object>> _jsonEnvio = List<Map<String, Object>>();
-  bool _envioRespuestas=true;
+  Map<String,TextEditingController>  _textosDeIngreso = Map<String,TextEditingController>();
 
-  final _textoIngreso = TextEditingController();
 
-  void _seleccionarRespuesta(int idPregunta, String respuesta) {
+  void _seleccionarRespuesta(int idPregunta, String respuesta,int idAs) {
     setState(() {
       _respuestasMarcadas[idPregunta] = respuesta;
       _jsonEnvio.add({
         "correo": MyApp.correoUsuario,
-        "fkasistencia": 14333,
+        "fkasistencia": idAs,
         "idrespuesta": respuesta,
         "FKVOTACION": "$idPregunta"
       });
@@ -36,18 +37,18 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                         //print(_jsonEnvio.elementAt(i));
                       }
     setState(() {
-      _envioRespuestas=false;
+      Logedin.boolContesto=true;
     });
   }
 
-  void _submitTexto(int idPregunta, TextEditingController textoIngreso) {
+  void _submitTexto(int idPregunta, TextEditingController textoIngreso,int idAs) {
     //final String tituloIngresado = tituloControlador.text;
 
     setState(() {
       _respuestasMarcadas[idPregunta] = textoIngreso.text;
       _jsonEnvio.add({
         "correo":  MyApp.correoUsuario,
-        "fkasistencia": 14333,
+        "fkasistencia": idAs,
         "idrespuesta":textoIngreso.text,
         "FKVOTACION": "$idPregunta"
       });
@@ -59,10 +60,10 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
     Future<List<dynamic>> _preguntas =
         Votaciones_providers.solicitarPreguntasPorVotacion(widget.idAsamblea);
 
-    return imprimirPreguntas(_preguntas);
+    return imprimirPreguntas(_preguntas, widget.idAsistente);
   }
 
-  Widget imprimirPreguntas(Future<List<dynamic>> preguntas) {
+  Widget imprimirPreguntas(Future<List<dynamic>> preguntas,int idAsistente) {
     int _numeroPreguntas;
     return Center(
       child: FutureBuilder<List<dynamic>>(
@@ -74,8 +75,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: 500,
-                    width: 500,
+                    height: MediaQuery.of(context).size.height*0.7,
+                    width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
                       itemCount: auxPreguntas.data.length,
                       itemBuilder: (context, index) {
@@ -87,12 +88,12 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                           padding: const EdgeInsets.all(10.0),
                           child: Card(
                               elevation: 30,
-                              child: imprimirVotos(preguntaUnitaria, context)),
+                              child: imprimirVotos(preguntaUnitaria, context, idAsistente)),
                         );
                       },
                     ),
                   ),
-                  botonEnvio(_respuestasMarcadas.length == _numeroPreguntas,context,_jsonEnvio,cancelarBoton,_envioRespuestas)
+                  botonEnvio(_respuestasMarcadas.length == _numeroPreguntas,context,_jsonEnvio,cancelarBoton,Logedin.boolContesto)
                                   ],
                                 ),
                               );
@@ -108,22 +109,29 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                     Widget imprimirVotos(
                       Pregunta preguntaUnit,
                       BuildContext ctx,
+                      int  idAsistente
                     ) {
                       Future<List<dynamic>> respuestas =
                           Votaciones_providers.solicitarRespuestasPorPregunta('${preguntaUnit.id}');
                   
+                    return LayoutBuilder(builder:(ctx,constrains){
+
                       return  Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            preguntaUnit.pregunta,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Container(
+                            height:constrains.maxHeight*0.3 ,
+                            width:constrains.maxWidth ,
+                            child: Text(
+                              preguntaUnit.pregunta,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(vertical: 2),
-                            width: double.infinity,
-                            height: 200,
+                            height: constrains.maxHeight*0.7,
+                            width: constrains.maxWidth,
                             child: FutureBuilder<List<dynamic>>(
                               future: respuestas,
                               builder: (context, auxrespuestas) {
@@ -134,15 +142,25 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                                       var respuestaUnitaria = new Respuesta.fromJson(
                                           auxrespuestas.data.elementAt(index)
                                               as Map<String, dynamic>);
-                                      return mostrarRespuesta(
-                                          auxrespuestas.data.length == 1,
-                                          ctx,
-                                          _respuestasMarcadas,
-                                          preguntaUnit.id,
-                                          respuestaUnitaria,
-                                          _seleccionarRespuesta,
-                                          _textoIngreso,
-                                          _submitTexto); //
+                                              
+                                        if((auxrespuestas.data.length==1) & (_textosDeIngreso[preguntaUnit.id.toString()]==null)){
+                                              TextEditingController textoIngreso = TextEditingController();
+                                           _textosDeIngreso[preguntaUnit.id.toString()]=textoIngreso; 
+                                        }
+
+                                      return Container(
+                                      height:constrains.maxHeight*0.7/auxrespuestas.data.length ,
+                                      width:constrains.maxWidth ,
+                                        child: mostrarRespuesta(
+                                            auxrespuestas.data.length == 1,
+                                            ctx,
+                                            _respuestasMarcadas,
+                                            preguntaUnit.id,
+                                            respuestaUnitaria,
+                                            _seleccionarRespuesta,
+                                            _textosDeIngreso[preguntaUnit.id.toString()],
+                                            _submitTexto, idAsistente),
+                                      ); //
                                     },
                                   );
                                 } else if (auxrespuestas.hasError) {
@@ -154,12 +172,15 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                           )
                         ],
                       );
+
+
+                    });
                     }
                   
                   
 }
 Widget  botonEnvio(bool condicion,BuildContext context,List<Map<String, Object>> jsonEnvio,Function enviarCancelar,bool cancel ) {
-return condicion&cancel?RaisedButton(
+return condicion&!cancel?RaisedButton(
                     child: Text(
                       'enviar respuestas',
                       textAlign: TextAlign.center,
@@ -171,7 +192,7 @@ return condicion&cancel?RaisedButton(
                     disabledColor: Theme.of(context).primaryColorLight,
                     elevation: 20,
                     disabledElevation: 10,
-                  ):cancel?Text(' Por favor \n responder todas las preguntas',textAlign: TextAlign.center,):Text("ya respondio todo",textAlign: TextAlign.center,);
+                  ):!cancel?Text(' Por favor \n responder todas las preguntas',textAlign: TextAlign.center,):Text("ya respondio todo",textAlign: TextAlign.center,);
 
 }
 Widget mostrarRespuesta(
@@ -182,12 +203,12 @@ Widget mostrarRespuesta(
     Respuesta respuestaUnitaria,
     Function seleccionarRespuesta,
     TextEditingController textoIngreso,
-    Function submitData) {
+    Function submitData,int  idAsistente) {
   return tipoRespuesta
       ? respuestaAbierta(ctx, textoIngreso, submitData, textoIngreso.text == '',
-          respuestaUnitaria, idPregunta)
+          respuestaUnitaria, idPregunta, idAsistente)
       : respuestaOpciones(ctx, respuestasMarcadas, idPregunta,
-          respuestaUnitaria, seleccionarRespuesta);
+          respuestaUnitaria, seleccionarRespuesta, idAsistente);
 }
 
 Widget respuestaOpciones(
@@ -195,44 +216,48 @@ Widget respuestaOpciones(
     Map<int, String> respuestasMarcadas,
     int idPregunta,
     Respuesta respuestaUnitaria,
-    Function seleccionarRespuesta) {
+    Function seleccionarRespuesta,int  idAsistente) {
   Color colorVal = Colors.white;
   if (respuestasMarcadas[idPregunta] == respuestaUnitaria.id.toString()) {
     colorVal = Theme.of(ctx).primaryColorLight;
   }
   return validacionRespuestasOpciones(respuestasMarcadas[idPregunta] == null,
-      idPregunta, respuestaUnitaria, seleccionarRespuesta, colorVal);
+      idPregunta, respuestaUnitaria, seleccionarRespuesta, colorVal, idAsistente);
 }
 
 Widget validacionRespuestasOpciones(bool condicion, int idPregunta,
-    Respuesta respuestaUnitaria, Function seleccionarRespuesta, Color color) {
+    Respuesta respuestaUnitaria, Function seleccionarRespuesta, Color color,int  idAsistente) {
   return condicion
       ? InkWell(
           onTap: () =>
-              seleccionarRespuesta(idPregunta, respuestaUnitaria.id.toString()),
+              seleccionarRespuesta(idPregunta, respuestaUnitaria.id.toString(), idAsistente),
           child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(21),
               ),
               margin: EdgeInsets.symmetric(vertical: 5),
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-              child: Text(
-                respuestaUnitaria.respuesta,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              child: FittedBox(
+                              child: Text(
+                  respuestaUnitaria.respuesta,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               )),
         )
       : Container(
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(21),
           ),
           margin: EdgeInsets.symmetric(vertical: 5),
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 150),
-          child: Text(respuestaUnitaria.respuesta,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold)));
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+          child: FittedBox(
+                      child: Text(respuestaUnitaria.respuesta,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+          ));
 }
 
 Widget respuestaAbierta(
@@ -241,7 +266,7 @@ Widget respuestaAbierta(
     Function submitData,
     bool condicion,
     Respuesta respuestaUnitaria,
-    int idPregunta) {
+    int idPregunta,int  idAsistente) {
   return condicion
       ? Container(
           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -253,7 +278,7 @@ Widget respuestaAbierta(
               labelText: 'por favor responda',
             ),
             controller: textoIngreso,
-            onSubmitted: (_) => submitData(idPregunta, textoIngreso),
+            onSubmitted: (_) => submitData(idPregunta, textoIngreso, idAsistente),
           ),
         )
       : Container(

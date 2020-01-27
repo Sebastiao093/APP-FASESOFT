@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movilfasesoft/main.dart';
 import 'package:movilfasesoft/models/ahorro.dart';
+import 'package:movilfasesoft/models/infoAsistente.dart';
 
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
+import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
 import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
@@ -33,6 +35,32 @@ void irPerfil(BuildContext ctx, String correo) {
   Navigator.of(ctx).pushNamed(PerfilPantalla.routedname, arguments: correo);
 }
 
+bool get valorValidacion {
+  Future<InfoAsistente> infoAsistente =
+      InfoAsistenteProvider().getInfoAsistente("cagarzon@asesoftware.com");
+  infoAsistente.then((aux) {
+    Logedin.boolHayAsambleaActual = !(aux == null);
+    if (Logedin.boolHayAsambleaActual) {
+      Logedin.boolAsistio = (aux.estado == 'SIASI');
+    } else {
+      Logedin.boolAsistio = false;
+    }
+  });
+  if (Logedin.boolHayAsambleaPast &
+      !Logedin.boolHayAsambleaActual &
+      Logedin.boolContesto) {
+    Logedin.boolContesto = false;
+  }
+  Logedin.boolHayAsambleaPast = Logedin.boolHayAsambleaActual;
+
+  //print( Logedin.boolAsistio);
+  //print(!Logedin.boolContesto);
+  //print(Logedin.boolHayAsambleaActual);
+  return Logedin.boolAsistio &
+      !Logedin.boolContesto &
+      Logedin.boolHayAsambleaActual;
+}
+
 String nombre(user) {
   String resultado;
   try {
@@ -45,10 +73,14 @@ String nombre(user) {
 
 class Logedin extends StatelessWidget {
   UsuarioAres usuarioAres = new UsuarioAres();
-  
+  static bool boolContesto = false;
+  static bool boolHayAsambleaPast = false;
+  static bool boolHayAsambleaActual = false;
+  static bool boolAsistio = false;
   final String user = MyApp.correoUsuario;
 
   Widget build(BuildContext context) {
+    print(valorValidacion);
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context, snapshot) {
@@ -79,14 +111,15 @@ class Logedin extends StatelessWidget {
     return Drawer(
         child: ListView(
       children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text(nombre(this.usuarioAres)),
-            accountEmail: Text(user),
-            currentAccountPicture: Icon(Icons.account_circle,
-            size: 80,color: Colors.white70,),
-            
+        UserAccountsDrawerHeader(
+          accountName: Text(nombre(this.usuarioAres)),
+          accountEmail: Text(user),
+          currentAccountPicture: Icon(
+            Icons.account_circle,
+            size: 80,
+            color: Colors.white70,
           ),
-        
+        ),
         ListTile(
           leading: Icon(Icons.person, color: Colors.blue),
           title: Text('Detalle de perfil'),
@@ -102,11 +135,7 @@ class Logedin extends StatelessWidget {
           title: Text('Convenios'),
           onTap: () => irConvenios(context, user),
         ),
-        ListTile(
-          leading: Icon(Icons.question_answer, color: Colors.blue),
-          title: Text('Votaciones'),
-          onTap: () => irVotaciones(context),
-        ),
+        validacionVotacion(context, valorValidacion),
         ListTile(
           leading: Icon(Icons.filter_center_focus, color: Colors.blue),
           title: Text('Asistencia'),
@@ -127,7 +156,6 @@ class Logedin extends StatelessWidget {
   }
 
   Widget _DetallesAhorro(String correo) {
-    
     FasAhorroProviders provider = FasAhorroProviders();
     return FutureBuilder(
       future: provider.getAhorroPermanente(correo),
@@ -174,61 +202,55 @@ class Logedin extends StatelessWidget {
                     ),
                     Center(
                         heightFactor: 3.0, child: Text('DETALLES DE CUENTA ')),
-                  
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10.0),
                       child: Column(
                         children: <Widget>[
-                          
-                                    Divider(),
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Text('AHORROS')),
-                                          Align(
-                                              alignment: Alignment.topRight,
-                                              child: Text(
-                                                '\$ ' + numberFormat(ahorro.monto.toDouble()),
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                    Divider(),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 10.0),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Text('APORTE MENSUAL')),
-                                          Align(
-                                              alignment: Alignment.topRight,
-                                              child: Text(
-                                                '\$ ' +
-                                                   numberFormat(ahorro.aporte.toDouble()),
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )),
-                                          Divider()
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              
+                          Divider(),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text('AHORROS')),
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      '\$ ' +
+                                          numberFormat(ahorro.monto.toDouble()),
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ],
                             ),
-                          
-                    
+                          ),
+                          Divider(),
+                          Container(
+                            margin: EdgeInsets.only(top: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text('APORTE MENSUAL')),
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      '\$ ' +
+                                          numberFormat(
+                                              ahorro.aporte.toDouble()),
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                Divider()
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -239,4 +261,14 @@ class Logedin extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget validacionVotacion(BuildContext ctx, bool cond) {
+  return cond
+      ? ListTile(
+          leading: Icon(Icons.question_answer, color: Colors.blue),
+          title: Text('Votaciones'),
+          onTap: () => irVotaciones(ctx),
+        )
+      : Container();
 }

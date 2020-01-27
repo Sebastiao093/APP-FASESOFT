@@ -7,11 +7,12 @@ import 'package:http/http.dart' as http;
 
 class Votaciones_providers{
 
-  static bool envioRespuestas=false;
+  //static String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
+    static String dominio = '173.16.0.84:7001';
 
    static Future<List<String>> solicitarAsambleaActual() async {
     String url =
-        "http://localhost:7001/fasesoft-web/webresources/servicios/fasasambleas/asambleactual";
+        "http://"+Votaciones_providers.dominio+"/fasesoft-web/webresources/servicios/fasasambleas/asambleactual";
     final response = await http.get(url);
     print(response.statusCode);
     if (response.statusCode == 200) {
@@ -24,7 +25,7 @@ class Votaciones_providers{
 
   static Future<List<dynamic>> solicitarPreguntasPorVotacion(String idAsamblea) async {
     String url =
-        "http://sarapdev.eastus.cloudapp.azure.com:7001/fasesoft-web/webresources/servicios/fasVotaciones/consultaId/" +
+        "http://"+Votaciones_providers.dominio+"/fasesoft-web/webresources/servicios/fasVotaciones/consultaId/" +
             idAsamblea;
 
     final response = await http.get(url);
@@ -38,7 +39,7 @@ class Votaciones_providers{
  static Future<List<dynamic>> solicitarRespuestasPorPregunta(
       String idPregunta) async {
     String url =
-        "http://sarapdev.eastus.cloudapp.azure.com:7001/fasesoft-web/webresources/servicios/fasRespuestas/consultaId/" +
+        "http://"+Votaciones_providers.dominio+"/fasesoft-web/webresources/servicios/fasRespuestas/consultaId/" +
             idPregunta;
 
     final response = await http.get(url);
@@ -51,7 +52,7 @@ class Votaciones_providers{
 
   static void enviarRespuestasPost(Map<String, dynamic> datoAenviar) async {
     String url =
-        "http://sarapdev.eastus.cloudapp.azure.com:7001/fasesoft-web/webresources/servicios/respuestaUsuario/agregar";
+        "http://"+Votaciones_providers.dominio+"/fasesoft-web/webresources/servicios/respuestaUsuario/agregar";
 
     var response = await http
         .post(Uri.encodeFull(url), body: json.encode(datoAenviar), headers: {
@@ -63,7 +64,7 @@ class Votaciones_providers{
 
   static void enviarRespuestasPut(Map<String, dynamic> datoAenviar) async {
     String url =
-        "http://sarapdev.eastus.cloudapp.azure.com:7001/fasesoft-web/webresources/servicios/fasasambleas";
+        "http://"+Votaciones_providers.dominio+"/fasesoft-web/webresources/servicios/fasasambleas";
 
     var response = await http.put(
       Uri.encodeFull(url),
