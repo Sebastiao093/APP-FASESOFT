@@ -138,11 +138,11 @@ class Logedin extends StatelessWidget {
           onTap: () => irConvenios(context, user),
         ),
         validacionVotacion(context, valorValidacion),
-        ListTile(
+        false?ListTile(
           leading: Icon(Icons.filter_center_focus, color: Colors.blue),
           title: Text('Asistencia'),
           onTap: () => irQr(context),
-        ),
+        ): Container(),
         ListTile(
           leading: Icon(Icons.center_focus_weak),
           title: Text(
