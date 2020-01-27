@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget  with PortraitModeMixin {
       initialRoute: '/',
       routes: getAplicaciones(),
       onGenerateRoute: (settings){
-        print(settings.arguments);
         return MaterialPageRoute(
           builder: (ctx) => PantallaInicial()
         );
