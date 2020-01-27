@@ -88,6 +88,7 @@ class Logedin extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } else {
           this.usuarioAres = snapshot.data;
+          
           return Scaffold(
             appBar: AppBar(
               title: ImageIcon(
