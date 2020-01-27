@@ -43,94 +43,107 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
   }
 
   Widget ElementosCartas(Credito elemento, BuildContext ctx) {
-    return Card(
-      elevation: 10.0,
-      margin: EdgeInsets.all(5.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      child: Container(
-        width: 100,
-        height: 60,
-        margin: EdgeInsets.all(25.0),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              mainAxisSize: MainAxisSize.max,
+    return LayoutBuilder(
+      builder: (ctx, constrains) {
+        return Card(
+          elevation: 10.0,
+          margin: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.1
+          ,horizontal: constrains.maxWidth*0.05 ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          child: Container(
+            width: constrains.maxWidth ,
+            height: constrains.maxHeight,
+            margin: EdgeInsets.all(25.0),
+            child: Column(
               children: <Widget>[
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(elemento.nombretipodecredito),
-                      Text(elemento.fechaSolicitud.substring(0, 10))
-                    ]),
-                RaisedButton(
-                  padding: EdgeInsets.all(7.0),
-                  elevation: 7.0,
-                  child: Text(elemento.estado),
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
-                  color: getColor(elemento.estado.toString()),
-                  onPressed: () {
-                    mostrarAlerta(ctx, elemento);
-                  },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(elemento.nombretipodecredito),
+                          Text(elemento.fechaSolicitud.substring(0, 10))
+                        ]),
+                    RaisedButton(
+                      padding: EdgeInsets.all(7.0),
+                      elevation: 7.0,
+                      child: Text(elemento.estado),
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      color: getColor(elemento.estado.toString()),
+                      onPressed: () {
+                        mostrarAlerta(ctx, elemento);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget contenido1(Future<List<dynamic>> elementos, BuildContext ctx) {
-    return Center(
-      child: FutureBuilder<List<dynamic>>(
-        future: elementos,
-        builder: (context, auxElementos) {
-          if (auxElementos.hasData) {
-            return ListView.builder(
-              itemCount: auxElementos.data.length,
-              itemBuilder: (context, index) {
-                var elemento = new Credito.fromJson(
-                    auxElementos.data.elementAt(index) as Map<String, dynamic>);
+    return LayoutBuilder(
+      builder: (ctx, constrains) {
+        return Center(
+          child: FutureBuilder<List<dynamic>>(
+            future: elementos,
+            builder: (context, auxElementos) {
+              if (auxElementos.hasData) {
+                return ListView.builder(
+                  itemCount: auxElementos.data.length,
+                  itemBuilder: (context, index) {
+                    var elemento = new Credito.fromJson(auxElementos.data
+                        .elementAt(index) as Map<String, dynamic>);
 
-                return ElementosCartas(elemento, ctx);
-              },
-            );
-          } else if (auxElementos.hasError) {
-            return Container(
-              height: 370,
-              width: 370,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-               color: Colors.blue,
-              ),
-              child: Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            elevation: 15.0,
-            child: Padding(
-              padding: EdgeInsets.all(1.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                   FittedBox(
-                      child: Text('No puedes conectarte con Fasesoft'),
+                    return Container(
+                      width: constrains.maxWidth,
+                      height: constrains.maxHeight*0.25,
+                      child: ElementosCartas(elemento, ctx));
+                  },
+                );
+              } else if (auxElementos.hasError) {
+                return Container(
+                    height: constrains.maxHeight * 0.5,
+                    width: constrains.maxWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.blue,
                     ),
-                ],
-                ),
-            ),
-              )
-            );
-              
-          } else if (auxElementos.hasData ==  []) {
-            return Text('No tienes Créditos con nosotros');
-          }
-          return CircularProgressIndicator();
-        },
-      ),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      elevation: 15.0,
+                      child: Padding(
+                        padding: EdgeInsets.all(1.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            FittedBox(
+                              child: Center(
+                                  child: Text(
+                                      'No puedes conectarte con Fasesoft')),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ));
+              } else if (auxElementos.hasData == []) {
+                return Center(child: Text('No tienes Créditos con nosotros'));
+              }
+              return CircularProgressIndicator();
+            },
+          ),
+        );
+      },
     );
   }
 
