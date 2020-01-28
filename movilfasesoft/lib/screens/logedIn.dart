@@ -280,6 +280,7 @@ Widget validacionRol(BuildContext ctx) {
         } else if (perfilAux.hasError) {
         return Container();
       }
+       return Container();
       },
     );
 
