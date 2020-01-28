@@ -9,21 +9,18 @@ Widget userPhoto(correo) {
 
   String _url='Https://graph.microsoft.com/v1.0/users/';
  
- return Container(
-      width: 100.0,
-      height: 100.0,
-      decoration: new BoxDecoration(
-          shape: BoxShape.circle,
-          image: new DecorationImage(
-          fit: BoxFit.fill,
-          image:  NetworkImage(
+ return  ClipRRect(
+   borderRadius: BorderRadius.circular(80),
+   child:FadeInImage(
+     placeholder: AssetImage('assets/icons/person.png'),
+     image:  NetworkImage(
         _url+correo+'/photo/\$VALUE' ,
         headers: {HttpHeaders.authorizationHeader: MyApp.token},
+      )
     ),
+   );
+      
    
-                 )
-)
-);
-  }
 
+  }
 
