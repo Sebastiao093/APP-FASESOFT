@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -8,7 +6,7 @@ import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
 import 'package:movilfasesoft/main.dart';
-import 'package:msgraph/msgraph.dart';
+
 
 class UserLogin {
    String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
@@ -37,27 +35,22 @@ class UserLogin {
       }
     } on SocketException catch (er) {
       //print(er);
-      print('not connected');
+     // print('not connected');
       return 'error';
     }
     String accessToken;
     if(conexion){
-      try{
+    
           await oauth.login();
            accessToken= await oauth.getAccessToken();
-      }
-      catch(e){
-
-      }
-      
-
+    
        
         //solicitar token como string
         var decodedToken = new JWT.parse(
             accessToken); //Decodificar token usando libreria corsac jwt
         //print(decodedToken.getClaim('upn'));//solicitar el claim 'upn' que es el id de correo en este caso.
         var correo = decodedToken.getClaim('upn');
-
+          MyApp.token=accessToken;
         final url = Uri.http(
             _url,
             'fasesoft-web/webresources/servicios/fasusuarios/afiliadoPorCorreo/' +
@@ -71,10 +64,7 @@ class UserLogin {
           if (decodedData.isNotEmpty) {
             if (decodedData[0]['estado'] == 'AFILIADO') {
               MyApp.correoUsuario = correo;
-              var msGraph = MsGraph(accessToken);
-              var me=await msGraph.me.get();
-              print(me); //get me
-
+     
               return correo;
             } else {
               //print('no afiliado');

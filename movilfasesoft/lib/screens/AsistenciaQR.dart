@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:majascan/majascan.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
+import 'package:movilfasesoft/providers/photoProvider.dart';
 
 class PantallaQr extends StatefulWidget {
   static const routedname = "/PantallaQr";
@@ -119,12 +120,22 @@ class _PantallaQrState extends State<PantallaQr> {
     } catch (e) {
       setState(() => this._valorAsistencia = 'Error desconocido : $e');
     }
-
+  
     print('Datos obtenidos: $futureString');
 
     if ( futureString != null) {
       print('Tenemos informacion');
     }
+    return  showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return Center(
+            child:userPhoto(futureString)
+           
+                     );
+        });
+
   }
 
 void enviarCambioEstadoPut(Map<String, Object> dato) async {

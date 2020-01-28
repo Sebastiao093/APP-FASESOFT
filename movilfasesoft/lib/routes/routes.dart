@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movilfasesoft/screens/AsambleaPantalla.dart';
+import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/screens/logedIn.dart';
 import '../screens/PerfilPantalla.dart';
 import '../screens/AsistenciaQR.dart';
@@ -10,9 +11,12 @@ import '../screens/PantallaInicial.dart';
 
 Map <String,WidgetBuilder> getAplicaciones(){
 return <String,WidgetBuilder>{
-        '/':(ctx)=>PantallaInicial(),
         '/login':(ctx)=> LoginPage(),
         '/loged':(ctx)=> Logedin(),
+        '/qr':(ctx)=> CodigoQR(),
+        PantallaNoAfiliado.routedname:(ctx)=>PantallaNoAfiliado(),
+        PantallaSinConexion.routedname:(ctx)=>PantallaSinConexion(),
+        PantallaNoRegistrado.routedname:(ctx)=>PantallaNoRegistrado(),
         PantallaInicial.routedname: (ctx) => PantallaInicial(),
         PantallaQr.routedname:(ctx) => PantallaQr(),
         PantallaVotaciones.routedname:(ctx) => PantallaVotaciones(),

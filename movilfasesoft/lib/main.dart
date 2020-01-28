@@ -7,6 +7,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget  with PortraitModeMixin {
   static String correoUsuario='';
+  static String token='';
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
