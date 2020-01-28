@@ -6,7 +6,6 @@ import 'package:movilfasesoft/models/Credito.dart';
 
 class CreditoPantalla extends StatefulWidget {
   static const routedname = "/PantallaCreditos";
-  static var correo = "shgarcia@asesoftware.com";
 
   @override
   _CreditoPantallaState createState() => _CreditoPantallaState();
@@ -33,9 +32,17 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
     String usuarioCorreo = ModalRoute.of(context).settings.arguments as String;
     Future<List<dynamic>> userData = obtenerData(usuarioCorreo);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Creditos'),
-      ),
+      appBar:  AppBar(
+          title: Text('Perfil'),
+          centerTitle: true,
+          actions: <Widget>[
+            Container(
+                child: ImageIcon(
+              AssetImage('assets/icons/fasesoftLogo.png'),
+              size: 100.0,
+            ))
+          ],
+        ),
       body: Center(
         child: contenido1(userData, context),
       ),
@@ -47,37 +54,48 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
       builder: (ctx, constrains) {
         return Card(
           elevation: 10.0,
-          margin: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.1
-          ,horizontal: constrains.maxWidth*0.05 ),
+          margin: EdgeInsets.symmetric(
+              vertical: constrains.maxHeight * 0.1,
+              horizontal: constrains.maxWidth * 0.05),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Container(
-            width: constrains.maxWidth ,
+            width: constrains.maxWidth,
             height: constrains.maxHeight,
-            margin: EdgeInsets.all(25.0),
+            margin: EdgeInsets.symmetric(
+                horizontal: constrains.maxWidth * 0.02,
+                vertical: constrains.maxHeight * 0.05),
             child: Column(
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(elemento.nombretipodecredito),
-                          Text(elemento.fechaSolicitud.substring(0, 10))
-                        ]),
-                    RaisedButton(
-                      padding: EdgeInsets.all(7.0),
-                      elevation: 7.0,
-                      child: Text(elemento.estado),
-                      textColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: getColor(elemento.estado.toString()),
-                      onPressed: () {
-                        mostrarAlerta(ctx, elemento);
-                      },
+                    Container(
+                      width: constrains.maxWidth * 0.5,
+                      height: constrains.maxHeight * 0.7,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(elemento.nombretipodecredito,style: TextStyle(fontWeight: FontWeight.bold),),
+                            Text(elemento.fechaSolicitud.substring(0, 10))
+                          ]),
+                    ),
+                    Container(
+                      width: constrains.maxWidth * 0.3,
+                      alignment: Alignment.center,
+                      child: RaisedButton(
+                        padding: EdgeInsets.all(7.0),
+                        elevation: 7.0,
+                        child: Text(elemento.estado),
+                        textColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        color: getColor(elemento.estado.toString()),
+                        onPressed: () {
+                          mostrarAlerta(ctx, elemento);
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -104,9 +122,9 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                         .elementAt(index) as Map<String, dynamic>);
 
                     return Container(
-                      width: constrains.maxWidth,
-                      height: constrains.maxHeight*0.25,
-                      child: ElementosCartas(elemento, ctx));
+                        width: constrains.maxWidth,
+                        height: constrains.maxHeight * 0.25,
+                        child: ElementosCartas(elemento, ctx));
                   },
                 );
               } else if (auxElementos.hasError) {
@@ -136,7 +154,7 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                         ),
                       ),
                     ));
-              } else if (auxElementos.hasData == []) {
+              } else if (auxElementos.data == []) {
                 return Center(child: Text('No tienes Créditos con nosotros'));
               }
               return CircularProgressIndicator();

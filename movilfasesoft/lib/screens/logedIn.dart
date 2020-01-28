@@ -7,11 +7,8 @@ import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
-<<<<<<< HEAD
-=======
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
->>>>>>> a9fffce6329253fa3214194cd3dd968aa2296a61
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:movilfasesoft/providers/votaciones_providers.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
@@ -261,12 +258,14 @@ Widget validacionVotacion(BuildContext ctx) {
     future:
         Votaciones_providers.getValidacionBotonVotaciones(MyApp.correoUsuario),
     builder: (ctx, validacionAux) {
-    
-      print('hay asmablea= ${validacionAux.data.hayAsamblea}' );
-      print('asistio= ${validacionAux.data.asistio}' );
-      print('preguntas por contestar ${validacionAux.data.preguntasPorContestar}' );
-  print('-----------------------------------');
+   
       if (validacionAux.hasData) {
+        if(validacionAux.data.hayAsamblea==null ||
+            validacionAux.data.asistio==null ||
+            validacionAux.data.preguntasPorContestar==null){
+              return Container();
+
+            }
         if (validacionAux.data.hayAsamblea &&
             validacionAux.data.asistio &&
             validacionAux.data.preguntasPorContestar) {
