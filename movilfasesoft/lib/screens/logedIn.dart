@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movilfasesoft/main.dart';
+import 'package:movilfasesoft/models/PerfilRol.dart';
 import 'package:movilfasesoft/models/ahorro.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
+import 'package:movilfasesoft/providers/perfilrol_provider.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
 import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
@@ -80,8 +82,10 @@ class Logedin extends StatelessWidget {
   static bool boolHayAsambleaActual = false;
   static bool boolAsistio = false;
   final String user = MyApp.correoUsuario;
+  static String tipoRol;
 
   Widget build(BuildContext context) {
+    cargarPerfilRol(user);
     print(valorValidacion);
     return FutureBuilder(
       future: UserProvider().getUser(user),
@@ -90,7 +94,6 @@ class Logedin extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } else {
           this.usuarioAres = snapshot.data;
-          
           return Scaffold(
             appBar: AppBar(
               title: ImageIcon(
@@ -138,11 +141,7 @@ class Logedin extends StatelessWidget {
           onTap: () => irConvenios(context, user),
         ),
         validacionVotacion(context, valorValidacion),
-        false?ListTile(
-          leading: Icon(Icons.filter_center_focus, color: Colors.blue),
-          title: Text('Asistencia'),
-          onTap: () => irQr(context),
-        ): Container(),
+        validacionRol(context),
         ListTile(
           leading: Icon(Icons.center_focus_weak),
           title: Text(
@@ -283,6 +282,21 @@ class Logedin extends StatelessWidget {
     ],
     );
   }
+  static Future<PerfilRol> cargarPerfilRol(String correo) async  {
+    final perfilProvider = PerfilRolProvider();
+    PerfilRol perfilRol = await perfilProvider.getPerfilRol(correo);
+    //tipoRol = perfilRol.tipo;
+    return perfilRol;
+  }
+
+Widget validacionRol(BuildContext ctx) {
+  return tipoRol  == 'ASISTENCIA' 
+      ?ListTile(
+          leading: Icon(Icons.filter_center_focus, color: Colors.blue),
+          title: Text('Asistencia'),
+          onTap: () => irQr(ctx),
+        ): Container();
+}
 }
 
 Widget validacionVotacion(BuildContext ctx, bool cond) {
