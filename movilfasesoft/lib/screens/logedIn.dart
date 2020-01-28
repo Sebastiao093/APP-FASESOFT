@@ -56,9 +56,10 @@ class Logedin extends StatelessWidget {
   UsuarioAres usuarioAres = new UsuarioAres();
   final String user = MyApp.correoUsuario;
   static String tipoRol;
+  static Future<PerfilRol> futurePerfilRol;
 
   Widget build(BuildContext context) {
-    cargarPerfilRol(user);
+    futurePerfilRol = cargarPerfilRol(user);
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context, snapshot) {
@@ -263,12 +264,28 @@ class Logedin extends StatelessWidget {
   }
 
 Widget validacionRol(BuildContext ctx) {
-  return tipoRol  == 'ASISTENCIA' 
-      ?ListTile(
+  return FutureBuilder <PerfilRol>(
+      future: futurePerfilRol,
+      builder: (ctx, perfilAux) {
+        if(perfilAux.hasData){
+          if (perfilAux.data.tipo ==  'ASISTENCIA') {
+            return ListTile(
           leading: Icon(Icons.filter_center_focus, color: Colors.blue),
           title: Text('Asistencia'),
           onTap: () => irQr(ctx),
-        ): Container();
+          );
+          } else {
+          return Container();
+        }
+        } else if (perfilAux.hasError) {
+        return Container();
+      }
+       return Container();
+      },
+    );
+
+  
+
 }
 }
 
@@ -278,6 +295,12 @@ Widget validacionVotacion(BuildContext ctx) {
         Votaciones_providers.getValidacionBotonVotaciones(MyApp.correoUsuario),
     builder: (ctx, validacionAux) {
       if (validacionAux.hasData) {
+        if(validacionAux.data.hayAsamblea==null ||
+            validacionAux.data.asistio==null ||
+            validacionAux.data.preguntasPorContestar==null){
+              return Container();
+
+            }
         if (validacionAux.data.hayAsamblea &&
             validacionAux.data.asistio &&
             validacionAux.data.preguntasPorContestar) {
