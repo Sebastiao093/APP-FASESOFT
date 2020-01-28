@@ -95,7 +95,9 @@ class _PantallaQrState extends State<PantallaQr> {
 
 
   Future _scanQR() async {
-
+    setState(() {
+      
+    });
     String futureString = '';
 
     try {
@@ -148,7 +150,7 @@ void enviarCambioEstadoPut(Map<String, Object> dato) async {
         "content-type": "application/json",
         "accept": "application/json",
       },
-    );
+    ); 
     print(response.body);
   }
 
