@@ -1,14 +1,13 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/main.dart';
 
 Widget userPhoto(correo) {
  
 
   String _url='Https://graph.microsoft.com/v1.0/users/';
- 
+ print(correo);
  return  ClipRRect(
    borderRadius: BorderRadius.circular(80),
    child:FadeInImage(
