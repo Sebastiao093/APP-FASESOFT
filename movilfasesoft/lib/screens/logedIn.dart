@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movilfasesoft/main.dart';
+import 'package:movilfasesoft/models/PerfilRol.dart';
 import 'package:movilfasesoft/models/ahorro.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/models/usuario.dart';
+import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
+import 'package:movilfasesoft/providers/perfilrol_provider.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
+import 'package:movilfasesoft/providers/votaciones_providers.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
 import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
 import 'package:movilfasesoft/screens/CreditoPantalla.dart';
@@ -18,8 +22,8 @@ import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-void irVotaciones(BuildContext ctx) {
-  Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname);
+void irVotaciones(BuildContext ctx,bool preguntasPorContestar) {
+  Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname,arguments: preguntasPorContestar);
 }
 
 void irCreditos(BuildContext ctx, String user) {
@@ -38,32 +42,6 @@ void irPerfil(BuildContext ctx, String correo) {
   Navigator.of(ctx).pushNamed(PerfilPantalla.routedname, arguments: correo);
 }
 
-bool get valorValidacion {
-  Future<InfoAsistente> infoAsistente =
-      InfoAsistenteProvider().getInfoAsistente("cagarzon@asesoftware.com");
-  infoAsistente.then((aux) {
-    Logedin.boolHayAsambleaActual = !(aux == null);
-    if (Logedin.boolHayAsambleaActual) {
-      Logedin.boolAsistio = (aux.estado == 'SIASI');
-    } else {
-      Logedin.boolAsistio = false;
-    }
-  });
-  if (Logedin.boolHayAsambleaPast &
-      !Logedin.boolHayAsambleaActual &
-      Logedin.boolContesto) {
-    Logedin.boolContesto = false;
-  }
-  Logedin.boolHayAsambleaPast = Logedin.boolHayAsambleaActual;
-
-  //print( Logedin.boolAsistio);
-  //print(!Logedin.boolContesto);
-  //print(Logedin.boolHayAsambleaActual);
-  return Logedin.boolAsistio &
-      !Logedin.boolContesto &
-      Logedin.boolHayAsambleaActual;
-}
-
 String nombre(user) {
   String resultado;
   try {
@@ -76,14 +54,11 @@ String nombre(user) {
 
 class Logedin extends StatelessWidget {
   UsuarioAres usuarioAres = new UsuarioAres();
-  static bool boolContesto = false;
-  static bool boolHayAsambleaPast = false;
-  static bool boolHayAsambleaActual = false;
-  static bool boolAsistio = false;
   final String user = MyApp.correoUsuario;
+  static String tipoRol;
 
   Widget build(BuildContext context) {
-    print(valorValidacion);
+    cargarPerfilRol(user);
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context, snapshot) {
@@ -91,7 +66,6 @@ class Logedin extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } else {
           this.usuarioAres = snapshot.data;
-          
           return Scaffold(
             appBar: AppBar(
               title: ImageIcon(
@@ -134,12 +108,8 @@ class Logedin extends StatelessWidget {
           title: Text('Convenios'),
           onTap: () => irConvenios(context, user),
         ),
-        validacionVotacion(context, valorValidacion),
-        false?ListTile(
-          leading: Icon(Icons.filter_center_focus, color: Colors.blue),
-          title: Text('Asistencia'),
-          onTap: () => irQr(context),
-        ): Container(),
+        validacionVotacion(context),
+        validacionRol(context),
         ListTile(
           leading: Icon(Icons.center_focus_weak),
           title: Text(
@@ -280,14 +250,44 @@ class Logedin extends StatelessWidget {
     ],
     );
   }
+  static Future<PerfilRol> cargarPerfilRol(String correo) async  {
+    final perfilProvider = PerfilRolProvider();
+    PerfilRol perfilRol = await perfilProvider.getPerfilRol(correo);
+    //tipoRol = perfilRol.tipo;
+    return perfilRol;
+  }
+
+Widget validacionRol(BuildContext ctx) {
+  return tipoRol  == 'ASISTENCIA' 
+      ?ListTile(
+          leading: Icon(Icons.filter_center_focus, color: Colors.blue),
+          title: Text('Asistencia'),
+          onTap: () => irQr(ctx),
+        ): Container();
+}
 }
 
-Widget validacionVotacion(BuildContext ctx, bool cond) {
-  return cond
-      ? ListTile(
-          leading: Icon(Icons.question_answer, color: Colors.blue),
-          title: Text('Votaciones'),
-          onTap: () => irVotaciones(ctx),
-        )
-      : Container();
+Widget validacionVotacion(BuildContext ctx) {
+  return FutureBuilder<ValidacionBotonVotaciones>(
+    future:
+        Votaciones_providers.getValidacionBotonVotaciones(MyApp.correoUsuario),
+    builder: (ctx, validacionAux) {
+      if (validacionAux.hasData) {
+        if (validacionAux.data.hayAsamblea &&
+            validacionAux.data.asistio &&
+            validacionAux.data.preguntasPorContestar) {
+          return ListTile(
+            leading: Icon(Icons.question_answer, color: Colors.blue),
+            title: Text('Votaciones'),
+            onTap: () => irVotaciones(ctx,validacionAux.data.preguntasPorContestar),
+          );
+        } else {
+          return Container();
+        }
+      } else if (validacionAux.hasError) {
+        return Container();
+      }
+      return Container();
+    },
+  );
 }

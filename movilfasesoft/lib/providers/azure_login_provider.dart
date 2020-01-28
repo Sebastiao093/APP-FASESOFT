@@ -9,8 +9,13 @@ import 'package:movilfasesoft/main.dart';
 
 
 class UserLogin {
+<<<<<<< HEAD
+  // String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
+    String _url = '173.16.0.84:7001';
+=======
    String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
     //String _url = '173.16.0.84:7001';
+>>>>>>> a9fffce6329253fa3214194cd3dd968aa2296a61
   static Config config = new Config(
       "bf208dcb-97e8-4d43-bd72-323680bef25c", //tenand id
       "19d6b921-44b0-42df-946f-d14bf3392cbf", //client id

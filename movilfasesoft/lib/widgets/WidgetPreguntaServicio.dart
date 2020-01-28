@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:movilfasesoft/models/Pregunta.dart';
 import 'package:movilfasesoft/models/Respuesta.dart';
+import 'package:movilfasesoft/models/RespuestaContestadas.dart';
 import 'package:movilfasesoft/screens/logedIn.dart';
 import '../main.dart';
 import '../providers/votaciones_providers.dart';
@@ -11,9 +12,10 @@ class WidgetPreguntaServicio extends StatefulWidget {
   final int idAsistente;
   final AppBar appBar;
   final Future<List<dynamic>> _preguntas;
+  final List<RespuestasContestadas> _respuestasContestadas;
 
-  WidgetPreguntaServicio(
-      this.idAsamblea, this.idAsistente, this.appBar, this._preguntas);
+  WidgetPreguntaServicio(this.idAsamblea, this.idAsistente, this.appBar,
+      this._preguntas, this._respuestasContestadas);
 
   @override
   _WidgetPreguntaState createState() => _WidgetPreguntaState();
@@ -24,11 +26,10 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   List<Map<String, Object>> _jsonEnvio = List<Map<String, Object>>();
   Map<String, TextEditingController> _textosDeIngreso =
       Map<String, TextEditingController>();
- 
-  int _numeroPreguntas=0;
+  bool contesto = false;
+  int _numeroPreguntas = 0;
 
   void _seleccionarRespuesta(int idPregunta, String respuesta, int idAs) {
-    
     setState(() {
       _respuestasMarcadas[idPregunta] = respuesta;
       _jsonEnvio.add({
@@ -43,11 +44,12 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   void cancelarBoton(List<Map<String, Object>> jsonEnvio) {
     for (var i = 0; i < jsonEnvio.length; i++) {
       Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i));
-      //print(_jsonEnvio.elementAt(i));
+      print('envio ${_jsonEnvio.elementAt(i)}');
     }
     setState(() {
-      Logedin.boolContesto = true;
+      contesto = true;
     });
+    Navigator.of(context).pop();
   }
 
   void _submitTexto(
@@ -63,22 +65,27 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
         "FKVOTACION": "$idPregunta"
       });
     });
-    
   }
 
- void totalPreguntas(int totalPreguntas){
+  void totalPreguntas(int totalPreguntas) {
     setState(() {
-      
-    _numeroPreguntas=totalPreguntas;
+      _numeroPreguntas = totalPreguntas;
     });
   }
 
-  int retornarNumeroPreguntas(){
+  int retornarNumeroPreguntas() {
     return _numeroPreguntas;
   }
 
   @override
   Widget build(BuildContext context) {
+    for (var i = 0; i < widget._respuestasContestadas.length; i++) {
+      _respuestasMarcadas[widget._respuestasContestadas
+          .elementAt(i)
+          .fkVotacion] = widget._respuestasContestadas.elementAt(i).idrespuesta;
+    }
+    print(_respuestasMarcadas);
+
     return imprimirPreguntas(widget._preguntas, widget.idAsistente);
   }
 
@@ -101,21 +108,18 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                     child: ListView.builder(
                       itemCount: auxPreguntas.data.length,
                       itemBuilder: (context, index) {
-                       _numeroPreguntas=auxPreguntas.data.length;
+                        _numeroPreguntas = auxPreguntas.data.length;
                         var preguntaUnitaria = new Pregunta.fromJson(
                             auxPreguntas.data.elementAt(index)
                                 as Map<String, dynamic>);
-                                print(_respuestasMarcadas.length );
                         return Container(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.1,
-                              top: 20),
+                          padding: EdgeInsets.all(10),
                           height: (MediaQuery.of(context).size.height -
                                   widget.appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
-                              0.3,
+                              0.4,
                           width: MediaQuery.of(context).size.width,
-                          child: imprimirVotos(
+                          child: imprimirVotos(_numeroPreguntas, index,
                               preguntaUnitaria, context, idAsistente),
                         );
                       },
@@ -128,11 +132,12 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                         0.1,
                     width: MediaQuery.of(context).size.width,
                     child: botonEnvio(
-                        _respuestasMarcadas.length == _numeroPreguntas && _respuestasMarcadas.length>0,
+                        _respuestasMarcadas.length == _numeroPreguntas &&
+                            _respuestasMarcadas.length > 0,
                         context,
                         _jsonEnvio,
                         cancelarBoton,
-                        Logedin.boolContesto),
+                        contesto),
                   )
                 ],
               ),
@@ -147,8 +152,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
     );
   }
 
-  Widget imprimirVotos(
-      Pregunta preguntaUnit, BuildContext ctx, int idAsistente) {
+  Widget imprimirVotos(int numTotalPreguntas, int index, Pregunta preguntaUnit,
+      BuildContext ctx, int idAsistente) {
     Future<List<dynamic>> respuestas =
         Votaciones_providers.solicitarRespuestasPorPregunta(
             '${preguntaUnit.id}');
@@ -157,68 +162,74 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
       builder: (ctx, constrains) {
         return Card(
           elevation: 5,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                height: constrains.maxHeight * 0.15,
-                width: constrains.maxWidth,
-                child: FittedBox(
-                  child: Text(
-                    preguntaUnit.pregunta,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: constrains.maxHeight * 0.15,
+                  width: constrains.maxWidth,
+                  child: FittedBox(
+                    child: Text(
+                      '${index + 1}/${numTotalPreguntas}  ${preguntaUnit.pregunta}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-              ),
-              FutureBuilder<List<dynamic>>(
-                future: respuestas,
-                builder: (context, auxrespuestas) {
-                  if (auxrespuestas.hasData) {
-                    return Container(
-                      height: constrains.maxHeight * 0.75,
-                      width: constrains.maxWidth,
-                      child: ListView.builder(
-                        itemCount: auxrespuestas.data.length,
-                        itemBuilder: (context, index) {
-                          var respuestaUnitaria = new Respuesta.fromJson(
-                              auxrespuestas.data.elementAt(index)
-                                  as Map<String, dynamic>);
+                Divider(color: Colors.blue),
+                FutureBuilder<List<dynamic>>(
+                  future: respuestas,
+                  builder: (context, auxrespuestas) {
+                    if (auxrespuestas.hasData) {
+                      return Container(
+                        height: constrains.maxHeight * 0.75,
+                        width: constrains.maxWidth,
+                        child: ListView.builder(
+                          itemCount: auxrespuestas.data.length,
+                          itemBuilder: (context, index) {
+                            var respuestaUnitaria = new Respuesta.fromJson(
+                                auxrespuestas.data.elementAt(index)
+                                    as Map<String, dynamic>);
 
-                          if ((auxrespuestas.data.length == 1) &
-                              (_textosDeIngreso[preguntaUnit.id.toString()] ==
-                                  null)) {
-                            TextEditingController textoIngreso =
-                                TextEditingController();
-                            _textosDeIngreso[preguntaUnit.id.toString()] =
-                                textoIngreso;
-                          }
+                            if ((auxrespuestas.data.length == 1) &
+                                (_textosDeIngreso[preguntaUnit.id.toString()] ==
+                                    null)) {
+                              TextEditingController textoIngreso =
+                                  TextEditingController();
+                              _textosDeIngreso[preguntaUnit.id.toString()] =
+                                  textoIngreso;
+                            }
 
-                          return Container(
-                            height:auxrespuestas.data.length == 1?constrains.maxHeight*0.5:(constrains.maxHeight) /
-                                auxrespuestas.data.length,
-                            width: constrains.maxWidth,
-                            child: mostrarRespuesta(
-                                auxrespuestas.data.length == 1,
-                                ctx,
-                                _respuestasMarcadas,
-                                preguntaUnit.id,
-                                respuestaUnitaria,
-                                _seleccionarRespuesta,
-                                _textosDeIngreso[preguntaUnit.id.toString()],
-                                _submitTexto,
-                                idAsistente),
-                          ); //
-                        },
-                      ),
-                    );
-                  } else if (auxrespuestas.hasError) {
-                    return Text('${auxrespuestas.error}');
-                  }
-                  return CircularProgressIndicator();
-                },
-              )
-            ],
+                            return Container(
+                              height: auxrespuestas.data.length == 1
+                                  ? constrains.maxHeight * 0.5
+                                  : 0.7 *
+                                      (constrains.maxHeight) /
+                                      auxrespuestas.data.length,
+                              width: constrains.maxWidth,
+                              child: mostrarRespuesta(
+                                  auxrespuestas.data.length == 1,
+                                  ctx,
+                                  _respuestasMarcadas,
+                                  preguntaUnit.id,
+                                  respuestaUnitaria,
+                                  _seleccionarRespuesta,
+                                  _textosDeIngreso[preguntaUnit.id.toString()],
+                                  _submitTexto,
+                                  idAsistente),
+                            ); //
+                          },
+                        ),
+                      );
+                    } else if (auxrespuestas.hasError) {
+                      return Text('${auxrespuestas.error}');
+                    }
+                    return CircularProgressIndicator();
+                  },
+                )
+              ],
+            ),
           ),
         );
       },
@@ -228,7 +239,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
 
 Widget botonEnvio(bool condicion, BuildContext context,
     List<Map<String, Object>> jsonEnvio, Function enviarCancelar, bool cancel) {
-      print(condicion);
+  print(condicion);
   return condicion & !cancel
       ? RaisedButton(
           child: Text(
@@ -265,8 +276,14 @@ Widget mostrarRespuesta(
     Function submitData,
     int idAsistente) {
   return tipoRespuesta
-      ? respuestaAbierta(ctx, textoIngreso, submitData, textoIngreso.text == '',
-          respuestaUnitaria, idPregunta, idAsistente)
+      ? respuestaAbierta(
+          ctx,
+          textoIngreso,
+          submitData,
+          respuestasMarcadas,
+          respuestaUnitaria,
+          idPregunta,
+          idAsistente)
       : respuestaOpciones(ctx, respuestasMarcadas, idPregunta,
           respuestaUnitaria, seleccionarRespuesta, idAsistente);
 }
@@ -333,11 +350,11 @@ Widget respuestaAbierta(
     BuildContext ctx,
     TextEditingController textoIngreso,
     Function submitData,
-    bool condicion,
+    Map<int,String> respuestasContestadas,
     Respuesta respuestaUnitaria,
     int idPregunta,
     int idAsistente) {
-  return condicion
+  return respuestasContestadas[idPregunta] == null
       ? Container(
           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           padding: EdgeInsets.symmetric(
@@ -352,16 +369,14 @@ Widget respuestaAbierta(
                 submitData(idPregunta, textoIngreso, idAsistente),
           ),
         )
-      :  Container(
+      : Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Theme.of(ctx).primaryColorLight,
           ),
           child: Text(
-            textoIngreso.text,
+            respuestasContestadas[idPregunta],
             textAlign: TextAlign.center,
           ),
         );
-
-      
 }
