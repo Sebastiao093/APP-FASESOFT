@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -8,11 +6,16 @@ import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
 import 'package:movilfasesoft/main.dart';
-import 'package:msgraph/msgraph.dart';
+
 
 class UserLogin {
+<<<<<<< HEAD
+  // String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
+    String _url = '173.16.0.84:7001';
+=======
    String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
     //String _url = '173.16.0.84:7001';
+>>>>>>> a9fffce6329253fa3214194cd3dd968aa2296a61
   static Config config = new Config(
       "bf208dcb-97e8-4d43-bd72-323680bef25c", //tenand id
       "19d6b921-44b0-42df-946f-d14bf3392cbf", //client id
@@ -37,20 +40,15 @@ class UserLogin {
       }
     } on SocketException catch (er) {
       //print(er);
-      print('not connected');
+     // print('not connected');
       return 'error';
     }
     String accessToken;
     if(conexion){
-      try{
+    
           await oauth.login();
            accessToken= await oauth.getAccessToken();
-      }
-      catch(e){
-
-      }
-      
-
+    
        
         //solicitar token como string
         var decodedToken = new JWT.parse(
@@ -71,11 +69,7 @@ class UserLogin {
           if (decodedData.isNotEmpty) {
             if (decodedData[0]['estado'] == 'AFILIADO') {
               MyApp.correoUsuario = correo;
-              var msGraph = MsGraph(accessToken);
-              var me=await msGraph.me.get();
-              print('--------------------------------------');
-              print(me); //get me
-              print('--------------------------------------');
+     
               return correo;
             } else {
               //print('no afiliado');

@@ -52,7 +52,7 @@ import 'package:flutter/material.dart';
                       child: Text('Reintentar'),
                       onPressed: (){
                       
-                        Navigator.pushNamed(context,'/');},
+                        Navigator.pushNamed(context,'/PantallaInicial');},
                       borderSide: BorderSide(color: Colors.blue,width: 3),
                       textColor: Colors.blue,
                       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
