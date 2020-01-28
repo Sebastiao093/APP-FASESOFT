@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movilfasesoft/main.dart';
+import 'package:movilfasesoft/models/PerfilRol.dart';
 import 'package:movilfasesoft/models/ahorro.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/models/usuario.dart';
@@ -8,6 +9,7 @@ import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
+import 'package:movilfasesoft/providers/perfilrol_provider.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:movilfasesoft/providers/votaciones_providers.dart';
@@ -53,8 +55,11 @@ String nombre(user) {
 class Logedin extends StatelessWidget {
   UsuarioAres usuarioAres = new UsuarioAres();
   final String user = MyApp.correoUsuario;
+  static String tipoRol;
+  static Future<PerfilRol> futurePerfilRol;
 
   Widget build(BuildContext context) {
+    futurePerfilRol = cargarPerfilRol(user);
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context, snapshot) {
@@ -62,7 +67,6 @@ class Logedin extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } else {
           this.usuarioAres = snapshot.data;
-
           return Scaffold(
             appBar: AppBar(
               title: ImageIcon(
@@ -105,12 +109,8 @@ class Logedin extends StatelessWidget {
           title: Text('Convenios'),
           onTap: () => irConvenios(context, user),
         ),
-        validacionVotacion(context),
-        false?ListTile(
-          leading: Icon(Icons.filter_center_focus, color: Colors.blue),
-          title: Text('Asistencia'),
-          onTap: () => irQr(context),
-        ): Container(),
+        //validacionVotacion(context),
+        //validacionRol(context),
         ListTile(
           leading: Icon(Icons.center_focus_weak),
           title: Text(
@@ -131,6 +131,11 @@ class Logedin extends StatelessWidget {
             UserLogin().logOut(context);
           },
         ),
+        ListTile(
+          leading: Icon(Icons.filter_center_focus, color: Colors.blue),
+          title: Text('Asistencia'),
+          onTap: () => irQr(context),
+        )
         
       ],
     ));
@@ -251,6 +256,36 @@ class Logedin extends StatelessWidget {
     ],
     );
   }
+  static Future<PerfilRol> cargarPerfilRol(String correo) async  {
+    final perfilProvider = PerfilRolProvider();
+    PerfilRol perfilRol = await perfilProvider.getPerfilRol(correo);
+    //tipoRol = perfilRol.tipo;
+    return perfilRol;
+  }
+
+Widget validacionRol(BuildContext ctx) {
+  return FutureBuilder <PerfilRol>(
+      future: futurePerfilRol,
+      builder: (ctx, perfilAux) {
+        if(perfilAux.hasData){
+          if (perfilAux.data.tipo ==  'ASISTENCIA') {
+            return ListTile(
+          leading: Icon(Icons.filter_center_focus, color: Colors.blue),
+          title: Text('Asistencia'),
+          onTap: () => irQr(ctx),
+          );
+          } else {
+          return Container();
+        }
+        } else if (perfilAux.hasError) {
+        return Container();
+      }
+      },
+    );
+
+  
+
+}
 }
 
 Widget validacionVotacion(BuildContext ctx) {
@@ -258,7 +293,10 @@ Widget validacionVotacion(BuildContext ctx) {
     future:
         Votaciones_providers.getValidacionBotonVotaciones(MyApp.correoUsuario),
     builder: (ctx, validacionAux) {
+<<<<<<< HEAD
    
+=======
+>>>>>>> 25dc89a37c8836ff94c806e6388fe16c9fcbb451
       if (validacionAux.hasData) {
         if(validacionAux.data.hayAsamblea==null ||
             validacionAux.data.asistio==null ||
