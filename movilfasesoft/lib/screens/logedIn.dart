@@ -7,6 +7,7 @@ import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
+import 'package:movilfasesoft/providers/photoProvider.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
 import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
@@ -116,11 +117,7 @@ class Logedin extends StatelessWidget {
         UserAccountsDrawerHeader(
           accountName: Text(nombre(this.usuarioAres)),
           accountEmail: Text(user),
-          currentAccountPicture: Icon(
-            Icons.account_circle,
-            size: 80,
-            color: Colors.white70,
-          ),
+          currentAccountPicture: userPhoto(MyApp.correoUsuario)
         ),
         ListTile(
           leading: Icon(Icons.person, color: Colors.blue),
