@@ -48,6 +48,16 @@ import 'package:flutter/material.dart';
                     Padding(
                       padding: EdgeInsets.only(top: 20.0),
                     ),
+                    OutlineButton(
+                      child: Text('Reintentar'),
+                      onPressed: (){
+                      
+                        Navigator.pushNamed(context,'/PantallaInicial');},
+                      borderSide: BorderSide(color: Colors.blue,width: 3),
+                      textColor: Colors.blue,
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                    ),
+      
                     Text(
                       'Fondo de empleados\n Asesoftware',
                       softWrap: true,
