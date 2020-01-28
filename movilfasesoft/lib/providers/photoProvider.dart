@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/main.dart';
 
-Widget userPhoto(context,correo) {
+Widget userPhoto(correo) {
  
 
   String _url='Https://graph.microsoft.com/v1.0/users/';
