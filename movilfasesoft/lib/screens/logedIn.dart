@@ -293,10 +293,6 @@ Widget validacionVotacion(BuildContext ctx) {
     future:
         Votaciones_providers.getValidacionBotonVotaciones(MyApp.correoUsuario),
     builder: (ctx, validacionAux) {
-<<<<<<< HEAD
-   
-=======
->>>>>>> 25dc89a37c8836ff94c806e6388fe16c9fcbb451
       if (validacionAux.hasData) {
         if(validacionAux.data.hayAsamblea==null ||
             validacionAux.data.asistio==null ||
