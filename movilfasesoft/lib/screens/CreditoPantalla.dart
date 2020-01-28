@@ -6,7 +6,7 @@ import 'package:movilfasesoft/models/Credito.dart';
 
 class CreditoPantalla extends StatefulWidget {
   static const routedname = "/PantallaCreditos";
-  static var correo = "shgarcia@asesoftware.com";
+  
 
   @override
   _CreditoPantallaState createState() => _CreditoPantallaState();

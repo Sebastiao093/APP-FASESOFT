@@ -8,6 +8,7 @@ import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
+import 'package:movilfasesoft/screens/AsambleaPantalla.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
 import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
 import 'package:movilfasesoft/screens/CreditoPantalla.dart';
@@ -17,6 +18,10 @@ import 'package:movilfasesoft/utils/numberFormat.dart';
 
 void irVotaciones(BuildContext ctx) {
   Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname);
+}
+
+void irAsambleas(BuildContext ctx) {
+  Navigator.of(ctx).pushNamed(AsambleaPantalla.routedname);
 }
 
 void irCreditos(BuildContext ctx, String user) {
@@ -136,6 +141,11 @@ class Logedin extends StatelessWidget {
           onTap: () => irConvenios(context, user),
         ),
         validacionVotacion(context, valorValidacion),
+        ListTile(
+          leading: Icon(Icons.supervised_user_circle, color: Colors.blue),
+          title: Text('Asambleas'),
+          onTap: () => irAsambleas(context),
+        ),
         ListTile(
           leading: Icon(Icons.filter_center_focus, color: Colors.blue),
           title: Text('Asistencia'),
