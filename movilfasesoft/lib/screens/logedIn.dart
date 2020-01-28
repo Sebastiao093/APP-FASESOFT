@@ -8,15 +8,9 @@ import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
-<<<<<<< HEAD
-=======
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
-<<<<<<< HEAD
 import 'package:movilfasesoft/providers/perfilrol_provider.dart';
-=======
 import 'package:movilfasesoft/providers/photoProvider.dart';
->>>>>>> a9fffce6329253fa3214194cd3dd968aa2296a61
->>>>>>> 0783715be776da319a3fbbcabd8374d5ff42eea2
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:movilfasesoft/providers/votaciones_providers.dart';
 import 'package:movilfasesoft/screens/AsistenciaQR.dart';
@@ -64,11 +58,7 @@ class Logedin extends StatelessWidget {
   static String tipoRol;
 
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     cargarPerfilRol(user);
-    print(valorValidacion);
-=======
->>>>>>> 0783715be776da319a3fbbcabd8374d5ff42eea2
     return FutureBuilder(
       future: UserProvider().getUser(user),
       builder: (context, snapshot) {
@@ -76,10 +66,6 @@ class Logedin extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } else {
           this.usuarioAres = snapshot.data;
-<<<<<<< HEAD
-=======
-
->>>>>>> 0783715be776da319a3fbbcabd8374d5ff42eea2
           return Scaffold(
             appBar: AppBar(
               title: ImageIcon(
@@ -122,17 +108,8 @@ class Logedin extends StatelessWidget {
           title: Text('Convenios'),
           onTap: () => irConvenios(context, user),
         ),
-<<<<<<< HEAD
-        validacionVotacion(context, valorValidacion),
-        validacionRol(context),
-=======
         validacionVotacion(context),
-        false?ListTile(
-          leading: Icon(Icons.filter_center_focus, color: Colors.blue),
-          title: Text('Asistencia'),
-          onTap: () => irQr(context),
-        ): Container(),
->>>>>>> 0783715be776da319a3fbbcabd8374d5ff42eea2
+        validacionRol(context),
         ListTile(
           leading: Icon(Icons.center_focus_weak),
           title: Text(
@@ -295,11 +272,6 @@ Widget validacionVotacion(BuildContext ctx) {
     future:
         Votaciones_providers.getValidacionBotonVotaciones(MyApp.correoUsuario),
     builder: (ctx, validacionAux) {
-    
-      print('hay asmablea= ${validacionAux.data.hayAsamblea}' );
-      print('asistio= ${validacionAux.data.asistio}' );
-      print('preguntas por contestar ${validacionAux.data.preguntasPorContestar}' );
-  print('-----------------------------------');
       if (validacionAux.hasData) {
         if (validacionAux.data.hayAsamblea &&
             validacionAux.data.asistio &&
