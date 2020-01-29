@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movilfasesoft/screens/AsambleaPantalla.dart';
 import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/screens/logedIn.dart';
 import '../screens/PerfilPantalla.dart';
@@ -21,7 +22,8 @@ return <String,WidgetBuilder>{
         PantallaVotaciones.routedname:(ctx) => PantallaVotaciones(),
         CreditoPantalla.routedname:(ctx)=>CreditoPantalla(),
         ConvenioPantalla.routedname:(ctx)=>ConvenioPantalla(),
-        PerfilPantalla.routedname:(ctx)=>PerfilPantalla() 
+        PerfilPantalla.routedname:(ctx)=>PerfilPantalla(),
+        AsambleaPantalla.routedname: (ctx)=>AsambleaPantalla()
       };
 
 }
