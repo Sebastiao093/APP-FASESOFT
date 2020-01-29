@@ -54,4 +54,52 @@ class FasAhorroProviders {
     }
     return mov;
   }
+
+
+   Future<String> getDeuda(String correo) async {
+   
+    final String pathDeuda="fasesoft-web/webresources/servicios/fasafiliados/datosDeudas";
+
+    final uri = Uri.http(dominio, pathDeuda , {'correo': correo});
+
+    final respuestaHttp = await http.get(uri);
+
+      String deuda='0';
+
+    if (respuestaHttp.statusCode == HttpStatus.ok) {
+      final data = respuestaHttp.body;
+      List listaDeudas = json.decode(data);
+      print(uri);
+      if(listaDeudas.length>0){
+                int deu=0;
+                 listaDeudas.forEach(
+                   (data) {
+                                
+                      String estado = data['estado'];
+                      try{
+                      int saldo =data['saldo'];
+                      if('DESEMBOLSADO'.toUpperCase()==estado.toUpperCase()){
+                          deu+=saldo;
+                      };
+                      }catch (ParseException){
+                          return '0';
+                      }
+                      
+
+                 });
+
+                 return deu.toString();
+
+      }else{ 
+
+        return deuda;
+      }
+
+      }
+      
+     else {
+      print('ERROR en respuesta Http');
+    }
+    return deuda;;
+  }
 }

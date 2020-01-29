@@ -24,6 +24,9 @@ import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../providers/asamblea_providers.dart';
+import '../providers/asamblea_providers.dart';
+
 void irVotaciones(BuildContext ctx, bool preguntasPorContestar) {
   Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname,
       arguments: preguntasPorContestar);
@@ -167,7 +170,7 @@ class Logedin extends StatelessWidget {
           String aporte = '';
           String monto = '';
           if (snapshot.data != null) {
-            return _Ahorros(context, snapshot.data);
+            return _Ahorros(context, snapshot.data,correo);
           }
           return ListTile(
             title: Text('acumulado ' + monto),
@@ -180,7 +183,7 @@ class Logedin extends StatelessWidget {
     );
   }
 
-  Widget _Ahorros(BuildContext context, Ahorros ahorro) {
+  Widget _Ahorros(BuildContext context, Ahorros ahorro,String correo) {
     Size size = MediaQuery.of(context).size;
     return         Container(
           padding: EdgeInsets.all(30.0),
@@ -251,6 +254,21 @@ class Logedin extends StatelessWidget {
                                               fontWeight: FontWeight.bold),
                                         )),
                                     Divider(),
+                                    Container(
+                                margin: EdgeInsets.symmetric(vertical: 10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text('DEUDAS')),
+                                    Align(
+                                        alignment: Alignment.topRight,
+                                        child: _deuda(correo)
+                                        ),
+                                        Divider()
+                                  ],
+                                ),
+                              )
                                    
                                   ],
                                 ),
@@ -270,6 +288,34 @@ class Logedin extends StatelessWidget {
       
     
   }
+
+   Widget _deuda(String correo){
+        
+         FasAhorroProviders prov= FasAhorroProviders();
+
+        return Container(
+              child: FutureBuilder(
+                      future: prov.getDeuda(correo),
+                      builder: (ctx,AsyncSnapshot<String> snap){
+                            if(snap.hasData){
+                                return Text(
+                                          '\$ ' +
+                                              numberFormat(
+                                                  double.parse(snap.data)),
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold),
+                                        );
+                            }else{
+                              return CircularProgressIndicator();
+                            }
+
+                      },
+              ),
+        );
+
+
+   }
 
   static Future<PerfilRol> cargarPerfilRol(String correo) async {
     final perfilProvider = PerfilRolProvider();
