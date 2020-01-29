@@ -7,8 +7,11 @@ class FasAhorroProviders {
   final String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
   //final String dominio = '173.16.0.25:7001';
   final String path = 'fasesoft-web/webresources/servicios/fasahorros/';
+  
 
   Future<Ahorros> getAhorroPermanente(String correo) async {
+ 
+   
     final String pathAhorros = 'aportespermanentes';
     final uri = Uri.http(dominio, path + pathAhorros, {'correo': correo});
     print(uri);
@@ -29,6 +32,7 @@ class FasAhorroProviders {
   }
 
   Future<List<Ahorros>> getMovimientosAporte(String correo) async {
+   
     final String pathAhorros = 'movimientosAportes';
 
     final uri = Uri.http(dominio, path + pathAhorros, {'correo': correo});

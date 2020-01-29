@@ -87,7 +87,13 @@ class Logedin extends StatelessWidget {
               drawer: SafeArea(
                 child: _drawer(context),
               ),
-              body: _widget());
+              body: ListView(
+                children: <Widget>[
+                  _DetallesAhorro(user),
+                 _movimientosAportes(context,user),
+                ],
+              )
+              );
         }
       },
     );
@@ -166,9 +172,7 @@ class Logedin extends StatelessWidget {
 
   Widget _Ahorros(BuildContext context, Ahorros ahorro) {
     Size size = MediaQuery.of(context).size;
-    return ListView(
-      children: <Widget>[
-        Container(
+    return         Container(
           padding: EdgeInsets.all(30.0),
           child: Column(
             children: <Widget>[
@@ -237,13 +241,7 @@ class Logedin extends StatelessWidget {
                                               fontWeight: FontWeight.bold),
                                         )),
                                     Divider(),
-                                    GestureDetector(
-                                      child: Text(MyApp.token),
-                                      onLongPress: () {
-                                        Clipboard.setData(new ClipboardData(
-                                            text: MyApp.token));
-                                      },
-                                    )
+                                   
                                   ],
                                 ),
                               ),
@@ -258,9 +256,9 @@ class Logedin extends StatelessWidget {
               Container()
             ],
           ),
-        )
-      ],
-    );
+        );
+      
+    
   }
 
   static Future<PerfilRol> cargarPerfilRol(String correo) async {
@@ -291,20 +289,52 @@ class Logedin extends StatelessWidget {
     );
   }
 
-  Widget _movimientosAportes(String correo) {
+  Widget _movimientosAportes(context,String correo) {
     FasAhorroProviders provider = FasAhorroProviders();
 
-    return FutureBuilder(
-      future: provider.getMovimientosAporte(correo),
-      builder: (context, AsyncSnapshot<List<Ahorros>> snap) {
-        if (snap.hasData) {
-          return _detallesMovimientosAportes(snap.data);
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      },
+    return  Container(
+      padding: EdgeInsets.all(30.0),
+      child: Column(
+        children: <Widget>[
+          Container(                                            
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.blue,
+            ),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              elevation: 45.0,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                     height: MediaQuery.of(context).size.height/2,
+                      child: 
+                   FutureBuilder(
+                      future: provider.getMovimientosAporte(correo),
+                      builder: (context,AsyncSnapshot<List<Ahorros>> snap) {
+                        if (snap.hasData) {
+                          return _detallesMovimientosAportes(snap.data);
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    
+                  )
+                  )
+
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container()
+        ],
+      ),
     );
-  }
+}
 
   Widget _detallesMovimientosAportes(List<Ahorros> movimientos) {
     Widget list = ListView.builder(
@@ -359,11 +389,7 @@ class Logedin extends StatelessWidget {
     return list;
   }
 
-  Widget _widget() {
-    return
-        // _DetallesAhorro(user);
-        _movimientosAportes(user);
-  }
+
 }
 
 Widget validacionVotacion(BuildContext ctx) {
