@@ -3,11 +3,14 @@ import 'package:movilfasesoft/main.dart';
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
+import 'package:flutter/cupertino.dart';
 
 class PerfilPantalla extends StatelessWidget {
   static const routedname = "/PantallaPerfil";
   String correo;
-  final appBar= AppBar(
+
+  final appbarIos= CupertinoNavigationBar(middle:Text('Perfil'));
+  final appBarAndroid= AppBar(
           title: Text('Perfil'),
           centerTitle: true,
           actions: <Widget>[
@@ -31,7 +34,7 @@ class PerfilPantalla extends StatelessWidget {
   Widget _infoUsuario(BuildContext context, String correo) {
     
     return Scaffold(
-        appBar: appBar,
+        appBar: appBarAndroid,
         body: FutureBuilder(
           future: cargarUsuario(correo),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -61,7 +64,7 @@ class PerfilPantalla extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: constrains.maxWidth * 0.1,
-                vertical: (constrains.maxHeight-appBar.preferredSize.height-MediaQuery.of(context).padding.top) * 0.01),
+                vertical: (constrains.maxHeight-appBarAndroid.preferredSize.height-MediaQuery.of(context).padding.top) * 0.01),
             child: ListView.builder(
               itemCount: 1,
               itemBuilder: (BuildContext context, int index) {
