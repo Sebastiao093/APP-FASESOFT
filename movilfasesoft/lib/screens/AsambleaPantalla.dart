@@ -122,9 +122,7 @@ class AsambleaPantalla extends StatelessWidget {
 
       }
 
-
-
-
+ 
 
 
 }
