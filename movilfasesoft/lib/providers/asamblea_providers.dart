@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class AsambleaProviders {
-  final String _url='173.16.0.25:7001';
-  // final String _url='sarapdev.eastus.cloudapp.azure.com:7001';
+  //final String _url='173.16.0.25:7001';
+  final String _url='sarapdev.eastus.cloudapp.azure.com:7001';
   final String path='fasesoft-web/webresources/servicios/fasasambleas/asambleactual';
   //String _url = '173.16.0.84:7001';
 
