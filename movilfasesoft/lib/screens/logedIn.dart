@@ -112,7 +112,7 @@ class Logedin extends StatelessWidget {
         validacionVotacion(context),
         validacionRol(context),
         ListTile(
-          leading: Icon(Icons.center_focus_weak),
+          leading: Icon(Icons.center_focus_weak,color: Colors.blue,),
           title: Text(
             'Generar QR ',
             style: TextStyle(color: Colors.blueAccent),
@@ -263,6 +263,7 @@ Widget validacionRol(BuildContext ctx) {
       future: futurePerfilRol,
       builder: (ctx, perfilAux) {
         if(perfilAux.hasData){
+          print(perfilAux.data.tipo);
           if (perfilAux.data.tipo ==  'ASISTENCIA') {
             return ListTile(
           leading: Icon(Icons.filter_center_focus, color: Colors.blue),
