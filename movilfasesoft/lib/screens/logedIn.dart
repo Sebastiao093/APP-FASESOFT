@@ -125,8 +125,13 @@ class Logedin extends StatelessWidget {
           title: Text('Convenios'),
           onTap: () => irConvenios(context, user),
         ),
-        validacionVotacion(context),
-        validacionRol(context),
+        //validacionVotacion(context),
+        ListTile(
+              leading: Icon(Icons.filter_center_focus, color: Colors.blue),
+              title: Text('Asistencia'),
+              onTap: () => irQr(context),
+            ),
+        //validacionRol(context),
         ListTile(
           leading: Icon(Icons.center_focus_weak,color: Colors.blue,),
           title: Text(
@@ -185,8 +190,8 @@ class Logedin extends StatelessWidget {
 
   Widget _Ahorros(BuildContext context, Ahorros ahorro,String correo) {
     Size size = MediaQuery.of(context).size;
-    return         Container(
-          padding: EdgeInsets.all(30.0),
+    return    Container(
+          padding: EdgeInsets.all(20.0),
           child: Column(
             children: <Widget>[
               Container(
@@ -348,8 +353,9 @@ class Logedin extends StatelessWidget {
   Widget _movimientosAportes(context,String correo) {
     FasAhorroProviders provider = FasAhorroProviders();
 
-    return  Container(
-      padding: EdgeInsets.all(30.0),
+    return 
+      Container(
+      padding: EdgeInsets.all(20.0),
       child: Column(
         children: <Widget>[
           Container(                                            
@@ -360,14 +366,21 @@ class Logedin extends StatelessWidget {
             child: Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
-              elevation: 45.0,
+              elevation: 30.0,
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
                 child: Column(
+                  mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
+
+                    Icon(Icons.swap_horiz,color: Colors.lightBlue,size: 80,),
+                        Center(
+                            heightFactor: 3.0,
+                            child: Text('MOVIMIENTOS')),  
+
                     Container(
-                     height: MediaQuery.of(context).size.height/2,
-                      child: 
+                     height: 200,
+                     child: 
                    FutureBuilder(
                       future: provider.getMovimientosAporte(correo),
                       builder: (context,AsyncSnapshot<List<Ahorros>> snap) {
@@ -389,6 +402,8 @@ class Logedin extends StatelessWidget {
           Container()
         ],
       ),
+    
+    
     );
 }
 
@@ -420,21 +435,21 @@ class Logedin extends StatelessWidget {
                   Icons.monetization_on,
                   color: Colors.green,
                 ),
-                trailing: Text(
-                    '\$ ' +
+                subtitle: Text(
+                    sinFecha+'\n \$ ' +
                         numberFormat(
                           movimientos[posicion].aporte.toDouble(),
                         ),
                     style: TextStyle(
-                        color: Colors.blue,
+                        
                         fontSize: 15,
-                        fontWeight: FontWeight.normal),
-                    overflow: TextOverflow.ellipsis),
+                        fontWeight: FontWeight.normal),),
+                    //overflow: TextOverflow.ellipsis),
                 title: Text(
                   tipoAporte,
                   overflow: TextOverflow.ellipsis,
                 ),
-                subtitle: Text(sinFecha, overflow: TextOverflow.ellipsis),
+                //subtitle: Text(sinFecha,),
               ),
             ),
           ],
