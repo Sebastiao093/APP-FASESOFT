@@ -30,13 +30,9 @@ class _WidgetPreguntaState extends State<WidgetPregunta> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    widget.preguntasAvotar.elementAt(index).pregunta,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                    textAlign: TextAlign.center,
-                  ),
+                Text(
+                  widget.preguntasAvotar.elementAt(index).pregunta,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
                 Column(
                   children: widget.preguntasAvotar
@@ -47,7 +43,7 @@ class _WidgetPreguntaState extends State<WidgetPregunta> {
                     if (_respuestasMarcadas[
                             widget.preguntasAvotar.elementAt(index).id] ==
                         respuestaUnitaria.id) {
-                      colorVal = Theme.of(context).primaryColorLight;
+                      colorVal = Colors.red;
                     }
                     return validacionRespuestas(
                         _respuestasMarcadas[
@@ -85,9 +81,9 @@ Widget validacionRespuestas(bool condicion, int index,
       : Container(
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(20),
           ),
           margin: EdgeInsets.symmetric(vertical: 5),
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 150),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 150),
           child: Text(respuestaUnitaria.respuesta));
 }

@@ -27,22 +27,11 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
   //PantallaVotaciones({Key key, this.preguntasAvotar}) : super(key: key);
   final List<Pregunta> _preguntasAvotar = conversionAclases(preguntasConstantes);
 
-  void reinico(){
-    setState(() {
-      
-    });
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pantalla Votaciones'),
-        actions: <Widget>[
-         IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: ()=>reinicio(),
-          ),
-        ],
       ),
       body: WidgetPregunta(_preguntasAvotar),
     );
