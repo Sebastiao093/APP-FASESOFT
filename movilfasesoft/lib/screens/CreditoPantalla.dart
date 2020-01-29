@@ -34,7 +34,7 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
     Future<List<dynamic>> userData = obtenerData(usuarioCorreo);
     return Scaffold(
       appBar:  AppBar(
-          title: Text('Perfil'),
+          title: Text('Créditos'),
           centerTitle: true,
           actions: <Widget>[
             Container(
@@ -116,7 +116,7 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
             future: elementos,
             builder: (context, auxElementos) {
               if (auxElementos.hasData) {
-                return ListView.builder(
+                return  !auxElementos.data.isEmpty?ListView.builder(
                   itemCount: auxElementos.data.length,
                   itemBuilder: (context, index) {
                     var elemento = new Credito.fromJson(auxElementos.data
@@ -127,7 +127,32 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                         height: constrains.maxHeight * 0.25,
                         child: ElementosCartas(elemento, ctx));
                   },
-                );
+                ):Container(
+                    height: constrains.maxHeight * 0.5,
+                    width: constrains.maxWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.blue,
+                    ),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      elevation: 15.0,
+                      child: Padding(
+                        padding: EdgeInsets.all(1.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            FittedBox(
+                              child: Center(
+                                  child: Text(
+                                      'No tienes Créditos con Fasesoft')),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ));
               } else if (auxElementos.hasError) {
                 return Container(
                     height: constrains.maxHeight * 0.5,
@@ -155,8 +180,6 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                         ),
                       ),
                     ));
-              } else if (auxElementos.data == []) {
-                return Center(child: Text('No tienes Créditos con nosotros'));
               }
               return CircularProgressIndicator();
             },
