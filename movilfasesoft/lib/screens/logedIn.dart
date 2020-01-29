@@ -135,6 +135,16 @@ class Logedin extends StatelessWidget {
           },
         ),
         ListTile(
+          leading: Icon(Icons.people, color: Colors.blue,),
+          title: Text(
+            'Asamblea',
+            style: TextStyle(color: Colors.blueAccent),
+          ),
+          onTap: () {
+            irAsambleas(context );
+          },
+        ),
+        ListTile(
           leading: Icon(Icons.close),
           title: Text(
             'Cerrar sesion',
@@ -326,7 +336,7 @@ class Logedin extends StatelessWidget {
                         if (snap.hasData) {
                           return _detallesMovimientosAportes(snap.data);
                         } else {
-                          return CircularProgressIndicator();
+                          return Center(child: CircularProgressIndicator());
                         }
                       },
                     
