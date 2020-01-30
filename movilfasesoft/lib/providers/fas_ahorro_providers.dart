@@ -2,19 +2,18 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/ahorro.dart';
+import 'package:movilfasesoft/providers/providers_config.dart';
 
 class FasAhorroProviders {
-  final String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
-  //final String dominio = '173.16.0.25:7001';
-  final String path = 'fasesoft-web/webresources/servicios/fasahorros/';
   
+  final String pathServicio='fasahorros/';
 
   Future<Ahorros> getAhorroPermanente(String correo) async {
  
    
     final String pathAhorros = 'aportespermanentes';
-    final uri = Uri.http(dominio, path + pathAhorros, {'correo': correo});
-    print(uri);
+    final uri = Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio+ pathAhorros, {'correo': correo});
+    
     final respuestaHttp = await http.get(uri);
     Ahorros ahorro;
     if (respuestaHttp.statusCode == HttpStatus.ok) {
@@ -25,7 +24,7 @@ class FasAhorroProviders {
         ahorro = Ahorros.fromJson(item);
       });
     } else {
-      print('bolsa papeto');
+      //Error De Conexion
     }
 
     return ahorro;
@@ -35,7 +34,7 @@ class FasAhorroProviders {
    
     final String pathAhorros = 'movimientosAportes';
 
-    final uri = Uri.http(dominio, path + pathAhorros, {'correo': correo});
+    final uri = Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio+ pathAhorros, {'correo': correo});
 
     final respuestaHttp = await http.get(uri);
 
@@ -50,7 +49,7 @@ class FasAhorroProviders {
         mov.add(Ahorros.fromJson(item));
       });
     } else {
-      print('ERROR en respuesta Http');
+     // print('ERROR en respuesta Http');
     }
     return mov;
   }
@@ -58,9 +57,9 @@ class FasAhorroProviders {
 
    Future<String> getDeuda(String correo) async {
    
-    final String pathDeuda="fasesoft-web/webresources/servicios/fasafiliados/datosDeudas";
+    final String pathDeuda="fasafiliados/datosDeudas";
 
-    final uri = Uri.http(dominio, pathDeuda , {'correo': correo});
+    final uri = Uri.http(ProviderConfig.url,ProviderConfig.path+pathDeuda , {'correo': correo});
 
     final respuestaHttp = await http.get(uri);
 
@@ -69,7 +68,7 @@ class FasAhorroProviders {
     if (respuestaHttp.statusCode == HttpStatus.ok) {
       final data = respuestaHttp.body;
       List listaDeudas = json.decode(data);
-      print(uri);
+      
       if(listaDeudas.length>0){
                 int deu=0;
                  listaDeudas.forEach(
@@ -98,7 +97,7 @@ class FasAhorroProviders {
       }
       
      else {
-      print('ERROR en respuesta Http');
+     // print('ERROR en respuesta Http');
     }
     return deuda;;
   }

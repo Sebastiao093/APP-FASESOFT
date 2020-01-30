@@ -6,11 +6,12 @@ import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
 import 'package:movilfasesoft/main.dart';
+import 'package:movilfasesoft/providers/providers_config.dart';
 
 
 class UserLogin {
-   String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
-    //String _url = '173.16.0.84:7001';
+   final String servicioPath='fasusuarios/afiliadoPorCorreo/';
+   
   static Config config = new Config(
       "bf208dcb-97e8-4d43-bd72-323680bef25c", //tenand id
       "19d6b921-44b0-42df-946f-d14bf3392cbf", //client id
@@ -30,7 +31,7 @@ class UserLogin {
       final result = await InternetAddress.lookup('www.google.com');
 
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        //print('connected');
+        
         conexion=true;
       }
     } on SocketException catch (_) {
@@ -54,14 +55,14 @@ class UserLogin {
         //solicitar token como string
         var decodedToken = new JWT.parse(
             accessToken); //Decodificar token usando libreria corsac jwt
-        //print(decodedToken.getClaim('upn'));//solicitar el claim 'upn' que es el id de correo en este caso.
+        
         var correo = decodedToken.getClaim('upn');
           MyApp.token=accessToken;
         final url = Uri.http(
-            _url,
-            'fasesoft-web/webresources/servicios/fasusuarios/afiliadoPorCorreo/' +
+            ProviderConfig.url,
+            ProviderConfig.path+servicioPath+
                 correo);
-        //print(url);
+        
         final resp = await http.get(url);
 
         if (resp.statusCode == HttpStatus.ok) {
@@ -93,7 +94,7 @@ class UserLogin {
   }
 
   isloged() {
-    //print(oauth.tokenIsValid());
+    
     return oauth.tokenIsValid();
   }
 }

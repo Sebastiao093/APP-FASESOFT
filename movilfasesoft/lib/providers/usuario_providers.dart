@@ -6,13 +6,12 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/usuario.dart';
+import 'package:movilfasesoft/providers/providers_config.dart';
 
 class UserProvider {
   final List<ListTile> usuario1 =List();
+  final String pathServicio='fasafiliados/detalleUsuarioAres/';
 
-
-  String _url='sarapdev.eastus.cloudapp.azure.com:7001';
-  //String _url = '173.16.0.84:7001';
 
   getusername(String user1){
     getUser(user1).then((onValue){
@@ -22,11 +21,11 @@ class UserProvider {
     
     }
      Future<UsuarioAres> getUser(String user1) async{
-    //print('entro');
+    
     UsuarioAres user;
 
-    final url= Uri.http(_url,'fasesoft-web/webresources/servicios/fasafiliados/detalleUsuarioAres/'+user1);
-    print(url);
+    final url= Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio+user1);
+    
     final resp = await http.get(url);
     
     if (resp.statusCode==HttpStatus.ok){
@@ -34,13 +33,9 @@ class UserProvider {
       user= UsuarioAres.fromJson(decodedData[0]);
 
    }else{
-       print('error en http');
+      // print('error en http');
    }
 
-
- 
-    //print(user.nombre +' '+user.identificacion);
-  
     return user;
 
  
