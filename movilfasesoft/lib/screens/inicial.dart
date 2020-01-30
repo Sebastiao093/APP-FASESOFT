@@ -55,17 +55,19 @@ class _PrimeraPantallaState extends State<PrimeraPantalla> {
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 26.0),
-                      )
+                      ),
+                      
                     ],
                   ),
                 ),
               ),
+              if (showLoading) CircularProgressIndicator(),
               Expanded(
                 flex: 1,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    if (showLoading) CircularProgressIndicator(),
+                    
                     if(!showLoading)OutlineButton(
                       child: Text('Iniciar Sesion'),onPressed: (){
                         setState(() {
