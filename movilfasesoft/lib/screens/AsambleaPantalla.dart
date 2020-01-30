@@ -62,7 +62,7 @@ class AsambleaPantalla extends StatelessWidget {
          String fechaFormater;
         try{
         DateTime fecha= dateConvert.parse(item.fecha);
-        print(fecha);
+        
         fechaFormater=dateFormat.format(fecha);
         }on FormatException{
               fechaFormater=item.fecha;
