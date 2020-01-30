@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/ahorro.dart';
 
 class FasAhorroProviders {
-  final String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
-  //final String dominio = '173.16.0.25:7001';
+ // final String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
+  final String dominio = '173.16.0.16:7001';
   final String path = 'fasesoft-web/webresources/servicios/fasahorros/';
   
 
@@ -48,7 +48,9 @@ class FasAhorroProviders {
 
       listaMovimientos.forEach((item) {
         mov.add(Ahorros.fromJson(item));
+        
       });
+     
     } else {
       print('ERROR en respuesta Http');
     }
