@@ -19,7 +19,6 @@ class _PantallaQrState extends State<PantallaQr> {
   String  estado           = '';
   dynamic colorContainer   = Colors.white;
   dynamic colorTexto       = Colors.black87;
-  bool    _varRegistro     = false;
   bool    _varBloqueoBoton = false;
   bool    _varError        = false;
 
@@ -36,7 +35,6 @@ class _PantallaQrState extends State<PantallaQr> {
       this.colorContainer   = Colors.white;
       this.colorTexto       = Colors.black87;
       this._datosObtenidos  = '';
-      this._varRegistro     = false;
       this._varBloqueoBoton = false;
       this._varError        = false;
     });         
@@ -73,7 +71,7 @@ class _PantallaQrState extends State<PantallaQr> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Divider(color: Colors.white,height: 20.0,),
-              Text('No se encontraron datos',textScaleFactor: 1.3,),
+              Text('No se encontraron datos del usuario',textScaleFactor: 1.3,),
               Divider(color: Colors.white,height: 50.0,),
               Icon(Icons.info,color: Colors.red, size: 70.0,)
             ],
@@ -155,7 +153,6 @@ class _PantallaQrState extends State<PantallaQr> {
   }
   
   Widget _datalleUsuario(InfoAsistente user,Color colorContainer, Color colorTexto){
-    utf8.encode(user.apellido);
     return Center(child:ListView(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       children: <Widget>[
@@ -177,7 +174,7 @@ class _PantallaQrState extends State<PantallaQr> {
         Divider(color: Colors.blue),
         _informacion('Identificacion:',Icons.fingerprint,user.identificacion.toString()),
         Divider(color: Colors.blue),
-        _informacion('Afiliacion:',Icons.location_on,user.estadoUsuario),
+        _informacion('Afiliacion:',Icons.portrait,user.estadoUsuario),
         Divider(color: Colors.blue),
         _estado(colorContainer,colorTexto),
         Divider(color: Colors.blue),
@@ -230,10 +227,10 @@ class _PantallaQrState extends State<PantallaQr> {
     );
   }
  
-  void _alerta(String info, IconData icono,Color color){
+  void _alerta(String info1,String info2, IconData icono,Color color){
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (contet) {
         return AlertDialog(
           shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
@@ -243,21 +240,106 @@ class _PantallaQrState extends State<PantallaQr> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Divider(color: Colors.white,height: 20.0,),
-              Text(info,textScaleFactor: 1.3,),
-              Divider(color: Colors.white,height: 50.0,),
+              Text(info1,textScaleFactor: 1.3,),
+              Divider(color: Colors.white,height: 5.0,),
+              Text(info2,textScaleFactor: 1.3,),
+              Divider(color: Colors.white,height: 30.0,),
               Icon(icono,color: color, size: 70.0,)
             ],
           ),
           actions: <Widget>[
-            FlatButton(
-              shape: StadiumBorder(),
-              child: Text('Aceptar',textScaleFactor: 0.9,),
-              color: Colors.blue,
-              onPressed: () => Navigator.of(context).pop(),
-            ),
+            Center(
+              child:FlatButton(
+                shape: StadiumBorder(),
+                child: Text('Aceptar',textScaleFactor: 1.2,),
+                color: Colors.blue,
+                onPressed: () => Navigator.of(context).pop(),
+            )),
           ],
         );
       }
+    );
+  }
+
+  void _alertaCarga(){
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (contet) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
+          title: Text('Alerta',textScaleFactor: 1.5,style: TextStyle(color: Colors.blue)),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Divider(color: Colors.white,height: 20.0,),
+              _alertWidget(),
+              Divider(color: Colors.white,height: 30.0,)
+            ],
+          ),
+          actions: <Widget>[
+            _alertBoton(),
+          ],
+        );
+      }
+    );
+  }
+
+  Widget _alertBoton(){
+    return FutureBuilder(
+      future: _postConsulta(),
+      builder: (ctx,AsyncSnapshot<String> snap){
+        if(snap.hasData){
+          if(snap.data=='Registro exitoso'){
+            return FlatButton(
+              shape: StadiumBorder(),
+              child: Text('Aceptar',textScaleFactor: 1.2,),
+              color: Colors.blue,
+              onPressed: () => Navigator.of(context).pop(),
+            );
+          }else{
+            return Divider(color: Colors.white,height: 40.0,);
+          }
+        }else{ 
+          return  Divider(color: Colors.white,height: 40.0,);  
+        }
+      },
+    );
+  }
+
+  Widget _alertWidget(){
+    return FutureBuilder(
+      future: _postConsulta(),
+      builder: (ctx,AsyncSnapshot<String> snap){
+        if(snap.hasData){
+          if(snap.data=='Registro exitoso'){
+            return Column(
+              children: <Widget>[
+                Text(snap.data,textScaleFactor: 1.3,),
+                Divider(color: Colors.white,height: 40.0,),
+                Icon(Icons.check,color: Colors.green,size: 70,)
+              ],
+            );  
+          }else{
+            return Column(
+              children: <Widget>[
+                Text(snap.data,textScaleFactor: 1.3,),
+                Divider(color: Colors.white,height: 40.0,),
+                Icon(Icons.error,color: Colors.red,size: 70,)
+              ],
+            );  
+          }
+        }else{
+          return  Column(
+            children: <Widget>[
+              Text('Cargando..',textScaleFactor: 1.3,),
+              Divider(color: Colors.white,height: 40.0,),
+              CircularProgressIndicator()
+            ],
+          );
+        }
+      },
     );
   }
 
@@ -280,44 +362,30 @@ class _PantallaQrState extends State<PantallaQr> {
     return infoAsistente;
   }
 
-  _registrar(BuildContext context, String correo) {
-    if (this.correo != '') {
-      if (_varRegistro == true) {
-        setState(() {
-          _alerta('Persona ya registrada', Icons.person, Colors.green);
-          this._varBloqueoBoton = false;
-        });
-      } else {
-        _registrarInfoAsistente(correo);
-        Future.delayed(Duration(seconds: 3),() async {
-          Future<InfoAsistente> infoAsistente = InfoAsistenteProvider().getInfoAsistente(correo);
-          await infoAsistente.then((aux){
-            if (aux.estado == 'SIASI') {
-              setState(() {
-                this.colorContainer=Colors.green;
-                this.colorTexto=Colors.white;
-                this.colorContainer=Colors.green;
-                this.colorTexto=Colors.white;
-                _alerta('Registro exitoso', Icons.person, Colors.green);
-                this._varBloqueoBoton = false;
-              });
-            } else {
-              if (aux.estado == 'NOASI') {
-                setState(() {
-                  _alerta('Registro no efectuado', Icons.error, Colors.red);
-                  this._varBloqueoBoton = true;
-                });
-              }
-             }
-           });
-        });
-      } 
+  Future<String> _postConsulta()async {
+    await Future.delayed(Duration(seconds: 2));
+    InfoAsistente infoAsistente = await InfoAsistenteProvider().getInfoAsistente(correo);
+    if ( infoAsistente.estado == 'SIASI') {
+      setState(() {
+        this.colorContainer=Colors.green;
+        this.colorTexto=Colors.white;
+        this.colorContainer=Colors.green;
+        this.colorTexto=Colors.white;
+        this.estado='Asistencia registrada';
+        this._varBloqueoBoton = false;
+      });
+      return 'Registro exitoso';
     } else {
       setState(() {
-        _alerta('Sin lectura de QR', Icons.info, Colors.red);
-        this._varBloqueoBoton = true;
+         this._varBloqueoBoton = true;
       });
-    } 
+      return 'Registro no efectuado';
+    }
+  }
+
+  _registrar(BuildContext context, String correo) {
+    _registrarInfoAsistente(correo);
+    _alertaCarga();
   }
 
   Future _scanQR(BuildContext context) async {
@@ -335,24 +403,26 @@ class _PantallaQrState extends State<PantallaQr> {
       Future<InfoAsistente> infoAsistente = InfoAsistenteProvider().getInfoAsistente(futureString);
       infoAsistente.then((aux){
         if (futureString == aux.correo){
-          _alerta('Datos correctos', Icons.check, Colors.green);
-          setState(() {
-            this.correo= aux.correo;
-            if (aux.estado == 'NOASI') {
-              this.estado='No registrado';
+          this.correo= aux.correo;
+          if (aux.estado == 'NOASI') {
+            setState(() {
+              _alerta('Datos del usuario cargados','¡Exitosamente!', Icons.check, Colors.green);
+              this.estado='Asistencia no registrada';
               this.colorContainer=Colors.red;
               this.colorTexto=Colors.white;
               this._varBloqueoBoton = true;
-            } else {
-              if (aux.estado == 'SIASI') {
-                this._varRegistro = true;
-                this.estado='Registrado';
+            });
+          } else {
+            if (aux.estado == 'SIASI') {   
+              setState(() {
+                _alerta('Usuario ya registrado','', Icons.person, Colors.green);
+                this.estado='Asistencia registrada';
                 this.colorContainer=Colors.green;
                 this.colorTexto=Colors.white;
                 this._varBloqueoBoton = false;
-              }
+              });
             }
-          });
+          }
         }else{
           setState(() {
             this._varBloqueoBoton = false;
