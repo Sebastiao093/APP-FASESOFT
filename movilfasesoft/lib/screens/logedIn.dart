@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:movilfasesoft/main.dart';
+import 'package:movilfasesoft/models/Asamblea.dart';
 import 'package:movilfasesoft/models/PerfilRol.dart';
 import 'package:movilfasesoft/models/ahorro.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
+import 'package:movilfasesoft/providers/asamblea_providers.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
@@ -69,8 +71,9 @@ class Logedin extends StatelessWidget {
   static Future<PerfilRol> futurePerfilRol;
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
   DateFormat dateFormat = DateFormat("yyyy MMMM dd");
-
+  
   Widget build(BuildContext context) {
+    asambleaSoon(context);
     futurePerfilRol = cargarPerfilRol(user);
     return FutureBuilder(
       future: UserProvider().getUser(user),
@@ -94,6 +97,7 @@ class Logedin extends StatelessWidget {
                 children: <Widget>[
                   _DetallesAhorro(user),
                  _movimientosAportes(context,user),
+
                 ],
               )
               );
@@ -488,3 +492,42 @@ Widget validacionVotacion(BuildContext ctx) {
     },
   );
 }
+ asambleaSoon(context)async{
+  
+  DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+  DateTime fecha;
+  //DateTime now= DateTime.now();
+  final now = DateTime(2020, 01, 20);
+  print(now);
+  List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
+    for(var asamblea in asambleas){
+        
+        try{
+        fecha= dateConvert.parse(asamblea.fecha);
+        
+        }on FormatException{
+              
+        }
+        
+        if(now.isBefore(fecha) && fecha.isBefore(now.add(Duration(days: 5)))){
+          print('asambleeaaa papiiiii');
+          return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(actions: <Widget>[
+            FlatButton(child: Text('cerrar'),onPressed: (){Navigator.pop(context);},),
+            FlatButton(child: Text('No recordarme de nuevo'),onPressed: (){},)
+          ],title: Text('Hay una asamblea proximamente'),
+          );
+          }
+        );
+    
+        }else{
+          print('nada papi');
+        }
+        
+
+    }
+
+  }
