@@ -65,6 +65,7 @@ String nombre(user) {
 }
 
 class Logedin extends StatelessWidget {
+  static const routedname='/loged';
   UsuarioAres usuarioAres = new UsuarioAres();
   final String user = MyApp.correoUsuario;
   static String tipoRol;
@@ -73,7 +74,7 @@ class Logedin extends StatelessWidget {
   DateFormat dateFormat = DateFormat("yyyy MMMM dd");
   
   Widget build(BuildContext context) {
-    asambleaSoon(context);
+    
     futurePerfilRol = cargarPerfilRol(user);
     return FutureBuilder(
       future: UserProvider().getUser(user),
@@ -81,7 +82,9 @@ class Logedin extends StatelessWidget {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         } else {
+        
           this.usuarioAres = snapshot.data;
+          if(MyApp.show) asambleaSoon(context);
           return Scaffold(
               appBar: AppBar(
                 title: ImageIcon(
@@ -500,9 +503,10 @@ Widget validacionVotacion(BuildContext ctx) {
  asambleaSoon(context)async{
   
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+  DateFormat dateFormat = DateFormat("yyyy MMMM dd"); 
   DateTime fecha;
   //DateTime now= DateTime.now();
-  final now = DateTime(2020, 01, 20);
+  final now = DateTime(2020, 01, 26);
   print(now);
   List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
     for(var asamblea in asambleas){
@@ -515,15 +519,30 @@ Widget validacionVotacion(BuildContext ctx) {
         }
         
         if(now.isBefore(fecha) && fecha.isBefore(now.add(Duration(days: 5)))){
+         
           print('asambleeaaa papiiiii');
-          return showDialog(
+           showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return AlertDialog(actions: <Widget>[
-            FlatButton(child: Text('cerrar'),onPressed: (){Navigator.pop(context);},),
-            FlatButton(child: Text('No recordarme de nuevo'),onPressed: (){},)
-          ],title: Text('Hay una asamblea proximamente'),
+          return AlertDialog(
+            actions: <Widget>[
+            FlatButton(child: Text('cerrar'),onPressed: (){
+              MyApp.show=false;
+              Navigator.pop(context);
+            },),
+            //FlatButton(child: Text('No recordarme de nuevo'),onPressed: (){},)
+          ],
+          title: Text('HAY UNA ASAMBLEA PRONTO',style: TextStyle(color: Colors.redAccent)),
+          shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+          titleTextStyle: TextStyle(
+              fontSize: 22,
+              fontFamily: 'RobotoCondensed',
+              fontWeight: FontWeight.bold,
+            ),
+          content: Text('Fecha: '
+          + dateFormat.format(fecha)+'\nHora:'+asamblea.hora),
           );
           }
         );

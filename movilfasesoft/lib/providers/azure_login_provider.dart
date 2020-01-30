@@ -33,9 +33,8 @@ class UserLogin {
         //print('connected');
         conexion=true;
       }
-    } on SocketException catch (er) {
-      //print(er);
-     // print('not connected');
+    } on SocketException catch (_) {
+     
       return 'error';
     }
     String accessToken;
@@ -43,7 +42,7 @@ class UserLogin {
     
           
           try{
-            print('imtrying');
+            
             await oauth.login();
             accessToken= await oauth.getAccessToken();
 
@@ -87,6 +86,7 @@ class UserLogin {
   }
 
   logOut(context) {
+    MyApp.show=true;
     MyApp.correoUsuario = '';
     oauth.logout();
     Navigator.pushReplacementNamed(context, '/');

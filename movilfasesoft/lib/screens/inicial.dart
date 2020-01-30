@@ -124,7 +124,7 @@ class _PrimeraPantallaState extends State<PrimeraPantalla> {
           result != 'NR' &&
           result != 'NA' &&
           result!=null) {
-          Navigator.pushNamed(context, '/loged');
+          Navigator.pushReplacementNamed(context, '/loged');
       }
       if (result == 'NA') {
       Navigator.pushNamed(context, '/noAfiliado');
