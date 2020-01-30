@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './screens/PantallaInicial.dart';
+import 'package:movilfasesoft/screens/inicial.dart';
 import 'mixis/mixis_block_screen.dart';
 import 'routes/routes.dart';
 
@@ -8,6 +8,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget  with PortraitModeMixin {
   static String correoUsuario='';
   static String token='';
+  static bool show=true;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -35,16 +36,16 @@ class MyApp extends StatelessWidget  with PortraitModeMixin {
         //     ),
       ),
       //home: PantallaCategorias(),
-      initialRoute: '/PantallaInicial',
+      initialRoute: '/',
       routes: getAplicaciones(),
       onGenerateRoute: (settings){
         return MaterialPageRoute(
-          builder: (ctx) => PantallaInicial()
+          builder: (ctx) => PrimeraPantalla()
         );
       },
       onUnknownRoute: (settings){
         return MaterialPageRoute(
-          builder: (ctx) => PantallaInicial()
+          builder: (ctx) => PrimeraPantalla()
         );
       },
     );

@@ -1,10 +1,28 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
-import 'package:movilfasesoft/widgets/widgetSplash.dart';
+import 'dart:async';
+import 'dart:convert';
 
-  Widget firstScreen(context){
+import 'package:movilfasesoft/widgets/firstScreenWidget.dart';
+
+
+class PrimeraPantalla extends StatefulWidget {
+  static const routedname = "/";
+  
+  @override
+  _PrimeraPantallaState createState() => _PrimeraPantallaState();
+}
+
+
+class _PrimeraPantallaState extends State<PrimeraPantalla> {
+  var showLoading=false;
+@override
+  void initState() {
+    showLoading=false;
+    super.initState();
+  }
+  Widget build(BuildContext context) {
+    print('hi bitches');
     
     return Scaffold(
       body:Stack(
@@ -47,33 +65,31 @@ import 'package:movilfasesoft/widgets/widgetSplash.dart';
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    OutlineButton(
+                    if (showLoading) CircularProgressIndicator(),
+                    if(!showLoading)OutlineButton(
                       child: Text('Iniciar Sesion'),onPressed: (){
+                        setState(() {
+                          print('its me');
+                           showLoading= true;
+                           login(context);
+                        });
                         
-                        login(context);
-                        //Navigator.pushReplacementNamed(context, '/login');
-                        //return splashScreen(context);
+                      
                       },
-                        //                     onPressed: () async {
-                        //                       print('va');
-                        // var result = await UserLogin().azureLogin(context);
-                        // if (UserLogin().isloged() &&
-                        //     result != 'error' &&
-                        //     result != 'NR' &&
-                        //     result != 'NA' &&
-                        //     result!=null) {
-                        //     Navigator.pushReplacementNamed(context, '/loged');
-                        // }
-                        // if (result == 'NA') {
-                        // Navigator.pushReplacementNamed(context, '/noAfiliado');
-                        // }
-                        // if (result == 'NR') {
-                        // Navigator.pushReplacementNamed(context, '/noRegistrado');
-                        // }
-                        // if (result == 'error') {
-                        // Navigator.pushReplacementNamed(context, '/noConexion');
-                        // }
-                        // },
+                       
+                      borderSide: BorderSide(color: Colors.blue,width: 3),
+                      textColor: Colors.blue,
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                    ),
+                    if(showLoading)OutlineButton(
+                      child: Text('Reintentar'),onPressed: (){
+                        setState(() {
+                          print('its me again');
+                           showLoading= false;
+                        });
+                      
+                      },
+                       
                       borderSide: BorderSide(color: Colors.blue,width: 3),
                       textColor: Colors.blue,
                       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
@@ -98,4 +114,25 @@ import 'package:movilfasesoft/widgets/widgetSplash.dart';
         ],
       ) 
       ,);
+  }
+}
+
+  login(context) async {
+      var result = await UserLogin().azureLogin(context);
+      if (UserLogin().isloged() &&
+          result != 'error' &&
+          result != 'NR' &&
+          result != 'NA' &&
+          result!=null) {
+          Navigator.pushReplacementNamed(context, '/loged');
+      }
+      if (result == 'NA') {
+      Navigator.pushNamed(context, '/noAfiliado');
+      }
+      if (result == 'NR') {
+      Navigator.pushNamed(context, '/noRegistrado');
+      }
+      if (result == 'error') {
+      Navigator.pushNamed(context, '/noConexion');
+      }
   }

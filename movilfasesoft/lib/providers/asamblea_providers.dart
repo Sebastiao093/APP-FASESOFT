@@ -2,17 +2,16 @@ import 'package:movilfasesoft/models/Asamblea.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:movilfasesoft/providers/providers_config.dart';
 
 class AsambleaProviders {
-  //final String _url='173.16.0.25:7001';
-  final String _url='sarapdev.eastus.cloudapp.azure.com:7001';
-  final String path='fasesoft-web/webresources/servicios/fasasambleas/asambleactual';
-  //String _url = '173.16.0.84:7001';
+
+  final String pathServicio='fasasambleas/asambleactual';
 
 
     Future<List<Asamblea>> getAsambleas() async{
     List<Asamblea> asambleas;
-    final url= Uri.http(_url,path);
+    final url= Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio);
     print(url);
     final resp = await http.get(url);
     
