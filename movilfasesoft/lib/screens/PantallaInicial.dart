@@ -3,6 +3,7 @@ import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/widgets/NoConectionScreen.dart';
 import 'package:movilfasesoft/widgets/firstScreenWidget.dart';
 import 'package:movilfasesoft/widgets/widgetSplash.dart';
+import 'package:async/async.dart';
 
 
 class PantallaInicial extends StatelessWidget {
@@ -15,9 +16,9 @@ class PantallaInicial extends StatelessWidget {
 }
 
 class LoginPage extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
-    login(context);
     return splashScreen(context);
   }
 }
@@ -45,8 +46,11 @@ class PantallaNoAfiliado extends StatelessWidget {
 }
 
 
-login(context) async {
-  var result = await UserLogin().azureLogin(context);
+login(context) {
+  
+  var result =  UserLogin().azureLogin(context);
+  
+  do{
   if (UserLogin().isloged() &&
       result != 'error' &&
       result != 'NR' &&
@@ -63,4 +67,5 @@ login(context) async {
   if (result == 'error') {
    Navigator.pushReplacementNamed(context, '/noConexion');
   }
+  }while(result==null);
 }

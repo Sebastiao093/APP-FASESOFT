@@ -41,9 +41,16 @@ class UserLogin {
     String accessToken;
     if(conexion){
     
-          await oauth.login();
-           accessToken= await oauth.getAccessToken();
-    
+          
+          try{
+            print('imtrying');
+            await oauth.login();
+            accessToken= await oauth.getAccessToken();
+
+          }catch (e){
+            print(e);
+          }
+           
        
         //solicitar token como string
         var decodedToken = new JWT.parse(

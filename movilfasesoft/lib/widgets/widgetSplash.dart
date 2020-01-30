@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:movilfasesoft/providers/azure_login_provider.dart';
 
   Widget splashScreen(context){
-     
+    //  print('aquiesta');
+    //login(context);
     return Scaffold(
+      
       body:Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -18,7 +21,9 @@ import 'package:flutter/material.dart';
                 child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    
                     children: <Widget>[
+                      
                       Image(
                         // backgroundColor: Colors.white,
                         // radius: 50.0,
@@ -75,4 +80,24 @@ import 'package:flutter/material.dart';
         ],
       ) 
       ,);
+  }
+
+  login(context) async {
+      var result = await UserLogin().azureLogin(context);
+      if (UserLogin().isloged() &&
+          result != 'error' &&
+          result != 'NR' &&
+          result != 'NA' &&
+          result!=null) {
+          Navigator.pushReplacementNamed(context, '/loged');
+      }
+      if (result == 'NA') {
+      Navigator.pushReplacementNamed(context, '/noAfiliado');
+      }
+      if (result == 'NR') {
+      Navigator.pushReplacementNamed(context, '/noRegistrado');
+      }
+      if (result == 'error') {
+      Navigator.pushReplacementNamed(context, '/noConexion');
+      }
   }
