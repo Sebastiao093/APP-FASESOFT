@@ -47,7 +47,9 @@ class FasAhorroProviders {
 
       listaMovimientos.forEach((item) {
         mov.add(Ahorros.fromJson(item));
+        
       });
+     
     } else {
      // print('ERROR en respuesta Http');
     }

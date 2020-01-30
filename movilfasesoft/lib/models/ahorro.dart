@@ -10,6 +10,7 @@ class Ahorros {
   String fechaSolicitud;
   int idAhorro;
   int monto;
+  String tipoAhorro;
 
   Ahorros.fromJson(Map<String,dynamic> data)   
     {
@@ -22,5 +23,6 @@ class Ahorros {
     this.fechaSolicitud = data['fechaSolicitud'];
     this.idAhorro = data['idAhorro'];
     this.monto = data['monto'];
+    this.tipoAhorro= data['tipoAhorro'];
   }
 }

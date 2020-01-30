@@ -99,11 +99,9 @@ class Logedin extends StatelessWidget {
               body: ListView(
                 children: <Widget>[
                   _DetallesAhorro(user),
-                 _movimientosAportes(context,user),
-
+                  _movimientosAportes(context, user),
                 ],
-              )
-              );
+              ));
         }
       },
     );
@@ -140,7 +138,10 @@ class Logedin extends StatelessWidget {
         validacionVotacion(context),
         validacionRol(context),
         ListTile(
-          leading: Icon(Icons.center_focus_weak,color: Colors.blue,),
+          leading: Icon(
+            Icons.center_focus_weak,
+            color: Colors.blue,
+          ),
           title: Text(
             'Generar QR ',
             style: TextStyle(color: Colors.blueAccent),
@@ -150,13 +151,16 @@ class Logedin extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: Icon(Icons.people, color: Colors.blue,),
+          leading: Icon(
+            Icons.people,
+            color: Colors.blue,
+          ),
           title: Text(
             'Asamblea',
             style: TextStyle(color: Colors.blueAccent),
           ),
           onTap: () {
-            irAsambleas(context );
+            irAsambleas(context);
           },
         ),
         ListTile(
@@ -197,108 +201,87 @@ class Logedin extends StatelessWidget {
 
   Widget _Ahorros(BuildContext context, Ahorros ahorro,String correo) {
     Size size = MediaQuery.of(context).size;
-    return    Container(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.blue,
-                ),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  elevation: 45.0,
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-                    child: Column(
-                      children: <Widget>[
-                        Image(
-                          image: AssetImage('assets/icons/ahorroLogo.png'),
-                          //Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
-                        ),
-                        Center(
-                            heightFactor: 3.0,
-                            child: Text('DETALLES DE CUENTA ')),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10.0),
-                          child: Column(
-                            children: <Widget>[
-                              Divider(),
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 10.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text('AHORROS')),
-                                    Align(
-                                        alignment: Alignment.topRight,
-                                        child: Text(
-                                          '\$ ' +
-                                              numberFormat(
-                                                  ahorro.monto.toDouble()),
-                                          style: TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                  ],
-                                ),
-                              ),
-                              Divider(),
-                              Container(
-                                margin: EdgeInsets.only(top: 10.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text('APORTE MENSUAL')),
-                                    Align(
-                                        alignment: Alignment.topRight,
-                                        child: Text(
-                                          '\$ ' +
-                                              numberFormat(
-                                                  ahorro.aporte.toDouble()),
-                                          style: TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                    Divider(),
-                                    Container(
-                                margin: EdgeInsets.symmetric(vertical: 10.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text('DEUDAS')),
-                                    Align(
-                                        alignment: Alignment.topRight,
-                                        child: _deuda(correo)
-                                        ),
-                                        Divider()
-                                  ],
-                                ),
-                              )
-                                   
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.blue,
+            ),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              elevation: 45.0,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                child: Column(
+                  children: <Widget>[
+                    Image(
+                      image: AssetImage('assets/icons/ahorroLogo.png'),
+                      //Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
                     ),
-                  ),
+                    Center(
+                        heightFactor: 3.0, child: Text('DETALLES DE CUENTA ',style: TextStyle(color: Colors.blue, fontSize: 18),)),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      child: Column(
+                        children: <Widget>[
+                          Divider(),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text('AHORROS')),
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      '\$ ' +
+                                          numberFormat(ahorro.monto.toDouble()),
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ],
+                            ),
+                          ),
+                          Divider(),
+                          Container(
+                            margin: EdgeInsets.only(top: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text('APORTE MENSUAL')),
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      '\$ ' +
+                                          numberFormat(
+                                              ahorro.aporte.toDouble()),
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                Divider(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Container()
-            ],
+            ),
           ),
-        );
-      
-    
+          Container()
+        ],
+      ),
+    );
   }
 
    Widget _deuda(String correo){
@@ -357,15 +340,14 @@ class Logedin extends StatelessWidget {
     );
   }
 
-  Widget _movimientosAportes(context,String correo) {
+  Widget _movimientosAportes(context, String correo) {
     FasAhorroProviders provider = FasAhorroProviders();
 
-    return 
-      Container(
+    return Container(
       padding: EdgeInsets.all(20.0),
       child: Column(
         children: <Widget>[
-          Container(                                            
+          Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               color: Colors.blue,
@@ -379,28 +361,36 @@ class Logedin extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-
-                    Icon(Icons.swap_horiz,color: Colors.lightBlue,size: 80,),
-                        Center(
+                    Row(
+                      children: <Widget>[
+                        Image(
+                          image: AssetImage('assets/icons/iconomovimientos.png'),
+                        ),
+                        Expanded(
+                          child:Center(
                             heightFactor: 3.0,
-                            child: Text('MOVIMIENTOS')),  
+                            child: Text(
+                              'MOVIMIENTOS',
+                              style: TextStyle(color: Colors.blue,fontSize: 18),
+                            )), 
 
+                        )
+                        
+                      ],
+                    ),
                     Container(
-                     height: 200,
-                     child: 
-                   FutureBuilder(
-                      future: provider.getMovimientosAporte(correo),
-                      builder: (context,AsyncSnapshot<List<Ahorros>> snap) {
-                        if (snap.hasData) {
-                          return _detallesMovimientosAportes(snap.data);
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      },
-                    
-                  )
-                  )
-
+                        height: 200,
+                        child: FutureBuilder(
+                          future: provider.getMovimientosAporte(correo),
+                          builder:
+                              (context, AsyncSnapshot<List<Ahorros>> snap) {
+                            if (snap.hasData) {
+                              return _detallesMovimientosAportes(snap.data);
+                            } else {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                          },
+                        ))
                   ],
                 ),
               ),
@@ -409,28 +399,22 @@ class Logedin extends StatelessWidget {
           Container()
         ],
       ),
-    
-    
     );
-}
+  }
 
   Widget _detallesMovimientosAportes(List<Ahorros> movimientos) {
     Widget list = ListView.builder(
       itemCount: movimientos.length,
       itemBuilder: (ctx, posicion) {
-        String tipoAporte = 'Permanente';
         String sinFecha = 'Fecha: Indefinida';
-        if (movimientos[posicion].fasTiposAhoIdTipoAho == 2) {
-          tipoAporte = 'Voluntario';
-        }
 
-        if (movimientos[posicion].fechaInicioAporte != null) {
+        if (movimientos[posicion].fechaInicio != null) {
           try {
             DateTime fecha =
-                dateConvert.parse(movimientos[posicion].fechaInicioAporte);
+                dateConvert.parse(movimientos[posicion].fechaInicio);
             sinFecha = 'Fecha: ' + dateFormat.format(fecha);
           } on FormatException {
-            sinFecha = 'Fecha: ' + movimientos[posicion].fechaInicioAporte;
+            sinFecha = 'Fecha: ' + movimientos[posicion].fechaInicio;
           }
         }
 
@@ -443,17 +427,16 @@ class Logedin extends StatelessWidget {
                   color: Colors.green,
                 ),
                 subtitle: Text(
-                    sinFecha+'\n \$ ' +
-                        numberFormat(
-                          movimientos[posicion].aporte.toDouble(),
-                        ),
-                    style: TextStyle(
-                        
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal),),
-                    //overflow: TextOverflow.ellipsis),
+                  sinFecha +
+                      '\n \$ ' +
+                      numberFormat(
+                        movimientos[posicion].aporte.toDouble(),
+                      ),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                ),
+                //overflow: TextOverflow.ellipsis),
                 title: Text(
-                  tipoAporte,
+                  movimientos[posicion].tipoAhorro,
                   overflow: TextOverflow.ellipsis,
                 ),
                 //subtitle: Text(sinFecha,),
@@ -466,8 +449,6 @@ class Logedin extends StatelessWidget {
 
     return list;
   }
-
-
 }
 
 Widget validacionVotacion(BuildContext ctx) {
