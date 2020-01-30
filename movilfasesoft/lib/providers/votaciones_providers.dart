@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:movilfasesoft/models/RespuestaContestadas.dart';
 import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 
 
@@ -11,7 +10,7 @@ import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 class Votaciones_providers{
 
   static String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
-  //static final String dominio = '173.16.0.84:7001';
+  //static final String dominio = '192.168.0.13:7001';
   static final String path='fasesoft-web/webresources/servicios/fasVotaciones/';
 
   

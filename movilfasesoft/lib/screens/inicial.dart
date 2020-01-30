@@ -22,8 +22,6 @@ class _PrimeraPantallaState extends State<PrimeraPantalla> {
     super.initState();
   }
   Widget build(BuildContext context) {
-    print('hi bitches');
-    
     return Scaffold(
       body:Stack(
         fit: StackFit.expand,
@@ -84,7 +82,6 @@ class _PrimeraPantallaState extends State<PrimeraPantalla> {
                     if(showLoading)OutlineButton(
                       child: Text('Reintentar'),onPressed: (){
                         setState(() {
-                          print('its me again');
                            showLoading= false;
                         });
                       

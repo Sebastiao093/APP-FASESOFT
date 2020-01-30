@@ -103,7 +103,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                     height: (MediaQuery.of(context).size.height -
                             widget.appBar.preferredSize.height -
                             MediaQuery.of(context).padding.top) *
-                        0.9,
+                        0.85,
                     width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
                       itemCount: auxPreguntas.data.length,
@@ -113,7 +113,6 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                             auxPreguntas.data.elementAt(index)
                                 as Map<String, dynamic>);
                         return Container(
-                          padding: EdgeInsets.all(10),
                           height: (MediaQuery.of(context).size.height -
                                   widget.appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
@@ -160,75 +159,89 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
 
     return LayoutBuilder(
       builder: (ctx, constrains) {
-        return Card(
-          elevation: 5,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  height: constrains.maxHeight * 0.15,
-                  width: constrains.maxWidth,
-                  child: FittedBox(
-                    child: Text(
-                      '${index + 1}/${numTotalPreguntas}  ${preguntaUnit.pregunta}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Divider(color: Colors.blue),
-                FutureBuilder<List<dynamic>>(
-                  future: respuestas,
-                  builder: (context, auxrespuestas) {
-                    if (auxrespuestas.hasData) {
-                      return Container(
-                        height: constrains.maxHeight * 0.75,
-                        width: constrains.maxWidth,
-                        child: ListView.builder(
-                          itemCount: auxrespuestas.data.length,
-                          itemBuilder: (context, index) {
-                            var respuestaUnitaria = new Respuesta.fromJson(
-                                auxrespuestas.data.elementAt(index)
-                                    as Map<String, dynamic>);
-
-                            if ((auxrespuestas.data.length == 1) &
-                                (_textosDeIngreso[preguntaUnit.id.toString()] ==
-                                    null)) {
-                              TextEditingController textoIngreso =
-                                  TextEditingController();
-                              _textosDeIngreso[preguntaUnit.id.toString()] =
-                                  textoIngreso;
-                            }
-
-                            return Container(
-                              height: auxrespuestas.data.length == 1
-                                  ? constrains.maxHeight * 0.5
-                                  : 0.7 *
-                                      (constrains.maxHeight) /
-                                      auxrespuestas.data.length,
-                              width: constrains.maxWidth,
-                              child: mostrarRespuesta(
-                                  auxrespuestas.data.length == 1,
-                                  ctx,
-                                  _respuestasMarcadas,
-                                  preguntaUnit.id,
-                                  respuestaUnitaria,
-                                  _seleccionarRespuesta,
-                                  _textosDeIngreso[preguntaUnit.id.toString()],
-                                  _submitTexto,
-                                  idAsistente),
-                            ); //
-                          },
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.05,horizontal: constrains.maxWidth*0.05),
+          padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.001,horizontal: constrains.maxWidth*0.001),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15*(constrains.maxHeight/constrains.maxWidth)),
+          color: Theme.of(context).primaryColor,
+          ),
+          child: Card(
+            elevation: 20,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: constrains.maxHeight * 0.15,
+                    width: constrains.maxWidth,
+                    child:  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[Container(width: constrains.maxWidth*0.1,
+                          child: Text(
+                              '${index + 1}/$numTotalPreguntas',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                         ),
-                      );
-                    } else if (auxrespuestas.hasError) {
-                      return Text('${auxrespuestas.error}');
-                    }
-                    return CircularProgressIndicator();
-                  },
-                )
-              ],
+                          Container(width: constrains.maxWidth*0.7,
+                            child: FittedBox(
+                      child:Column(children: partirPalabra(preguntaUnit.pregunta, 7),)),
+                          ),
+                        ],
+                      ),
+                  ),
+                  Divider(color: Colors.blue),
+                  FutureBuilder<List<dynamic>>(
+                    future: respuestas,
+                    builder: (context, auxrespuestas) {
+                      if (auxrespuestas.hasData) {
+                        return Container(
+                          height: constrains.maxHeight * 0.75,
+                          width: constrains.maxWidth,
+                          child: ListView.builder(
+                            itemCount: auxrespuestas.data.length,
+                            itemBuilder: (context, index) {
+                              var respuestaUnitaria = new Respuesta.fromJson(
+                                  auxrespuestas.data.elementAt(index)
+                                      as Map<String, dynamic>);
+
+                              if ((auxrespuestas.data.length == 1) &
+                                  (_textosDeIngreso[preguntaUnit.id.toString()] ==
+                                      null)) {
+                                TextEditingController textoIngreso =
+                                    TextEditingController();
+                                _textosDeIngreso[preguntaUnit.id.toString()] =
+                                    textoIngreso;
+                              }
+
+                              return Container(
+                                height: auxrespuestas.data.length == 1
+                                    ? constrains.maxHeight * 0.5
+                                    : 0.7 *
+                                        (constrains.maxHeight) /
+                                        auxrespuestas.data.length,
+                                width: constrains.maxWidth,
+                                child: mostrarRespuesta(
+                                    auxrespuestas.data.length == 1,
+                                    ctx,
+                                    _respuestasMarcadas,
+                                    preguntaUnit.id,
+                                    respuestaUnitaria,
+                                    _seleccionarRespuesta,
+                                    _textosDeIngreso[preguntaUnit.id.toString()],
+                                    _submitTexto,
+                                    idAsistente),
+                              ); //
+                            },
+                          ),
+                        );
+                      } else if (auxrespuestas.hasError) {
+                        return Text('${auxrespuestas.error}');
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         );
@@ -315,17 +328,18 @@ Widget validacionRespuestasOpciones(
     Function seleccionarRespuesta,
     Color color,
     int idAsistente) {
-  return condicion
+  return LayoutBuilder(
+    builder: (ctx, constraints){
+      return condicion
       ? InkWell(
           onTap: () => seleccionarRespuesta(
               idPregunta, respuestaUnitaria.id.toString(), idAsistente),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(21),
-            ),
-            margin: EdgeInsets.symmetric(vertical: 5),
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              borderRadius: BorderRadius.circular(100),
+          ),margin: EdgeInsets.symmetric(vertical: constraints.maxHeight*0.2),
+            padding: EdgeInsets.symmetric(vertical: constraints.maxHeight*0.2),
             child: Text(
               respuestaUnitaria.respuesta,
               textAlign: TextAlign.center,
@@ -336,14 +350,15 @@ Widget validacionRespuestasOpciones(
       : Container(
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(21),
-          ),
-          margin: EdgeInsets.symmetric(vertical: 5),
-          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+            borderRadius: BorderRadius.circular(100),
+          ),margin: EdgeInsets.symmetric(vertical: constraints.maxHeight*0.2),
+            padding: EdgeInsets.symmetric(vertical: constraints.maxHeight*0.2),
           child: Text(respuestaUnitaria.respuesta,
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold)),
         );
+    },
+  );
 }
 
 Widget respuestaAbierta(
@@ -379,4 +394,32 @@ Widget respuestaAbierta(
             textAlign: TextAlign.center,
           ),
         );
+}
+
+List<Text> partirPalabra(String pregunta,int palabraPorLinea){
+
+  List<String> listaPalabras = pregunta.split(" ");
+  String frasePalabra="";
+  int i=0;
+  List<Text> listaEnvio=List<Text>();
+  for (String palabra in listaPalabras) {
+    i++;
+  frasePalabra=frasePalabra+" "+palabra;
+  if(i==palabraPorLinea ){
+    listaEnvio.add(Text(
+       frasePalabra,
+       textAlign: TextAlign.center,
+      style: TextStyle(fontWeight: FontWeight.bold),
+       ));
+       frasePalabra="";
+       i=0;
+  }
+  }
+listaEnvio.add(Text(
+       frasePalabra,
+       textAlign: TextAlign.center,
+      style: TextStyle(fontWeight: FontWeight.bold),
+       ));
+       return listaEnvio;
+
 }
