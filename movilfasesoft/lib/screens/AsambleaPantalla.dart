@@ -14,7 +14,16 @@ class AsambleaPantalla extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text('Asambleas'),
-      ),
+          centerTitle: true,
+          actions: <Widget>[
+            Container(
+                child: ImageIcon(
+              AssetImage('assets/icons/fasesoftLogo.png'),
+              size: 100.0,
+            ))
+          ],
+        ),
+      
       body: _WidgetlstAsambleas(),
           );
         }

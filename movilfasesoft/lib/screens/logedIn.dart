@@ -122,11 +122,11 @@ class Logedin extends StatelessWidget {
           onTap: () => irPerfil(context, user)
           ),
         
-        // ListTile(
-        //   leading: Icon(Icons.person, color: Colors.blue),
-        //   title: Text('Detalle de perfil'),
-        //   onTap: () => irPerfil(context, user),
-        // ),
+        ListTile(
+          leading: Icon(Icons.person, color: Colors.blue),
+          title: Text('Detalle de perfil'),
+          onTap: () => irPerfil(context, user),
+        ),
         ListTile(
           leading: Icon(Icons.business_center, color: Colors.blue),
           title: Text('Creditos'),
