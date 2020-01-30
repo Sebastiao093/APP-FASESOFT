@@ -7,80 +7,41 @@ import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
 
-
 class PantallaQr extends StatefulWidget {
   static const routedname = "/PantallaQr";
-
   @override
   _PantallaQrState createState() => _PantallaQrState();
-  
 }
 
 class _PantallaQrState extends State<PantallaQr> {
-
   String  _datosObtenidos  = '';
-  String  nombre           = '';
-  String  apellido         = '';
   String  correo           = '';
-  String  identificacion   = '';
   String  estado           = '';
- /*  String  direccion        = '';
-  String  telefono         = ''; */
-  String  afiliacion       = '';
-  String  nombre1          = '';
-  String  apellido1        = '';
-  String  correo1          = '';
-  String  identificacion1  = '';
-  String  estado1          = '';
-  /* String  direccion1       = '';
-  String  telefono1        = ''; */
-  String  afiliacion1      = '';
   dynamic colorContainer   = Colors.white;
   dynamic colorTexto       = Colors.black87;
-  bool    _varBloqueo      = false;
-  bool    _varRegistro     = false;
-  bool    _regis           = false;
   bool    _varBloqueoBoton = false;
-  
+  bool    _varError        = false;
+
   @override
   void initState() { 
     super.initState();
-    
     _scanQR(context);
-
   }
 
   void redraw(){
     setState(() {
-      this.nombre           = '';
-      this.apellido         = '';
       this.correo           = '';
-      this.identificacion   = '';
       this.estado           = '';
-      /* this.direccion        = '';
-      this.telefono         = ''; */
-      this.afiliacion       = '';
-      this.nombre1          = '';
-      this.apellido1        = '';
-      this.correo1          = '';
-      this.identificacion1  = '';
-      this.estado1          = '';
-     /*  this.direccion1       = '';
-      this.telefono1        = ''; */
-      this.afiliacion1      = '';
       this.colorContainer   = Colors.white;
       this.colorTexto       = Colors.black87;
       this._datosObtenidos  = '';
-      this._varBloqueo      = false;
-      this._varRegistro     = false;
-      this._regis           = false;
-      this._varBloqueoBoton      = false;
+      this._varBloqueoBoton = false;
+      this._varError        = false;
     });         
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('QR Asistencia'),
@@ -93,7 +54,6 @@ class _PantallaQrState extends State<PantallaQr> {
       ),
       body:_infoContenido(_datosObtenidos),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      //floatingActionButton: _botonQR(),
       floatingActionButton: _crearBotones(_datosObtenidos),
       bottomNavigationBar: BottomAppBar(child: _titulos(),),
     );
@@ -101,22 +61,9 @@ class _PantallaQrState extends State<PantallaQr> {
 
   Widget _infoContenido(String datos){
     if (datos != '') {
-      return  FutureBuilder(
-        future: _cargarInfoUsuario(datos),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return _datalleUsuario(snapshot.data,colorContainer, colorTexto);
-          } else {
-            return Center(
-                child: CircularProgressIndicator(),
-              );
-          }
-        },
-      );
-    } else {
-      //_alerta('Lectura de QR Incorrecta', Icons.filter_center_focus, Colors.red);
-     
-      return AlertDialog(
+      print('varError $_varError');
+      if (this._varError == true) {
+        return AlertDialog(
           shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
           title: Text('Alerta',textScaleFactor: 1.5,style: TextStyle(color: Colors.blue)),
           content: Column(
@@ -124,27 +71,46 @@ class _PantallaQrState extends State<PantallaQr> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Divider(color: Colors.white,height: 20.0,),
-              Text('Sin lectura de QR',textScaleFactor: 1.3,),
+              Text('No se encontraron datos del usuario',textScaleFactor: 1.3,),
               Divider(color: Colors.white,height: 50.0,),
               Icon(Icons.info,color: Colors.red, size: 70.0,)
             ],
           ),
-          actions: <Widget>[
-            FlatButton(
-              shape: StadiumBorder(),
-              child: Text('Aceptar',textScaleFactor: 0.9,),
-              color: Colors.blue,
-              onPressed: () => _scanQR(context),
-            ),
-          ],
         );
+      } else {
+         return  FutureBuilder(
+          future: _cargarInfoUsuario(datos),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return _datalleUsuario(snapshot.data,colorContainer, colorTexto);
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        );
+      }
+    } else {
+      return AlertDialog(
+        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
+        title: Text('Alerta',textScaleFactor: 1.5,style: TextStyle(color: Colors.blue)),
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Divider(color: Colors.white,height: 20.0,),
+            Text('Sin lectura de QR',textScaleFactor: 1.3,),
+            Divider(color: Colors.white,height: 50.0,),
+            Icon(Icons.info,color: Colors.red, size: 70.0,)
+          ],
+        ),
+      );
     }
   }
 
   Future<InfoAsistente> _cargarInfoUsuario(String correo) async {
-
-    final infoasistenteprovider = InfoAsistenteProvider();
-    InfoAsistente infoAsistente = await infoasistenteprovider.getInfoAsistente(correo);
+    InfoAsistente infoAsistente = await InfoAsistenteProvider().getInfoAsistente(correo);
     return infoAsistente;
   }
 
@@ -186,43 +152,7 @@ class _PantallaQrState extends State<PantallaQr> {
     }
   }
   
-  Widget _datalleUsuario2(Color colorContainer, Color colorTexto){
-    return Center(child:ListView(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(bottom: 20.0),
-          child: CircleAvatar(
-            child: CircleAvatar(
-              child: Text(''),
-              backgroundColor: Colors.white,
-              maxRadius: 48.0,
-            ),
-            backgroundColor: Colors.blue,
-            maxRadius: 50.0,
-          ),
-        ),
-        _informacion('Nombre:',Icons.account_circle,'' + ' ' + ''),
-        Divider(color: Colors.blue),
-        _informacion('Correo:',Icons.email,''),
-        Divider(color: Colors.blue),
-        _informacion('Identificacion:',Icons.fingerprint,identificacion),
-        Divider(color: Colors.blue),
-        /* _informacion('Telefono:',Icons.phone,telefono),
-        Divider(color: Colors.blue),
-        _informacion('Direccion:',Icons.location_on,direccion), */
-        Divider(color: Colors.white),
-        _informacion('Afiliacion:',Icons.location_on,afiliacion),
-        Divider(color: Colors.white),
-        _estado2(colorContainer,colorTexto),
-      ],
-    ));
-  }
-  
-  
-
   Widget _datalleUsuario(InfoAsistente user,Color colorContainer, Color colorTexto){
-    utf8.encode(user.apellido);
     return Center(child:ListView(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       children: <Widget>[
@@ -230,7 +160,7 @@ class _PantallaQrState extends State<PantallaQr> {
           padding: EdgeInsets.only(bottom: 20.0),
           child: CircleAvatar(
             child: CircleAvatar(
-              child: _avatar(user),
+              child: _avatar(),
               backgroundColor: Colors.white,
               maxRadius: 48.0,
             ),
@@ -244,25 +174,20 @@ class _PantallaQrState extends State<PantallaQr> {
         Divider(color: Colors.blue),
         _informacion('Identificacion:',Icons.fingerprint,user.identificacion.toString()),
         Divider(color: Colors.blue),
-       /*  _informacion('Telefono:',Icons.phone,user.telefono.toString()),
+        _informacion('Afiliacion:',Icons.portrait,user.estadoUsuario),
         Divider(color: Colors.blue),
-        _informacion('Direccion:',Icons.location_on,user.direccion), */
-        Divider(color: Colors.white),
-        _informacion('Afiliacion:',Icons.location_on,user.estadoUsuario),
-        Divider(color: Colors.white),
         _estado(colorContainer,colorTexto),
+        Divider(color: Colors.blue),
       ],
     ));
   }
 
-  Widget _avatar(InfoAsistente user){
+  Widget _avatar(){
     return userPhoto(_datosObtenidos);
   }
 
   Widget _informacion(String parametro,IconData icono,String informacion){ 
-
     return Row(
-      
       children: <Widget>[
         Icon(icono,color: Colors.blue,),
         SizedBox(width: 10.0,),
@@ -282,9 +207,7 @@ class _PantallaQrState extends State<PantallaQr> {
   }
 
   Widget _estado(Color colorContainer,Color colorTexto){ 
-
     return Row(
-      
       children: <Widget>[
         Icon(Icons.person,color: Colors.blue,),
         SizedBox(width: 10.0,),
@@ -303,34 +226,11 @@ class _PantallaQrState extends State<PantallaQr> {
       ],
     );
   }
-  Widget _estado2(Color colorContainer,Color colorTexto){ 
-
-    return Row(
-      
-      children: <Widget>[
-        Icon(Icons.person,color: Colors.blue,),
-        SizedBox(width: 10.0,),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: colorContainer,
-              border: Border.all(color: Colors.blue),
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-          child:ListTile(
-            title: Text('Registro:',style: TextStyle(color: colorTexto),),
-            subtitle: Text('',textScaleFactor: 1.2,style: TextStyle(fontWeight: FontWeight.bold,color: colorTexto),textAlign: TextAlign.left, )),
-          ),
-        )
-      ],
-    );
-  }
-
-  void _alerta(String info, IconData icono,Color color){
-
+ 
+  void _alerta(String info1,String info2, IconData icono,Color color){
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (contet) {
         return AlertDialog(
           shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
@@ -340,30 +240,112 @@ class _PantallaQrState extends State<PantallaQr> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Divider(color: Colors.white,height: 20.0,),
-              Text(info,textScaleFactor: 1.3,),
-              Divider(color: Colors.white,height: 50.0,),
+              Text(info1,textScaleFactor: 1.3,),
+              Divider(color: Colors.white,height: 5.0,),
+              Text(info2,textScaleFactor: 1.3,),
+              Divider(color: Colors.white,height: 30.0,),
               Icon(icono,color: color, size: 70.0,)
             ],
           ),
           actions: <Widget>[
-            FlatButton(
-              shape: StadiumBorder(),
-              child: Text('Aceptar',textScaleFactor: 0.9,),
-              color: Colors.blue,
-              onPressed: () => Navigator.of(context).pop(),
-            ),
+            Center(
+              child:FlatButton(
+                shape: StadiumBorder(),
+                child: Text('Aceptar',textScaleFactor: 1.2,),
+                color: Colors.blue,
+                onPressed: () => Navigator.of(context).pop(),
+            )),
           ],
         );
       }
     );
   }
 
-  Future<InfoAsistente> _registrarInfoAsistente(String correo) async  {
-    final infoasistenteprovider = InfoAsistenteProvider();
-    InfoAsistente infoAsistente = await infoasistenteprovider.getInfoAsistente(correo);
+  void _alertaCarga(){
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (contet) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
+          title: Text('Alerta',textScaleFactor: 1.5,style: TextStyle(color: Colors.blue)),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Divider(color: Colors.white,height: 20.0,),
+              _alertWidget(),
+              Divider(color: Colors.white,height: 30.0,)
+            ],
+          ),
+          actions: <Widget>[
+            _alertBoton(),
+          ],
+        );
+      }
+    );
+  }
 
+  Widget _alertBoton(){
+    return FutureBuilder(
+      future: _postConsulta(),
+      builder: (ctx,AsyncSnapshot<String> snap){
+        if(snap.hasData){
+          if(snap.data=='Registro exitoso'){
+            return FlatButton(
+              shape: StadiumBorder(),
+              child: Text('Aceptar',textScaleFactor: 1.2,),
+              color: Colors.blue,
+              onPressed: () => Navigator.of(context).pop(),
+            );
+          }else{
+            return Divider(color: Colors.white,height: 40.0,);
+          }
+        }else{ 
+          return  Divider(color: Colors.white,height: 40.0,);  
+        }
+      },
+    );
+  }
+
+  Widget _alertWidget(){
+    return FutureBuilder(
+      future: _postConsulta(),
+      builder: (ctx,AsyncSnapshot<String> snap){
+        if(snap.hasData){
+          if(snap.data=='Registro exitoso'){
+            return Column(
+              children: <Widget>[
+                Text(snap.data,textScaleFactor: 1.3,),
+                Divider(color: Colors.white,height: 40.0,),
+                Icon(Icons.check,color: Colors.green,size: 70,)
+              ],
+            );  
+          }else{
+            return Column(
+              children: <Widget>[
+                Text(snap.data,textScaleFactor: 1.3,),
+                Divider(color: Colors.white,height: 40.0,),
+                Icon(Icons.error,color: Colors.red,size: 70,)
+              ],
+            );  
+          }
+        }else{
+          return  Column(
+            children: <Widget>[
+              Text('Cargando..',textScaleFactor: 1.3,),
+              Divider(color: Colors.white,height: 40.0,),
+              CircularProgressIndicator()
+            ],
+          );
+        }
+      },
+    );
+  }
+
+  Future<InfoAsistente> _registrarInfoAsistente(String correo) async  {
+    InfoAsistente infoAsistente = await InfoAsistenteProvider().getInfoAsistente(correo);
     Map<String, Object> mapAsistente = {
-    
       'apellido'        : infoAsistente.apellido,
       'correo'          : infoAsistente.correo,
       'direccion'       : infoAsistente.direccion,
@@ -376,81 +358,39 @@ class _PantallaQrState extends State<PantallaQr> {
       'nombre'          : infoAsistente.nombre,
       'telefono'       : infoAsistente.telefono,
     };
-
     _enviarCambioEstadoPut(mapAsistente);
-
     return infoAsistente;
   }
 
-  _registrar(BuildContext context, String correo) {
-
-    if (this._regis == false) {
-
-      if (this.correo != '') {
-
-        if (this._varBloqueo == true) {
-
-          _alerta('Lectura de QR Incorrecta', Icons.filter_center_focus, Colors.red);
-           this._varBloqueoBoton = true;
-           setState(() {});
-        }else {
-          if (_varRegistro == true) {
-            _alerta('Persona ya registrada', Icons.person, Colors.green);
-            this._varBloqueoBoton = false;
-            setState(() {});
-          } else {
-
-            _registrarInfoAsistente(correo);
-            setState(() {});
-            Future.delayed(Duration(seconds: 3),() async {
-
-              Future<InfoAsistente> infoAsistente = InfoAsistenteProvider().getInfoAsistente(correo);
-
-              await infoAsistente.then((aux){
-
-                this.estado1=aux.estado;
-
-                setState(() {
-                  if (this.estado1 == 'SIASI') {
-
-                    this.colorContainer=Colors.green;
-                    this.colorTexto=Colors.white;
-                    this.colorContainer=Colors.green;
-                    this.colorTexto=Colors.white;
-                    _alerta('Registro exitoso', Icons.person, Colors.green);
-                    _regis = true;
-                    this._varBloqueoBoton = false;
-                    setState(() {});
-                  } else {
-                     if (this.estado1 == 'NOASI') {
-                      _alerta('Registro no efectuado', Icons.error, Colors.red);
-                      this._varBloqueoBoton = true;
-                       setState(() {});
-                     }
-                   }
-                });
-               });
-            });
-          }
-        }
-      } else {
-        _alerta('Sin lectura de QR', Icons.info, Colors.red);
-        this._varBloqueoBoton = true;
-        setState(() {});
-      } 
-    }else {
-      _alerta('Ya se realizo el registro', Icons.filter_center_focus, Colors.red);
-      this._varBloqueoBoton = false;
-      setState(() {});
+  Future<String> _postConsulta()async {
+    await Future.delayed(Duration(seconds: 2));
+    InfoAsistente infoAsistente = await InfoAsistenteProvider().getInfoAsistente(correo);
+    if ( infoAsistente.estado == 'SIASI') {
+      setState(() {
+        this.colorContainer=Colors.green;
+        this.colorTexto=Colors.white;
+        this.colorContainer=Colors.green;
+        this.colorTexto=Colors.white;
+        this.estado='Asistencia registrada';
+        this._varBloqueoBoton = false;
+      });
+      return 'Registro exitoso';
+    } else {
+      setState(() {
+         this._varBloqueoBoton = true;
+      });
+      return 'Registro no efectuado';
     }
   }
 
+  _registrar(BuildContext context, String correo) {
+    _registrarInfoAsistente(correo);
+    _alertaCarga();
+  }
+
   Future _scanQR(BuildContext context) async {
-
     redraw();
-
     String futureString = '';
-  
     try {
       futureString = await MajaScan.startScan(
         title: 'QR Asistencia', 
@@ -460,61 +400,41 @@ class _PantallaQrState extends State<PantallaQr> {
         qRScannerColor: Colors.yellow,
 	      flashlightEnable: true
       );
-
       Future<InfoAsistente> infoAsistente = InfoAsistenteProvider().getInfoAsistente(futureString);
       infoAsistente.then((aux){
-        
-        /* this.nombre1=aux.nombre;
-        this.estado1=aux.estado;
-        this.apellido1=aux.apellido;
-        this.correo1=aux.correo;
-        this.telefono1=aux.telefono.toString();
-        this.direccion1=aux.direccion;
-        this.afiliacion1=aux.estadoUsuario;
-        this.identificacion1=aux.identificacion.toString(); */
-
-        if (futureString == aux.correo) {
-
-          _alerta('Datos correctos', Icons.check, Colors.green);
-
-          setState(() {
-
-            this.nombre=aux.nombre;
-            this.apellido=aux.apellido;
-            this.correo= aux.correo;
-            this.identificacion=aux.identificacion.toString();
-            /* this.direccion=direccion1;
-            this.telefono=telefono1; */
-            this.afiliacion=aux.estadoUsuario;
-
-            if (aux.estado == 'NOASI') {
+        if (futureString == aux.correo){
+          this.correo= aux.correo;
+          if (aux.estado == 'NOASI') {
+            setState(() {
+              _alerta('Datos del usuario cargados','¡Exitosamente!', Icons.check, Colors.green);
+              this.estado='Asistencia no registrada';
+              this.colorContainer=Colors.red;
+              this.colorTexto=Colors.white;
+              this._varBloqueoBoton = true;
+            });
+          } else {
+            if (aux.estado == 'SIASI') {   
               setState(() {
-                this.estado='No registrado';
-                this.colorContainer=Colors.red;
+                _alerta('Usuario ya registrado','', Icons.person, Colors.green);
+                this.estado='Asistencia registrada';
+                this.colorContainer=Colors.green;
                 this.colorTexto=Colors.white;
-                this._varBloqueoBoton = true;
-                setState(() {});
+                this._varBloqueoBoton = false;
               });
-            } else {
-              if (aux.estado == 'SIASI') {
-                setState(() {
-                  this._varRegistro = true;
-                  this.estado='Registrado';
-                  this.colorContainer=Colors.green;
-                  this.colorTexto=Colors.white;
-                  this._varBloqueoBoton = false;
-                  setState(() {});
-                });
-              }
             }
+          }
+        }else{
+          setState(() {
+            this._varBloqueoBoton = false;
+            this._varError = true;
           });
         } 
       }).catchError(
         (error){
-          _alerta('Datos Icorrectos', Icons.error, Colors.red);
-          this._varBloqueo = true;
-          this._varBloqueoBoton = true;
-          setState(() {});
+          setState(() {
+            this._varBloqueoBoton = false;
+            this._varError = true;
+          });
         } 
       );
       setState(() => this._datosObtenidos = futureString);
@@ -523,12 +443,9 @@ class _PantallaQrState extends State<PantallaQr> {
     }
   }
 
-void _enviarCambioEstadoPut(Map<String, Object> dato) async {
+  void _enviarCambioEstadoPut(Map<String, Object> dato) async {
     String url = "http://sarapdev.eastus.cloudapp.azure.com:7001/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
-
-    //String url = "http://173.16.0.32:7001/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
-
-    var response = await http.put(
+    await http.put(
       Uri.encodeFull(url),
       body: json.encode(dato),
       headers: {

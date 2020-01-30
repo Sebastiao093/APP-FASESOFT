@@ -5,7 +5,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 
 class CodigoQR extends StatelessWidget {
- 
+ static const routedname='/qr';
 @override
   Widget build(BuildContext context){
     return Scaffold(

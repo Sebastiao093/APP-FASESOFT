@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:movilfasesoft/main.dart';
+import 'package:movilfasesoft/models/Asamblea.dart';
 import 'package:movilfasesoft/models/PerfilRol.dart';
 import 'package:movilfasesoft/models/ahorro.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
+import 'package:movilfasesoft/providers/asamblea_providers.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
@@ -23,6 +25,9 @@ import 'package:movilfasesoft/screens/Votaciones.dart';
 import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
+import '../providers/asamblea_providers.dart';
+import '../providers/asamblea_providers.dart';
 
 void irVotaciones(BuildContext ctx, bool preguntasPorContestar) {
   Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname,
@@ -60,14 +65,16 @@ String nombre(user) {
 }
 
 class Logedin extends StatelessWidget {
+  static const routedname='/loged';
   UsuarioAres usuarioAres = new UsuarioAres();
   final String user = MyApp.correoUsuario;
   static String tipoRol;
   static Future<PerfilRol> futurePerfilRol;
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
   DateFormat dateFormat = DateFormat("yyyy MMMM dd");
-
+  
   Widget build(BuildContext context) {
+    
     futurePerfilRol = cargarPerfilRol(user);
     return FutureBuilder(
       future: UserProvider().getUser(user),
@@ -75,7 +82,9 @@ class Logedin extends StatelessWidget {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         } else {
+        
           this.usuarioAres = snapshot.data;
+          if(MyApp.show) asambleaSoon(context);
           return Scaffold(
               appBar: AppBar(
                 title: ImageIcon(
@@ -102,10 +111,15 @@ class Logedin extends StatelessWidget {
     return Drawer(
         child: ListView(
       children: <Widget>[
-        UserAccountsDrawerHeader(
+        GestureDetector(
+          child:UserAccountsDrawerHeader(
             accountName: Text(nombre(this.usuarioAres)),
             accountEmail: Text(user),
-            currentAccountPicture: userPhoto(MyApp.correoUsuario)),
+            currentAccountPicture: userPhoto(MyApp.correoUsuario)
+            ),
+          onTap: () => irPerfil(context, user)
+          ),
+        
         ListTile(
           leading: Icon(Icons.person, color: Colors.blue),
           title: Text('Detalle de perfil'),
@@ -121,13 +135,8 @@ class Logedin extends StatelessWidget {
           title: Text('Convenios'),
           onTap: () => irConvenios(context, user),
         ),
-        //validacionVotacion(context),
-        ListTile(
-          leading: Icon(Icons.filter_center_focus, color: Colors.blue),
-          title: Text('Asistencia'),
-          onTap: () => irQr(context),
-        ),
-        //validacionRol(context),
+        validacionVotacion(context),
+        validacionRol(context),
         ListTile(
           leading: Icon(
             Icons.center_focus_weak,
@@ -177,7 +186,7 @@ class Logedin extends StatelessWidget {
           String aporte = '';
           String monto = '';
           if (snapshot.data != null) {
-            return _Ahorros(context, snapshot.data);
+            return _Ahorros(context, snapshot.data,correo);
           }
           return ListTile(
             title: Text('acumulado ' + monto),
@@ -190,7 +199,7 @@ class Logedin extends StatelessWidget {
     );
   }
 
-  Widget _Ahorros(BuildContext context, Ahorros ahorro) {
+  Widget _Ahorros(BuildContext context, Ahorros ahorro,String correo) {
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(20.0),
@@ -274,6 +283,34 @@ class Logedin extends StatelessWidget {
       ),
     );
   }
+
+   Widget _deuda(String correo){
+        
+         FasAhorroProviders prov= FasAhorroProviders();
+
+        return Container(
+              child: FutureBuilder(
+                      future: prov.getDeuda(correo),
+                      builder: (ctx,AsyncSnapshot<String> snap){
+                            if(snap.hasData){
+                                return Text(
+                                          '\$ ' +
+                                              numberFormat(
+                                                  double.parse(snap.data)),
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold),
+                                        );
+                            }else{
+                              return CircularProgressIndicator();
+                            }
+
+                      },
+              ),
+        );
+
+
+   }
 
   static Future<PerfilRol> cargarPerfilRol(String correo) async {
     final perfilProvider = PerfilRolProvider();
@@ -444,3 +481,58 @@ Widget validacionVotacion(BuildContext ctx) {
     },
   );
 }
+ asambleaSoon(context)async{
+  
+  DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+  DateFormat dateFormat = DateFormat("yyyy MMMM dd"); 
+  DateTime fecha;
+  //DateTime now= DateTime.now();
+  final now = DateTime(2020, 01, 26);
+  print(now);
+  List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
+    for(var asamblea in asambleas){
+        
+        try{
+        fecha= dateConvert.parse(asamblea.fecha);
+        
+        }on FormatException{
+              
+        }
+        
+        if(now.isBefore(fecha) && fecha.isBefore(now.add(Duration(days: 5)))){
+         
+          print('asambleeaaa papiiiii');
+           showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            actions: <Widget>[
+            FlatButton(child: Text('cerrar'),onPressed: (){
+              MyApp.show=false;
+              Navigator.pop(context);
+            },),
+            //FlatButton(child: Text('No recordarme de nuevo'),onPressed: (){},)
+          ],
+          title: Text('HAY UNA ASAMBLEA PRONTO',style: TextStyle(color: Colors.redAccent)),
+          shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+          titleTextStyle: TextStyle(
+              fontSize: 22,
+              fontFamily: 'RobotoCondensed',
+              fontWeight: FontWeight.bold,
+            ),
+          content: Text('Fecha: '
+          + dateFormat.format(fecha)+'\nHora:'+asamblea.hora),
+          );
+          }
+        );
+    
+        }else{
+          print('nada papi');
+        }
+        
+
+    }
+
+  }
