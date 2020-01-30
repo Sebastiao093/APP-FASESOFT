@@ -113,15 +113,20 @@ class Logedin extends StatelessWidget {
     return Drawer(
         child: ListView(
       children: <Widget>[
-        UserAccountsDrawerHeader(
+        GestureDetector(
+          child:UserAccountsDrawerHeader(
             accountName: Text(nombre(this.usuarioAres)),
             accountEmail: Text(user),
-            currentAccountPicture: userPhoto(MyApp.correoUsuario)),
-        ListTile(
-          leading: Icon(Icons.person, color: Colors.blue),
-          title: Text('Detalle de perfil'),
-          onTap: () => irPerfil(context, user),
-        ),
+            currentAccountPicture: userPhoto(MyApp.correoUsuario)
+            ),
+          onTap: () => irPerfil(context, user)
+          ),
+        
+        // ListTile(
+        //   leading: Icon(Icons.person, color: Colors.blue),
+        //   title: Text('Detalle de perfil'),
+        //   onTap: () => irPerfil(context, user),
+        // ),
         ListTile(
           leading: Icon(Icons.business_center, color: Colors.blue),
           title: Text('Creditos'),
