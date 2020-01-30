@@ -3,23 +3,22 @@ import 'package:movilfasesoft/screens/AsambleaPantalla.dart';
 import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/screens/inicial.dart';
 import 'package:movilfasesoft/screens/logedIn.dart';
+import 'package:movilfasesoft/screens/pantallasInicio.dart';
 import '../screens/PerfilPantalla.dart';
 import '../screens/AsistenciaQR.dart';
 import '../screens/ConvenioPantalla.dart';
 import '../screens/CreditoPantalla.dart';
 import '../screens/Votaciones.dart';
-import '../screens/PantallaInicial.dart';
+
 
 Map <String,WidgetBuilder> getAplicaciones(){
 return <String,WidgetBuilder>{
-        '/':(ctx)=> PrimeraPantalla(),
-        '/login':(ctx)=> LoginPage(),
-        '/loged':(ctx)=> Logedin(),
-        '/qr':(ctx)=> CodigoQR(),
+        PrimeraPantalla.routedname:(ctx)=> PrimeraPantalla(),
+        Logedin.routedname:(ctx)=> Logedin(),
+        CodigoQR.routedname:(ctx)=> CodigoQR(),
         PantallaNoAfiliado.routedname:(ctx)=>PantallaNoAfiliado(),
         PantallaSinConexion.routedname:(ctx)=>PantallaSinConexion(),
         PantallaNoRegistrado.routedname:(ctx)=>PantallaNoRegistrado(),
-        PantallaInicial.routedname: (ctx) => PantallaInicial(),
         PantallaQr.routedname:(ctx) => PantallaQr(),
         PantallaVotaciones.routedname:(ctx) => PantallaVotaciones(),
         CreditoPantalla.routedname:(ctx)=>CreditoPantalla(),

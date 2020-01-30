@@ -94,29 +94,35 @@ class PerfilPantalla extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               userPhoto(MyApp.correoUsuario),
+              Divider(),
               ListTile(
                 title: Text('Nombre:'),
                 subtitle: Text(user.nombre + ' ' + user.apellido),
+                leading: Icon(Icons.person,color: Colors.blue,),
               ),
               Divider(color: Colors.blue),
               ListTile(
                 title: Text('Identificación:'),
                 subtitle: Text(user.identificacion),
+                leading: Icon(Icons.fingerprint,color: Colors.blue,),
               ),
               Divider(color: Colors.blue),
               ListTile(
                 title: Text('Correo:'),
                 subtitle: Text(user.correo),
+                leading: Icon(Icons.mail,color: Colors.blue,),
               ),
               Divider(color: Colors.blue),
               ListTile(
                 title: Text('Dirección:'),
                 subtitle: Text(user.direccion),
+                leading: Icon(Icons.home,color: Colors.blue,),
               ),
               Divider(color: Colors.blue),
               ListTile(
                 title: Text('Teléfono:'),
                 subtitle: Text(user.telefono),
+                leading: Icon(Icons.phone, color: Colors.blue,),
               ),
             ],
           ),

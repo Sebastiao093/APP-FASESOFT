@@ -14,7 +14,16 @@ class AsambleaPantalla extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text('Asambleas'),
-      ),
+          centerTitle: true,
+          actions: <Widget>[
+            Container(
+                child: ImageIcon(
+              AssetImage('assets/icons/fasesoftLogo.png'),
+              size: 100.0,
+            ))
+          ],
+        ),
+      
       body: _WidgetlstAsambleas(),
           );
         }
@@ -62,7 +71,7 @@ class AsambleaPantalla extends StatelessWidget {
          String fechaFormater;
         try{
         DateTime fecha= dateConvert.parse(item.fecha);
-        print(fecha);
+        
         fechaFormater=dateFormat.format(fecha);
         }on FormatException{
               fechaFormater=item.fecha;
@@ -122,9 +131,7 @@ class AsambleaPantalla extends StatelessWidget {
 
       }
 
-
-
-
+ 
 
 
 }
