@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:majascan/majascan.dart';
+import 'package:movilfasesoft/main.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
+import 'package:movilfasesoft/providers/providers_config.dart';
 
 class PantallaQr extends StatefulWidget {
   static const routedname = "/PantallaQr";
@@ -61,7 +63,6 @@ class _PantallaQrState extends State<PantallaQr> {
 
   Widget _infoContenido(String datos){
     if (datos != '') {
-      print('varError $_varError');
       if (this._varError == true) {
         return AlertDialog(
           shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
@@ -174,7 +175,7 @@ class _PantallaQrState extends State<PantallaQr> {
         Divider(color: Colors.blue),
         _informacion('Identificacion:',Icons.fingerprint,user.identificacion.toString()),
         Divider(color: Colors.blue),
-        _informacion('Afiliacion:',Icons.portrait,user.estadoUsuario),
+        _informacion('Afiliacion:',Icons.portrait,user.idAsamblea.toString()),
         Divider(color: Colors.blue),
         _estado(colorContainer,colorTexto),
         Divider(color: Colors.blue),
@@ -389,6 +390,7 @@ class _PantallaQrState extends State<PantallaQr> {
   }
 
   _registrar(BuildContext context, String correo) {
+    
     _registrarInfoAsistente(correo);
     _alertaCarga();
   }
@@ -449,7 +451,7 @@ class _PantallaQrState extends State<PantallaQr> {
   }
 
   void _enviarCambioEstadoPut(Map<String, Object> dato) async {
-    String url = "http://sarapdev.eastus.cloudapp.azure.com:7001/fasesoft-web/webresources/servicios/fasasistentes/actualizarEstado";
+    String url = "http://"+ProviderConfig.url+"/"+ProviderConfig.path+"fasasistentes/actualizarEstado";
     await http.put(
       Uri.encodeFull(url),
       body: json.encode(dato),

@@ -50,7 +50,6 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   void cancelarBoton(List<Map<String, Object>> jsonEnvio) {
     for (var i = 0; i < jsonEnvio.length; i++) {
       Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i));
-      print('envio ${_jsonEnvio.elementAt(i)}');
     }
     setState(() {
       contesto = true;
@@ -88,9 +87,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
     for (var i = 0; i < widget._respuestasContestadas.length; i++) {
       _respuestasMarcadas[widget._respuestasContestadas
           .elementAt(i)
-          .fkVotacion] = widget._respuestasContestadas.elementAt(i).idrespuesta;
+          .fkVotacion] = widget._respuestasContestadas.elementAt(i).idrespuesta=="SI"?"1":"2";
     }
-    print(_respuestasMarcadas);
 
     return imprimirPreguntas(widget._preguntas, widget.idAsistente);
   }
@@ -258,7 +256,6 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
 
 Widget botonEnvio(bool condicion, BuildContext context,
     List<Map<String, Object>> jsonEnvio, Function enviarCancelar, bool cancel) {
-  print(condicion);
   return condicion & !cancel
       ? RaisedButton(
           child: Text(
