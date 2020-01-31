@@ -129,7 +129,7 @@ class Logedin extends StatelessWidget {
         // ),
         ListTile(
           leading: Icon(Icons.business_center, color: Colors.blue),
-          title: Text('Creditos'),
+          title: Text('Creditos',),
           onTap: () => irCreditos(context, user),
         ),
         ListTile(
@@ -143,7 +143,6 @@ class Logedin extends StatelessWidget {
           leading: Icon(Icons.center_focus_weak,color: Colors.blue,),
           title: Text(
             'Generar QR ',
-            style: TextStyle(color: Colors.blueAccent),
           ),
           onTap: () {
             Navigator.of(context).pushNamed('/qr');
@@ -153,7 +152,6 @@ class Logedin extends StatelessWidget {
           leading: Icon(Icons.people, color: Colors.blue,),
           title: Text(
             'Asamblea',
-            style: TextStyle(color: Colors.blueAccent),
           ),
           onTap: () {
             irAsambleas(context );
