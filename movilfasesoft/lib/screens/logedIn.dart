@@ -99,11 +99,9 @@ class Logedin extends StatelessWidget {
               body: ListView(
                 children: <Widget>[
                   _DetallesAhorro(user),
-                 _movimientosAportes(context,user),
-
+                  _movimientosAportes(context, user),
                 ],
-              )
-              );
+              ));
         }
       },
     );
@@ -122,14 +120,14 @@ class Logedin extends StatelessWidget {
           onTap: () => irPerfil(context, user)
           ),
         
-        // ListTile(
-        //   leading: Icon(Icons.person, color: Colors.blue),
-        //   title: Text('Detalle de perfil'),
-        //   onTap: () => irPerfil(context, user),
-        // ),
+        ListTile(
+          leading: Icon(Icons.person, color: Colors.blue),
+          title: Text('Detalle de perfil'),
+          onTap: () => irPerfil(context, user),
+        ),
         ListTile(
           leading: Icon(Icons.business_center, color: Colors.blue),
-          title: Text('Creditos',),
+          title: Text('Creditos'),
           onTap: () => irCreditos(context, user),
         ),
         ListTile(
@@ -140,21 +138,29 @@ class Logedin extends StatelessWidget {
         validacionVotacion(context),
         validacionRol(context),
         ListTile(
-          leading: Icon(Icons.center_focus_weak,color: Colors.blue,),
+          leading: Icon(
+            Icons.center_focus_weak,
+            color: Colors.blue,
+          ),
           title: Text(
             'Generar QR ',
+            style: TextStyle(color: Colors.blueAccent),
           ),
           onTap: () {
             Navigator.of(context).pushNamed('/qr');
           },
         ),
         ListTile(
-          leading: Icon(Icons.people, color: Colors.blue,),
+          leading: Icon(
+            Icons.people,
+            color: Colors.blue,
+          ),
           title: Text(
             'Asamblea',
+            style: TextStyle(color: Colors.blueAccent),
           ),
           onTap: () {
-            irAsambleas(context );
+            irAsambleas(context);
           },
         ),
         ListTile(
@@ -215,7 +221,7 @@ class Logedin extends StatelessWidget {
                       children: <Widget>[
                         Image(
                           image: AssetImage('assets/icons/ahorroLogo.png'),
-                          //Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
+                          Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
                         ),
                         Center(
                             heightFactor: 3.0,
@@ -355,15 +361,14 @@ class Logedin extends StatelessWidget {
     );
   }
 
-  Widget _movimientosAportes(context,String correo) {
+  Widget _movimientosAportes(context, String correo) {
     FasAhorroProviders provider = FasAhorroProviders();
 
-    return 
-      Container(
+    return Container(
       padding: EdgeInsets.all(20.0),
       child: Column(
         children: <Widget>[
-          Container(                                            
+          Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               color: Colors.blue,
@@ -377,28 +382,36 @@ class Logedin extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-
-                    Icon(Icons.swap_horiz,color: Colors.lightBlue,size: 80,),
-                        Center(
+                    Row(
+                      children: <Widget>[
+                        Image(
+                          image: AssetImage('assets/icons/iconomovimientos.png'),
+                        ),
+                        Expanded(
+                          child:Center(
                             heightFactor: 3.0,
-                            child: Text('MOVIMIENTOS')),  
+                            child: Text(
+                              'MOVIMIENTOS',
+                              style: TextStyle(color: Colors.blue,fontSize: 18),
+                            )), 
 
+                        )
+                        
+                      ],
+                    ),
                     Container(
-                     height: 200,
-                     child: 
-                   FutureBuilder(
-                      future: provider.getMovimientosAporte(correo),
-                      builder: (context,AsyncSnapshot<List<Ahorros>> snap) {
-                        if (snap.hasData) {
-                          return _detallesMovimientosAportes(snap.data);
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      },
-                    
-                  )
-                  )
-
+                        height: 200,
+                        child: FutureBuilder(
+                          future: provider.getMovimientosAporte(correo),
+                          builder:
+                              (context, AsyncSnapshot<List<Ahorros>> snap) {
+                            if (snap.hasData) {
+                              return _detallesMovimientosAportes(snap.data);
+                            } else {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                          },
+                        ))
                   ],
                 ),
               ),
@@ -407,28 +420,22 @@ class Logedin extends StatelessWidget {
           Container()
         ],
       ),
-    
-    
     );
-}
+  }
 
   Widget _detallesMovimientosAportes(List<Ahorros> movimientos) {
     Widget list = ListView.builder(
       itemCount: movimientos.length,
       itemBuilder: (ctx, posicion) {
-        String tipoAporte = 'Permanente';
         String sinFecha = 'Fecha: Indefinida';
-        if (movimientos[posicion].fasTiposAhoIdTipoAho == 2) {
-          tipoAporte = 'Voluntario';
-        }
 
-        if (movimientos[posicion].fechaInicioAporte != null) {
+        if (movimientos[posicion].fechaInicio != null) {
           try {
             DateTime fecha =
-                dateConvert.parse(movimientos[posicion].fechaInicioAporte);
+                dateConvert.parse(movimientos[posicion].fechaInicio);
             sinFecha = 'Fecha: ' + dateFormat.format(fecha);
           } on FormatException {
-            sinFecha = 'Fecha: ' + movimientos[posicion].fechaInicioAporte;
+            sinFecha = 'Fecha: ' + movimientos[posicion].fechaInicio;
           }
         }
 
@@ -441,17 +448,16 @@ class Logedin extends StatelessWidget {
                   color: Colors.green,
                 ),
                 subtitle: Text(
-                    sinFecha+'\n \$ ' +
-                        numberFormat(
-                          movimientos[posicion].aporte.toDouble(),
-                        ),
-                    style: TextStyle(
-                        
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal),),
-                    //overflow: TextOverflow.ellipsis),
+                  sinFecha +
+                      '\n \$ ' +
+                      numberFormat(
+                        movimientos[posicion].aporte.toDouble(),
+                      ),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                ),
+                //overflow: TextOverflow.ellipsis),
                 title: Text(
-                  tipoAporte,
+                  movimientos[posicion].tipoAhorro,
                   overflow: TextOverflow.ellipsis,
                 ),
                 //subtitle: Text(sinFecha,),
@@ -464,8 +470,6 @@ class Logedin extends StatelessWidget {
 
     return list;
   }
-
-
 }
 
 Widget validacionVotacion(BuildContext ctx) {
@@ -503,8 +507,8 @@ Widget validacionVotacion(BuildContext ctx) {
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
   DateFormat dateFormat = DateFormat("yyyy MMMM dd"); 
   DateTime fecha;
-  //DateTime now= DateTime.now();
-  final now = DateTime(2020, 01, 26);
+  DateTime now= DateTime.now();
+  //final now = DateTime(2020, 01, 26);
   print(now);
   List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
     for(var asamblea in asambleas){
