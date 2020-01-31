@@ -69,7 +69,6 @@ class _PrimeraPantallaState extends State<PrimeraPantalla> {
                     if(!showLoading)OutlineButton(
                       child: Text('Iniciar Sesion'),onPressed: (){
                         setState(() {
-                          print('its me');
                            showLoading= true;
                            login(context);
                         });
