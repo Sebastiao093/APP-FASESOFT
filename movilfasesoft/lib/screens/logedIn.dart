@@ -299,33 +299,33 @@ class Logedin extends StatelessWidget {
     
   }
 
-   Widget _deuda(String correo){
+   Widget _deuda(String correo){//this is all fucking importantttt;
         
-         FasAhorroProviders prov= FasAhorroProviders();
+  //        FasAhorroProviders prov= FasAhorroProviders();
 
-        return Container(
-              child: FutureBuilder(
-                      future: prov.getDeuda(correo),
-                      builder: (ctx,AsyncSnapshot<String> snap){
-                            if(snap.hasData){
-                                return Text(
-                                          '\$ ' +
-                                              numberFormat(
-                                                  double.parse(snap.data)),
-                                          style: TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold),
-                                        );
-                            }else{
-                              return CircularProgressIndicator();
-                            }
+  //       return Container(
+  //             child: FutureBuilder(
+  //                     future: prov.getDeuda(correo),
+  //                     builder: (ctx,AsyncSnapshot<String> snap){
+  //                           if(snap.hasData){
+  //                               return Text(
+  //                                         '\$ ' +
+  //                                             numberFormat(
+  //                                                 double.parse(snap.data)),
+  //                                         style: TextStyle(
+  //                                             color: Colors.blue,
+  //                                             fontWeight: FontWeight.bold),
+  //                                       );
+  //                           }else{
+  //                             return CircularProgressIndicator();
+  //                           }
 
-                      },
-              ),
-        );
+  //                     },
+  //             ),
+  //       );
 
 
-   }
+  //  }//up to here 
 
   static Future<PerfilRol> cargarPerfilRol(String correo) async {
     final perfilProvider = PerfilRolProvider();
