@@ -299,7 +299,12 @@ class _PantallaQrState extends State<PantallaQr> {
               onPressed: () => Navigator.of(context).pop(),
             );
           }else{
-            return Divider(color: Colors.white,height: 40.0,);
+            return FlatButton(
+              shape: StadiumBorder(),
+              child: Text('Aceptar',textScaleFactor: 1.2,),
+              color: Colors.blue,
+              onPressed: () => Navigator.of(context).pop(),
+            );
           }
         }else{ 
           return  Divider(color: Colors.white,height: 40.0,);  
