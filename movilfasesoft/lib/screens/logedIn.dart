@@ -201,87 +201,108 @@ class Logedin extends StatelessWidget {
 
   Widget _Ahorros(BuildContext context, Ahorros ahorro,String correo) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.all(20.0),
-      child: Column(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.blue,
-            ),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              elevation: 45.0,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-                child: Column(
-                  children: <Widget>[
-                    Image(
-                      image: AssetImage('assets/icons/ahorroLogo.png'),
-                      //Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
-                    ),
-                    Center(
-                        heightFactor: 3.0, child: Text('DETALLES DE CUENTA ',style: TextStyle(color: Colors.blue, fontSize: 18),)),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                      child: Column(
-                        children: <Widget>[
-                          Divider(),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 10.0),
-                            child: Column(
-                              children: <Widget>[
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('AHORROS')),
-                                Align(
-                                    alignment: Alignment.topRight,
-                                    child: Text(
-                                      '\$ ' +
-                                          numberFormat(ahorro.monto.toDouble()),
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                              ],
-                            ),
+    return    Container(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.blue,
+                ),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  elevation: 45.0,
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                    child: Column(
+                      children: <Widget>[
+                        Image(
+                          image: AssetImage('assets/icons/ahorroLogo.png'),
+                          //Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
+                        ),
+                        Center(
+                            heightFactor: 3.0,
+                            child: Text('DETALLES DE CUENTA ')),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10.0),
+                          child: Column(
+                            children: <Widget>[
+                              Divider(),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text('AHORROS')),
+                                    Align(
+                                        alignment: Alignment.topRight,
+                                        child: Text(
+                                          '\$ ' +
+                                              numberFormat(
+                                                  ahorro.monto.toDouble()),
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                              Container(
+                                margin: EdgeInsets.only(top: 10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text('APORTE MENSUAL')),
+                                    Align(
+                                        alignment: Alignment.topRight,
+                                        child: Text(
+                                          '\$ ' +
+                                              numberFormat(
+                                                  ahorro.aporte.toDouble()),
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                    Divider(),
+                                    Container(
+                                margin: EdgeInsets.symmetric(vertical: 10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text('DEUDAS')),
+                                    Align(
+                                        alignment: Alignment.topRight,
+                                        child: _deuda(correo)
+                                        ),
+                                        Divider()
+                                  ],
+                                ),
+                              )
+                                   
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          Divider(),
-                          Container(
-                            margin: EdgeInsets.only(top: 10.0),
-                            child: Column(
-                              children: <Widget>[
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('APORTE MENSUAL')),
-                                Align(
-                                    alignment: Alignment.topRight,
-                                    child: Text(
-                                      '\$ ' +
-                                          numberFormat(
-                                              ahorro.aporte.toDouble()),
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                Divider(),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              Container()
+            ],
           ),
-          Container()
-        ],
-      ),
-    );
+        );
+      
+    
   }
 
    Widget _deuda(String correo){
@@ -487,8 +508,8 @@ Widget validacionVotacion(BuildContext ctx) {
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
   DateFormat dateFormat = DateFormat("yyyy MMMM dd"); 
   DateTime fecha;
-  //DateTime now= DateTime.now();
-  final now = DateTime(2020, 01, 26);
+  DateTime now= DateTime.now();
+  //final now = DateTime(2020, 01, 26);
   print(now);
   List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
     for(var asamblea in asambleas){
