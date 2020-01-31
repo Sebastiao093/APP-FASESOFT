@@ -9,7 +9,7 @@ Widget userPhoto(correo) {
   String _url='Https://graph.microsoft.com/v1.0/users/';
  
  return  ClipRRect(
-   borderRadius: BorderRadius.circular(80),
+   borderRadius: BorderRadius.circular(100),
    child:FadeInImage(
      placeholder: AssetImage('assets/icons/person.png'),
      image:  NetworkImage(

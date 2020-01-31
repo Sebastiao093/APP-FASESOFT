@@ -486,8 +486,8 @@ Widget validacionVotacion(BuildContext ctx) {
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
   DateFormat dateFormat = DateFormat("yyyy MMMM dd"); 
   DateTime fecha;
-  //DateTime now= DateTime.now();
-  final now = DateTime(2020, 01, 26);
+  DateTime now= DateTime.now();
+  //final now = DateTime(2020, 01, 26);
   print(now);
   List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
     for(var asamblea in asambleas){

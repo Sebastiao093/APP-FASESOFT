@@ -63,7 +63,7 @@ class PerfilPantalla extends StatelessWidget {
         return Container(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: constrains.maxWidth * 0.1,
+                horizontal: constrains.maxWidth * 0.05,
                 vertical: (constrains.maxHeight-appBarAndroid.preferredSize.height-MediaQuery.of(context).padding.top) * 0.01),
             child: ListView.builder(
               itemCount: 1,
@@ -86,44 +86,34 @@ class PerfilPantalla extends StatelessWidget {
       child: Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        elevation: 45.0,
+        elevation: 15.0,
         child: Padding(
           padding: EdgeInsets.all(15.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              userPhoto(MyApp.correoUsuario),
-              Divider(),
-              ListTile(
-                title: Text('Nombre:'),
-                subtitle: Text(user.nombre + ' ' + user.apellido),
-                leading: Icon(Icons.person,color: Colors.blue,),
-              ),
+              CircleAvatar(
+            child: CircleAvatar(
+              child: userPhoto(MyApp.correoUsuario),
+              backgroundColor: Colors.white,
+              maxRadius: 96.0,
+            ),
+            backgroundColor: Colors.blue,
+            maxRadius: 100.0,
+          ),
+              Divider(color:Colors.white10),
+              _informacion('Nombre', Icons.person, user.nombre+ ' ' + user.apellido),
+            
               Divider(color: Colors.blue),
-              ListTile(
-                title: Text('Identificación:'),
-                subtitle: Text(user.identificacion),
-                leading: Icon(Icons.fingerprint,color: Colors.blue,),
-              ),
+              _informacion('Identificación:',Icons.fingerprint, user.identificacion),
               Divider(color: Colors.blue),
-              ListTile(
-                title: Text('Correo:'),
-                subtitle: Text(user.correo),
-                leading: Icon(Icons.mail,color: Colors.blue,),
-              ),
+              _informacion('Correo:', Icons.mail,user.correo),
               Divider(color: Colors.blue),
-              ListTile(
-                title: Text('Dirección:'),
-                subtitle: Text(user.direccion),
-                leading: Icon(Icons.home,color: Colors.blue,),
-              ),
+              _informacion('Dirección:', Icons.home,user.direccion),
               Divider(color: Colors.blue),
-              ListTile(
-                title: Text('Teléfono:'),
-                subtitle: Text(user.telefono),
-                leading: Icon(Icons.phone, color: Colors.blue,),
-              ),
+              _informacion('Teléfono:', Icons.phone, user.telefono)
+             
             ],
           ),
         ),
@@ -131,3 +121,23 @@ class PerfilPantalla extends StatelessWidget {
     );
   }
 }
+
+  Widget _informacion(String parametro,IconData icono,String informacion){ 
+    return Row(
+      children: <Widget>[
+        Icon(icono,color: Colors.blue,),
+        SizedBox(width: 10.0,),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.blue),
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          child:ListTile(
+            title: Text(parametro),
+            subtitle: Text(informacion,textScaleFactor: 1.2,style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,)),
+          ),
+        )
+      ],
+    );
+  }
