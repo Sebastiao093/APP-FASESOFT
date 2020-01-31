@@ -30,12 +30,18 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   int _numeroPreguntas = 0;
 
   void _seleccionarRespuesta(int idPregunta, String respuesta, int idAs) {
+    String respuestaAenviar="";
+    if(respuesta=="1"){
+      respuestaAenviar="SI";
+      }else if(respuesta=="2") {
+      respuestaAenviar="NO";  
+      }
     setState(() {
       _respuestasMarcadas[idPregunta] = respuesta;
       _jsonEnvio.add({
         "correo": MyApp.correoUsuario,
         "fkasistencia": idAs,
-        "idrespuesta": respuesta,
+        "idrespuesta": respuestaAenviar,
         "FKVOTACION": "$idPregunta"
       });
     });
