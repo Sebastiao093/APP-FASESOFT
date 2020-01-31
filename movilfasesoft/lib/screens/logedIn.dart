@@ -336,6 +336,7 @@ class Logedin extends StatelessWidget {
         } else if (perfilAux.hasError) {
           return Container();
         }
+        return Container();
       },
     );
   }
