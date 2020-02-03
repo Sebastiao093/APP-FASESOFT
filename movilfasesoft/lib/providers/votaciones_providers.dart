@@ -38,7 +38,7 @@ class Votaciones_providers{
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('error');
+      throw new MiException( errorCode: 200);
     }
   }
 
