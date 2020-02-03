@@ -4,6 +4,7 @@ import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/screens/inicial.dart';
 import 'package:movilfasesoft/screens/logedIn.dart';
 import 'package:movilfasesoft/screens/pantallasInicio.dart';
+import 'package:movilfasesoft/screens/PantallaWeb.dart';
 import '../screens/PerfilPantalla.dart';
 import '../screens/AsistenciaQR.dart';
 import '../screens/ConvenioPantalla.dart';
@@ -24,7 +25,8 @@ return <String,WidgetBuilder>{
         CreditoPantalla.routedname:(ctx)=>CreditoPantalla(),
         ConvenioPantalla.routedname:(ctx)=>ConvenioPantalla(),
         PerfilPantalla.routedname:(ctx)=>PerfilPantalla(),
-        AsambleaPantalla.routedname: (ctx)=>AsambleaPantalla()
+        AsambleaPantalla.routedname: (ctx)=>AsambleaPantalla(),
+        PantallaWeb.routedname: (ctx)=>PantallaWeb()
       };
 
 }

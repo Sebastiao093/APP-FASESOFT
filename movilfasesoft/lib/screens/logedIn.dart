@@ -22,9 +22,11 @@ import 'package:movilfasesoft/screens/ConvenioPantalla.dart';
 import 'package:movilfasesoft/screens/CreditoPantalla.dart';
 import 'package:movilfasesoft/screens/PerfilPantalla.dart';
 import 'package:movilfasesoft/screens/Votaciones.dart';
+import 'package:movilfasesoft/screens/PantallaWeb.dart';
 import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../providers/asamblea_providers.dart';
 import '../providers/asamblea_providers.dart';
@@ -52,6 +54,10 @@ void irQr(BuildContext ctx) {
 
 void irPerfil(BuildContext ctx, String correo) {
   Navigator.of(ctx).pushNamed(PerfilPantalla.routedname, arguments: correo);
+}
+
+void irWeb(BuildContext ctx) {
+  Navigator.of(ctx).pushNamed(PantallaWeb.routedname);
 }
 
 String nombre(user) {
@@ -172,6 +178,20 @@ class Logedin extends StatelessWidget {
           onTap: () {
             UserLogin().logOut(context);
           },
+        ),
+        Container(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.28),
+          child: ListTile(
+
+            leading: ImageIcon(
+                    AssetImage('assets/icons/fasesoftLogoBarra.png'),size: 200,color: Colors.blue,),
+            title: Text('',
+              style: TextStyle(color: Colors.blue),textScaleFactor: 2.0,
+            ),
+            onTap: () {
+              irWeb(context);
+            },
+          ),
         ),
       ],
     ));
