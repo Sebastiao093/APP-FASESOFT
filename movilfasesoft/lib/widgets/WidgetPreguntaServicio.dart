@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:movilfasesoft/models/Pregunta.dart';
 import 'package:movilfasesoft/models/Respuesta.dart';
 import 'package:movilfasesoft/models/RespuestaContestadas.dart';
-import 'package:movilfasesoft/screens/logedIn.dart';
 import '../main.dart';
 import '../providers/votaciones_providers.dart';
 
@@ -28,14 +27,13 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
       Map<String, TextEditingController>();
   bool contesto = false;
   int _numeroPreguntas = 0;
-
   void _seleccionarRespuesta(int idPregunta, String respuesta, int idAs) {
-    String respuestaAenviar="";
-    if(respuesta=="1"){
-      respuestaAenviar="SI";
-      }else if(respuesta=="2") {
-      respuestaAenviar="NO";  
-      }
+    String respuestaAenviar = "";
+    if (respuesta == "1") {
+      respuestaAenviar = "SI";
+    } else if (respuesta == "2") {
+      respuestaAenviar = "NO";
+    }
     setState(() {
       _respuestasMarcadas[idPregunta] = respuesta;
       _jsonEnvio.add({
@@ -47,14 +45,46 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
     });
   }
 
-  void cancelarBoton(List<Map<String, Object>> jsonEnvio) {
+  void cancelarBoton(List<Map<String, Object>> jsonEnvio, BuildContext ctx) {
+    bool error=true;
     for (var i = 0; i < jsonEnvio.length; i++) {
-      Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i));
+      Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i))
+          .then((aux) {})
+          .catchError((e) {
+              
+       if(error){showDialog(
+            context: ctx,
+            barrierDismissible: true,
+            builder: (context) {
+              return AlertDialog(
+                  title: Text('Error de conexión', style: TextStyle(color: Colors.blue)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  titleTextStyle: TextStyle(
+                    fontSize: 24,
+                    fontFamily: 'RobotoCondensed',
+                    fontWeight: FontWeight.bold,
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('cerrar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                  content: Text('Las respuestas no se han enviado por problemas de conexión'));
+            });
+            }
+            error=false;       
+      });
     }
+   
     setState(() {
       contesto = true;
     });
-    Navigator.of(context).pop();
+
+     Navigator.of(context).pop();
   }
 
   void _submitTexto(
@@ -85,9 +115,11 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   @override
   Widget build(BuildContext context) {
     for (var i = 0; i < widget._respuestasContestadas.length; i++) {
-      _respuestasMarcadas[widget._respuestasContestadas
-          .elementAt(i)
-          .fkVotacion] = widget._respuestasContestadas.elementAt(i).idrespuesta=="SI"?"1":"2";
+      _respuestasMarcadas[
+              widget._respuestasContestadas.elementAt(i).fkVotacion] =
+          widget._respuestasContestadas.elementAt(i).idrespuesta == "SI"
+              ? "1"
+              : "2";
     }
 
     return imprimirPreguntas(widget._preguntas, widget.idAsistente);
@@ -164,10 +196,16 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
     return LayoutBuilder(
       builder: (ctx, constrains) {
         return Container(
-          margin: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.05,horizontal: constrains.maxWidth*0.05),
-          padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.001,horizontal: constrains.maxWidth*0.001),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15*(constrains.maxHeight/constrains.maxWidth)),
-          color: Theme.of(context).primaryColor,
+          margin: EdgeInsets.symmetric(
+              vertical: constrains.maxHeight * 0.05,
+              horizontal: constrains.maxWidth * 0.05),
+          padding: EdgeInsets.symmetric(
+              vertical: constrains.maxHeight * 0.001,
+              horizontal: constrains.maxWidth * 0.001),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+                15 * (constrains.maxHeight / constrains.maxWidth)),
+            color: Theme.of(context).primaryColor,
           ),
           child: Card(
             elevation: 20,
@@ -178,20 +216,26 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                   Container(
                     height: constrains.maxHeight * 0.15,
                     width: constrains.maxWidth,
-                    child:  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[Container(width: constrains.maxWidth*0.1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          width: constrains.maxWidth * 0.1,
                           child: Text(
-                              '${index + 1}/$numTotalPreguntas',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                        ),
-                          Container(width: constrains.maxWidth*0.7,
-                            child: FittedBox(
-                      child:Column(children: partirPalabra(preguntaUnit.pregunta, 7),)),
+                            '${index + 1}/$numTotalPreguntas',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          width: constrains.maxWidth * 0.7,
+                          child: FittedBox(
+                              child: Column(
+                            children: partirPalabra(preguntaUnit.pregunta, 7),
+                          )),
+                        ),
+                      ],
+                    ),
                   ),
                   Divider(color: Colors.blue),
                   FutureBuilder<List<dynamic>>(
@@ -209,7 +253,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                                       as Map<String, dynamic>);
 
                               if ((auxrespuestas.data.length == 1) &
-                                  (_textosDeIngreso[preguntaUnit.id.toString()] ==
+                                  (_textosDeIngreso[
+                                          preguntaUnit.id.toString()] ==
                                       null)) {
                                 TextEditingController textoIngreso =
                                     TextEditingController();
@@ -231,7 +276,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                                     preguntaUnit.id,
                                     respuestaUnitaria,
                                     _seleccionarRespuesta,
-                                    _textosDeIngreso[preguntaUnit.id.toString()],
+                                    _textosDeIngreso[
+                                        preguntaUnit.id.toString()],
                                     _submitTexto,
                                     idAsistente),
                               ); //
@@ -239,7 +285,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                           ),
                         );
                       } else if (auxrespuestas.hasError) {
-                        return Text('${auxrespuestas.error}');
+                        return  mensajeNoInternet('Se perdio la conexión de internet',context);
                       }
                       return CircularProgressIndicator();
                     },
@@ -264,7 +310,7 @@ Widget botonEnvio(bool condicion, BuildContext context,
           ),
           color: Theme.of(context).primaryColor,
           onPressed: () {
-            enviarCancelar(jsonEnvio);
+            enviarCancelar(jsonEnvio, context);
           },
           disabledColor: Theme.of(context).primaryColorLight,
           elevation: 20,
@@ -292,14 +338,8 @@ Widget mostrarRespuesta(
     Function submitData,
     int idAsistente) {
   return tipoRespuesta
-      ? respuestaAbierta(
-          ctx,
-          textoIngreso,
-          submitData,
-          respuestasMarcadas,
-          respuestaUnitaria,
-          idPregunta,
-          idAsistente)
+      ? respuestaAbierta(ctx, textoIngreso, submitData, respuestasMarcadas,
+          respuestaUnitaria, idPregunta, idAsistente)
       : respuestaOpciones(ctx, respuestasMarcadas, idPregunta,
           respuestaUnitaria, seleccionarRespuesta, idAsistente);
 }
@@ -332,34 +372,40 @@ Widget validacionRespuestasOpciones(
     Color color,
     int idAsistente) {
   return LayoutBuilder(
-    builder: (ctx, constraints){
+    builder: (ctx, constraints) {
       return condicion
-      ? InkWell(
-          onTap: () => seleccionarRespuesta(
-              idPregunta, respuestaUnitaria.id.toString(), idAsistente),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(100),
-          ),margin: EdgeInsets.symmetric(vertical: constraints.maxHeight*0.2),
-            padding: EdgeInsets.symmetric(vertical: constraints.maxHeight*0.2),
-            child: Text(
-              respuestaUnitaria.respuesta,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        )
-      : Container(
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(100),
-          ),margin: EdgeInsets.symmetric(vertical: constraints.maxHeight*0.2),
-            padding: EdgeInsets.symmetric(vertical: constraints.maxHeight*0.2),
-          child: Text(respuestaUnitaria.respuesta,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold)),
-        );
+          ? InkWell(
+              onTap: () => seleccionarRespuesta(
+                  idPregunta, respuestaUnitaria.id.toString(), idAsistente),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                margin:
+                    EdgeInsets.symmetric(vertical: constraints.maxHeight * 0.2),
+                padding:
+                    EdgeInsets.symmetric(vertical: constraints.maxHeight * 0.2),
+                child: Text(
+                  respuestaUnitaria.respuesta,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+          : Container(
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              margin:
+                  EdgeInsets.symmetric(vertical: constraints.maxHeight * 0.2),
+              padding:
+                  EdgeInsets.symmetric(vertical: constraints.maxHeight * 0.2),
+              child: Text(respuestaUnitaria.respuesta,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            );
     },
   );
 }
@@ -368,7 +414,7 @@ Widget respuestaAbierta(
     BuildContext ctx,
     TextEditingController textoIngreso,
     Function submitData,
-    Map<int,String> respuestasContestadas,
+    Map<int, String> respuestasContestadas,
     Respuesta respuestaUnitaria,
     int idPregunta,
     int idAsistente) {
@@ -399,30 +445,52 @@ Widget respuestaAbierta(
         );
 }
 
-List<Text> partirPalabra(String pregunta,int palabraPorLinea){
-
+List<Text> partirPalabra(String pregunta, int palabraPorLinea) {
   List<String> listaPalabras = pregunta.split(" ");
-  String frasePalabra="";
-  int i=0;
-  List<Text> listaEnvio=List<Text>();
+  String frasePalabra = "";
+  int i = 0;
+  List<Text> listaEnvio = List<Text>();
   for (String palabra in listaPalabras) {
     i++;
-  frasePalabra=frasePalabra+" "+palabra;
-  if(i==palabraPorLinea ){
-    listaEnvio.add(Text(
-       frasePalabra,
-       textAlign: TextAlign.center,
-      style: TextStyle(fontWeight: FontWeight.bold),
-       ));
-       frasePalabra="";
-       i=0;
+    frasePalabra = frasePalabra + " " + palabra;
+    if (i == palabraPorLinea) {
+      listaEnvio.add(Text(
+        frasePalabra,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ));
+      frasePalabra = "";
+      i = 0;
+    }
   }
-  }
-listaEnvio.add(Text(
-       frasePalabra,
-       textAlign: TextAlign.center,
-      style: TextStyle(fontWeight: FontWeight.bold),
-       ));
-       return listaEnvio;
-
+  listaEnvio.add(Text(
+    frasePalabra,
+    textAlign: TextAlign.center,
+    style: TextStyle(fontWeight: FontWeight.bold),
+  ));
+  return listaEnvio;
 }
+Widget mensajeNoInternet(String mensaje, BuildContext context){
+
+  return  SafeArea(
+    child: Container(
+                    
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    child: SafeArea(
+                                          child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        elevation: 15.0,
+                        child: Padding(
+                          padding: EdgeInsets.all(1.0),
+                          child:  FittedBox(
+                                child: Text(mensaje,textAlign: TextAlign.center,),
+                              ),
+                        ),
+                      ),
+                    )),
+  );
+  }

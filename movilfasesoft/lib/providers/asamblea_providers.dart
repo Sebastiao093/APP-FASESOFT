@@ -12,7 +12,6 @@ class AsambleaProviders {
     Future<List<Asamblea>> getAsambleas() async{
     List<Asamblea> asambleas;
     final url= Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio);
-    print(url);
     final resp = await http.get(url);
     
     if (resp.statusCode==HttpStatus.ok){
