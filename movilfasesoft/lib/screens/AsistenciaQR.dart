@@ -8,6 +8,7 @@ import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
+import 'package:movilfasesoft/utils/miExcepcion.dart';
 
 class PantallaQr extends StatefulWidget {
   static const routedname = "/PantallaQr";
@@ -399,7 +400,7 @@ class _PantallaQrState extends State<PantallaQr> {
     redraw();
     String futureString = '';
     try {
-      futureString = await MajaScan.startScan(
+        futureString = await MajaScan.startScan(
         title: 'QR Asistencia', 
         titleColor: Colors.white,
         barColor: Colors.blue,
@@ -407,8 +408,14 @@ class _PantallaQrState extends State<PantallaQr> {
         qRScannerColor: Colors.yellow,
 	      flashlightEnable: true
       );
-      Future<InfoAsistente> infoAsistente = InfoAsistenteProvider().getInfoAsistente(futureString);
-      infoAsistente.then((aux){
+       } catch (e) {
+           futureString = e.toString();
+        }
+      
+        
+      
+      InfoAsistenteProvider().getInfoAsistente(futureString).then((aux){
+        
         if (futureString == aux.correo){
           this.correo= aux.correo;
           if (aux.estado == 'NOASI') {
@@ -437,7 +444,14 @@ class _PantallaQrState extends State<PantallaQr> {
           });
         } 
       }).catchError(
-        (error){
+        (MiException e){
+          e.toString()
+          print('errore $e');
+           print(e.errorCode);
+          if (e== '') {
+            
+          } else {
+          }
           setState(() {
             this._varBloqueoBoton = false;
             this._varError = true;
@@ -445,9 +459,7 @@ class _PantallaQrState extends State<PantallaQr> {
         } 
       );
       setState(() => this._datosObtenidos = futureString);
-    } catch (e) {
-      futureString = e.toString();
-    }
+   
   }
 
   void _enviarCambioEstadoPut(Map<String, Object> dato) async {

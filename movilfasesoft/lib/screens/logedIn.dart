@@ -170,7 +170,7 @@ class Logedin extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: Icon(Icons.close),
+          leading: Icon(Icons.power_settings_new,color: Colors.red,),
           title: Text(
             'Cerrar sesion',
             style: TextStyle(color: Colors.redAccent),
