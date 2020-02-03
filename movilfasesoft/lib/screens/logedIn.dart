@@ -148,10 +148,7 @@ class Logedin extends StatelessWidget {
             Icons.center_focus_weak,
             color: Colors.blue,
           ),
-          title: Text(
-            'Generar QR ',
-            style: TextStyle(color: Colors.blueAccent),
-          ),
+          title: Text('Generar QR'),
           onTap: () {
             Navigator.of(context).pushNamed('/qr');
           },
@@ -161,10 +158,7 @@ class Logedin extends StatelessWidget {
             Icons.people,
             color: Colors.blue,
           ),
-          title: Text(
-            'Asamblea',
-            style: TextStyle(color: Colors.blueAccent),
-          ),
+          title: Text('Asamblea'),
           onTap: () {
             irAsambleas(context);
           },
@@ -179,7 +173,7 @@ class Logedin extends StatelessWidget {
             UserLogin().logOut(context);
           },
         ),
-        Container(
+        /* Container(
           padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.28),
           child: ListTile(
 
@@ -192,7 +186,7 @@ class Logedin extends StatelessWidget {
               irWeb(context);
             },
           ),
-        ),
+        ), */
       ],
     ));
   }

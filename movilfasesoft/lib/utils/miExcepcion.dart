@@ -1,4 +1,6 @@
-class MiException implements Exception {
+import 'dart:io';
+
+class MiException implements Exception,SocketException{
   
  int errorCode;
  
@@ -28,6 +30,22 @@ class MiException implements Exception {
     }
 
  }
+
+  @override
+  // TODO: implement address
+  InternetAddress get address => null;
+
+  @override
+  // TODO: implement message
+  String get message => null;
+
+  @override
+  // TODO: implement osError
+  OSError get osError => null;
+
+  @override
+  // TODO: implement port
+  int get port => null;
 
 
 }

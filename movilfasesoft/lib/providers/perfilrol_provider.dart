@@ -17,7 +17,7 @@ class PerfilRolProvider {
     final respuestaHttp = await http.get(url);
 
     if (respuestaHttp.statusCode == 200) {
-      final decodedData = json.decode(respuestaHttp.body);
+      final decodedData = json.decode(utf8.decode(respuestaHttp.bodyBytes));
       perfilRol = PerfilRol.fromJson(decodedData[0]);
     } else {
       throw Exception('error');

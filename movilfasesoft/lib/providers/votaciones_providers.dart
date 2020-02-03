@@ -47,7 +47,7 @@ class Votaciones_providers{
     final url = Uri.http(ProviderConfig.url, ProviderConfig.path+ pathFasVotaciones);
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return json.decode(utf8.decode(response.bodyBytes));
     } else {
       throw Exception('error');
     }
@@ -59,7 +59,7 @@ class Votaciones_providers{
     final url = Uri.http(ProviderConfig.url, ProviderConfig.path+ pathFasRespuestas);
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return json.decode(utf8.decode(response.bodyBytes));
     } else {
       throw Exception('error');
     }

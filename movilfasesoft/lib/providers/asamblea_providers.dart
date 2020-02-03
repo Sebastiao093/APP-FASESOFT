@@ -15,7 +15,7 @@ class AsambleaProviders {
     final resp = await http.get(url);
     
     if (resp.statusCode==HttpStatus.ok){
-      final List<dynamic> decodedData= json.decode(resp.body);
+      final List<dynamic> decodedData= json.decode(utf8.decode(resp.bodyBytes));
        asambleas=List();
     decodedData.forEach((item){
         asambleas.add(Asamblea.fromJsonItem(item));
