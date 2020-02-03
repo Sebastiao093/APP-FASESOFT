@@ -445,8 +445,8 @@ class _PantallaQrState extends State<PantallaQr> {
         } 
       }).catchError(
         (MiException e){
-          print('errore $e');
-           print(e.errorCode);
+          //print('errore $e');
+           //print(e.errorCode);
           if (e== '') {
             
           } else {

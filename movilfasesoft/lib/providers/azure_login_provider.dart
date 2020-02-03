@@ -48,7 +48,6 @@ class UserLogin {
             accessToken= await oauth.getAccessToken();
 
           }catch (e){
-            print(e);
           }
            
        
