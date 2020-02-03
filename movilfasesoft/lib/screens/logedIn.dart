@@ -26,7 +26,7 @@ import 'package:movilfasesoft/screens/PantallaWeb.dart';
 import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:movilfasesoft/utils/numberFormat.dart';
 
 import '../providers/asamblea_providers.dart';
 import '../providers/asamblea_providers.dart';
@@ -77,7 +77,7 @@ class Logedin extends StatelessWidget {
   static String tipoRol;
   static Future<PerfilRol> futurePerfilRol;
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  DateFormat dateFormat = DateFormat("yyyy MMMM dd");
+  DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES');
   
   Widget build(BuildContext context) {
     
@@ -408,6 +408,7 @@ class Logedin extends StatelessWidget {
                         Image(
                           image: AssetImage('assets/icons/iconomovimientos.png'),
                         ),
+                        
                         Expanded(
                           child:Center(
                             heightFactor: 3.0,
@@ -420,6 +421,7 @@ class Logedin extends StatelessWidget {
                         
                       ],
                     ),
+                    Divider(color: Colors.blue,),
                     Container(
                         height: 200,
                         child: FutureBuilder(
@@ -526,11 +528,11 @@ Widget validacionVotacion(BuildContext ctx) {
  asambleaSoon(context)async{
   
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  DateFormat dateFormat = DateFormat("yyyy MMMM dd"); 
+  DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES'); 
   DateTime fecha;
   DateTime now= DateTime.now();
   //final now = DateTime(2020, 01, 26);
-  print(now);
+  
   List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
     for(var asamblea in asambleas){
         
@@ -542,8 +544,7 @@ Widget validacionVotacion(BuildContext ctx) {
         }
         
         if(now.isBefore(fecha) && fecha.isBefore(now.add(Duration(days: 5)))){
-         
-          print('asambleeaaa papiiiii');
+        
            showDialog(
         context: context,
         barrierDismissible: false,
@@ -571,7 +572,7 @@ Widget validacionVotacion(BuildContext ctx) {
         );
     
         }else{
-          print('nada papi');
+          
         }
         
 

@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class AsambleaPantalla extends StatelessWidget {
  DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
- DateFormat dateFormat = DateFormat("yyyy MMMM dd"); 
+ DateFormat dateFormat = DateFormat("MMMM dd yyyy",'es_ES'); 
 
  static const routedname = "/PantallaAsamblea";
   @override
