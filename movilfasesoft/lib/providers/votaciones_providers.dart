@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
+import 'package:movilfasesoft/utils/miExcepcion.dart';
 
 
 
@@ -37,7 +38,7 @@ class Votaciones_providers{
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('error');
+      throw new MiException( errorCode: 200);
     }
   }
 
@@ -49,7 +50,7 @@ class Votaciones_providers{
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('error');
+      throw new MiException( errorCode: 200);
     }
   }
 
@@ -61,7 +62,7 @@ class Votaciones_providers{
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('error');
+      throw new MiException( errorCode: 200);
     }
   }
 
@@ -78,7 +79,7 @@ class Votaciones_providers{
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('error');
+      throw new MiException( errorCode: 200);
     }
   }
 
