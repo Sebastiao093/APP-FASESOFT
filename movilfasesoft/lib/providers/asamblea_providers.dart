@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/providers/providers_config.dart';
+import 'package:movilfasesoft/utils/miExcepcion.dart';
 
 class AsambleaProviders {
 
@@ -22,7 +23,7 @@ class AsambleaProviders {
     });
 
    }else{
-       print('error en http');
+       throw new MiException( errorCode: 200);
    }
 
     return asambleas;

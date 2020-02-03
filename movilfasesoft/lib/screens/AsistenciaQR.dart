@@ -428,6 +428,7 @@ class _PantallaQrState extends State<PantallaQr> {
         qRScannerColor: Colors.yellow,
 	      flashlightEnable: true
       );
+<<<<<<< HEAD
       setState(() => this._datosObtenidos = futureString);
     } catch (e) {
       futureString = e.toString();
@@ -444,6 +445,51 @@ class _PantallaQrState extends State<PantallaQr> {
         });
       } else {
         if (aux.estado == 'SIASI') {   
+=======
+       } catch (e) {
+           futureString = e.toString();
+        }
+      
+        
+      
+      InfoAsistenteProvider().getInfoAsistente(futureString).then((aux){
+        
+        if (futureString == aux.correo){
+          this.correo= aux.correo;
+          if (aux.estado == 'NOASI') {
+            setState(() {
+              _alerta('Datos del usuario cargados','¡Exitosamente!', Icons.check, Colors.green);
+              this.estado='Asistencia no registrada';
+              this.colorContainer=Colors.red;
+              this.colorTexto=Colors.white;
+              this._varBloqueoBoton = true;
+            });
+          } else {
+            if (aux.estado == 'SIASI') {   
+              setState(() {
+                _alerta('Usuario ya registrado','', Icons.person, Colors.green);
+                this.estado='Asistencia registrada';
+                this.colorContainer=Colors.green;
+                this.colorTexto=Colors.white;
+                this._varBloqueoBoton = false;
+              });
+            }
+          }
+        }else{
+          setState(() {
+            this._varBloqueoBoton = false;
+            this._varError = true;
+          });
+        } 
+      }).catchError(
+        (MiException e){
+          //print('errore $e');
+           //print(e.errorCode);
+          if (e== '') {
+            
+          } else {
+          }
+>>>>>>> c7d32ecbb9f3b3f2e027549eb48b20b0d2cb0164
           setState(() {
             _alerta('Usuario ya registrado','', Icons.person, Colors.green);
             this.estado='Asistencia registrada';

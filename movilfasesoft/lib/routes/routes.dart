@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:movilfasesoft/screens/AsambleaPantalla.dart';
-import 'package:movilfasesoft/screens/codigoQr.dart';
-import 'package:movilfasesoft/screens/inicial.dart';
-import 'package:movilfasesoft/screens/logedIn.dart';
-import 'package:movilfasesoft/screens/pantallasInicio.dart';
-import 'package:movilfasesoft/screens/PantallaWeb.dart';
+import '../screens/AsambleaPantalla.dart';
+import '../screens/codigoQr.dart';
+import '../screens/inicial.dart';
+import '../screens/logedIn.dart';
+import '../screens/pantallasInicio.dart';
+import '../screens/PantallaWeb.dart';
 import '../screens/PerfilPantalla.dart';
 import '../screens/AsistenciaQR.dart';
 import '../screens/ConvenioPantalla.dart';

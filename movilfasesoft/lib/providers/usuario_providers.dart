@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
+import 'package:movilfasesoft/utils/miExcepcion.dart';
 
 class UserProvider {
   final List<ListTile> usuario1 =List();
@@ -33,7 +34,7 @@ class UserProvider {
       user= UsuarioAres.fromJson(decodedData[0]);
 
    }else{
-      // print('error en http');
+      throw new MiException( errorCode: 200);
    }
 
     return user;

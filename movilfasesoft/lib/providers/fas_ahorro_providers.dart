@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/ahorro.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
+import 'package:movilfasesoft/utils/miExcepcion.dart';
 
 class FasAhorroProviders {
   
@@ -24,7 +25,7 @@ class FasAhorroProviders {
         ahorro = Ahorros.fromJson(item);
       });
     } else {
-      //Error De Conexion
+      throw new MiException( errorCode: 200);
     }
 
     return ahorro;
@@ -51,7 +52,7 @@ class FasAhorroProviders {
       });
      
     } else {
-     // print('ERROR en respuesta Http');
+     throw new MiException( errorCode: 200);
     }
     return mov;
   }
@@ -99,8 +100,8 @@ class FasAhorroProviders {
       }
       
      else {
-     // print('ERROR en respuesta Http');
+       throw new MiException( errorCode: 200);
     }
-    return deuda;;
+   
   }
 }

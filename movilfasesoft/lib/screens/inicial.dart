@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
-import 'dart:async';
-import 'dart:convert';
 
-import 'package:movilfasesoft/widgets/firstScreenWidget.dart';
 
 
 class PrimeraPantalla extends StatefulWidget {
