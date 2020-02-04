@@ -4,6 +4,7 @@ import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class PerfilPantalla extends StatelessWidget {
   static const routedname = "/PantallaPerfil";
@@ -38,6 +39,16 @@ class PerfilPantalla extends StatelessWidget {
         body: FutureBuilder(
           future: cargarUsuario(correo),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
+           
+            if(snapshot.hasError){
+            return Container(
+            padding: EdgeInsets.symmetric(vertical:100.0),
+            child: ConexionError(),
+          );
+
+
+            }
+
             if (snapshot.hasData) {
               return _detalleUsuario(snapshot.data,context);
             } else {

@@ -21,6 +21,7 @@ import 'package:movilfasesoft/screens/PerfilPantalla.dart';
 import 'package:movilfasesoft/screens/Votaciones.dart';
 import 'package:movilfasesoft/screens/PantallaWeb.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
+import 'package:movilfasesoft/widgets/ConexionError.dart';
 import '../providers/asamblea_providers.dart';
 
 void irVotaciones(BuildContext ctx, bool preguntasPorContestar) {
@@ -186,9 +187,14 @@ class Logedin extends StatelessWidget {
     return FutureBuilder(
       future: provider.getAhorroPermanente(correo),
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Container();
+        }
+
         if (snapshot.hasData) {
           String aporte = '';
           String monto = '';
+
           if (snapshot.data != null) {
             return _Ahorros(context, snapshot.data, correo);
           }
@@ -277,20 +283,8 @@ class Logedin extends StatelessWidget {
                                           fontWeight: FontWeight.bold),
                                     )),
                                 Divider(),
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Text('DEUDAS')),
-                                      Align(
-                                          alignment: Alignment.topRight,
-                                          child: _deuda(correo)),
-                                      Divider()
-                                    ],
-                                  ),
-                                )
+                                _deuda(correo),
+                                Divider()
                               ],
                             ),
                           ),
@@ -310,16 +304,23 @@ class Logedin extends StatelessWidget {
 
   Widget _deuda(String correo) {
     FasAhorroProviders prov = FasAhorroProviders();
-
     return Container(
       child: FutureBuilder(
         future: prov.getDeuda(correo),
         builder: (ctx, AsyncSnapshot<String> snap) {
           if (snap.hasData) {
-            return Text(
-              '\$ ' + numberFormat(double.parse(snap.data)),
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-            );
+            return Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                child: Column(children: <Widget>[
+                  Align(alignment: Alignment.topLeft, child: Text('DEUDAS')),
+                  Align(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        '\$ ' + numberFormat(double.parse(snap.data)),
+                        style: TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.bold),
+                      ))
+                ]));
           } else {
             return CircularProgressIndicator();
           }
@@ -360,6 +361,26 @@ class Logedin extends StatelessWidget {
   Widget _movimientosAportes(context, String correo) {
     FasAhorroProviders provider = FasAhorroProviders();
 
+    return FutureBuilder(
+      future: provider.getMovimientosAporte(correo),
+      builder: (context, AsyncSnapshot<List<Ahorros>> snap) {
+        if (snap.hasError) {
+          return Container(
+            padding: EdgeInsets.symmetric(vertical:100.0),
+            child: ConexionError(),
+          );
+        }
+
+        if (snap.hasData) {
+          return _movimientoAportesWidget(snap.data);
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+
+  Widget _movimientoAportesWidget(List<Ahorros> list) {
     return Container(
       padding: EdgeInsets.all(20.0),
       child: Column(
@@ -400,18 +421,9 @@ class Logedin extends StatelessWidget {
                       color: Colors.blue,
                     ),
                     Container(
-                        height: 200,
-                        child: FutureBuilder(
-                          future: provider.getMovimientosAporte(correo),
-                          builder:
-                              (context, AsyncSnapshot<List<Ahorros>> snap) {
-                            if (snap.hasData) {
-                              return _detallesMovimientosAportes(snap.data);
-                            } else {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                          },
-                        ))
+                      height: 200,
+                      child: _detallesMovimientosAportes(list),
+                    )
                   ],
                 ),
               ),

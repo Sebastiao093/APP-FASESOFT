@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:movilfasesoft/models/Credito.dart';
+import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class CreditoPantalla extends StatefulWidget {
   static const routedname = "/PantallaCreditos";
@@ -173,8 +174,7 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                           children: <Widget>[
                             FittedBox(
                               child: Center(
-                                  child: Text(
-                                      'No puedes conectarte con Fasesoft')),
+                                  child: ConexionError()),
                             ),
                           ],
                         ),

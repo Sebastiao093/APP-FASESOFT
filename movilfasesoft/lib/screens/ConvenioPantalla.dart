@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:movilfasesoft/models/TipoConvenio.dart';
+import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class ConvenioPantalla extends StatefulWidget {
   static const routedname = "/PantallaConvenios";
@@ -194,7 +195,7 @@ Widget contenido1(Future<List<dynamic>> elementos, BuildContext ctx) {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           FittedBox(
-                            child: Text('No puedes conectarte con Fasesoft'),
+                            child: ConexionError(),
                           ),
                         ],
                       ),

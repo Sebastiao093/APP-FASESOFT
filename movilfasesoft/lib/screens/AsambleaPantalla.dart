@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movilfasesoft/models/Asamblea.dart';
 import 'package:movilfasesoft/providers/asamblea_providers.dart';
 import 'package:intl/intl.dart';
+import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class AsambleaPantalla extends StatelessWidget {
  DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -29,8 +30,17 @@ class AsambleaPantalla extends StatelessWidget {
     return FutureBuilder(
       future: asambleaProviders.getAsambleas(),
       builder: (ctx, AsyncSnapshot<List<Asamblea>> snap) {
+          if(snap.hasError){
+            print(snap.error.toString());
+
+            return Container(
+            padding: EdgeInsets.symmetric(vertical:100.0),
+            child: ConexionError(),
+          );
+          }
+
         if (snap.hasData) {
-        
+
           if (snap.data.length > 0) {
             return _asambleaItem(snap.data[0]);
           } else {
