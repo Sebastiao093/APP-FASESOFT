@@ -30,7 +30,7 @@ class UserProvider {
     final resp = await http.get(url);
     
     if (resp.statusCode==HttpStatus.ok){
-      final decodedData= json.decode(resp.body);
+      final decodedData= json.decode(utf8.decode(resp.bodyBytes));
       user= UsuarioAres.fromJson(decodedData[0]);
 
    }else{

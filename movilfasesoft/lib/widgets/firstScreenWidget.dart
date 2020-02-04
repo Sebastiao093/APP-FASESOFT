@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/widgets/widgetSplash.dart';
 
   Widget firstScreen(context){

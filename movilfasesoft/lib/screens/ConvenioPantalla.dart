@@ -215,7 +215,6 @@ Future<List<dynamic>> obtenerIdConvenioData(String idTipoConvenio) async {
       _url,
       'fasesoft-web/webresources/servicios/fastiposconvenio/test/' +
           idTipoConvenio);
-  print(urlfintipoconvenio);
   final response = await http.get(urlfintipoconvenio);
 
   if (response.statusCode == 200) {
