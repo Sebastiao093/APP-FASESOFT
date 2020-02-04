@@ -13,7 +13,8 @@ class AsambleaPantalla extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ImageIcon(AssetImage('assets/icons/fasesoftLogoBarra.png'),size: 150.0,),
+        title: ImageIcon(AssetImage('assets/icons/fasesoftLogoBarra.png'),size: 150.0,
+        ),
         centerTitle: true,
       ),
       body: _WidgetlstAsambleas(),

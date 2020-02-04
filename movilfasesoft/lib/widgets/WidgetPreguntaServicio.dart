@@ -252,21 +252,32 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   }
 }
 
-Widget botonEnvio(bool condicion, BuildContext context, List<Map<String, Object>> jsonEnvio, Function enviarCancelar, bool cancel) {
-  return condicion & !cancel? RaisedButton(
-    child: Text(
-      'enviar respuestas',
-      textAlign: TextAlign.center,
-    ),
-    color: Theme.of(context).primaryColor,
-    onPressed: () {
-      enviarCancelar(jsonEnvio, context);
-    },
-    disabledColor: Theme.of(context).primaryColorLight,
-    elevation: 20,
-    disabledElevation: 10,
-  ): !cancel? Text(' Por favor \n responder todas las preguntas',textAlign: TextAlign.center,
-  ): Text("ya respondio todo",textAlign: TextAlign.center,);
+Widget botonEnvio(bool condicion, BuildContext context,
+    List<Map<String, Object>> jsonEnvio, Function enviarCancelar, bool cancel) {
+  return condicion & !cancel
+      ? RaisedButton(
+        
+          child: Text(
+            'Enviar respuestas',
+            textAlign: TextAlign.center,
+          ),
+          color: Theme.of(context).primaryColor,
+          onPressed: () {
+            enviarCancelar(jsonEnvio, context);
+          },
+          disabledColor: Theme.of(context).primaryColorLight,
+          elevation: 20,
+          disabledElevation: 10,
+        )
+      : !cancel
+          ? Text(
+              ' Por favor \n responder todas las preguntas',
+              textAlign: TextAlign.center,
+            )
+          : Text(
+              "Ya respondió todas las preguntas",
+              textAlign: TextAlign.center,
+            );
 }
 
 Widget mostrarRespuesta(
