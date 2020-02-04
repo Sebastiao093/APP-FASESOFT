@@ -229,7 +229,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                           ),
                         ),
                         Container(
-                          width: constrains.maxWidth * 0.7,
+                          width: constrains.maxWidth * 0.6,
                           child: FittedBox(
                               child: Column(
                             children: partirPalabra(preguntaUnit.pregunta, 7),
@@ -238,13 +238,13 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                       ],
                     ),
                   ),
-                  Divider(color: Colors.blue),
+                  Divider(height: constrains.maxHeight*0.05,color: Colors.blue),
                   FutureBuilder<List<dynamic>>(
                     future: respuestas,
                     builder: (context, auxrespuestas) {
                       if (auxrespuestas.hasData) {
                         return Container(
-                          height: constrains.maxHeight * 0.75,
+                          height: constrains.maxHeight * 0.7,
                           width: constrains.maxWidth,
                           child: ListView.builder(
                             itemCount: auxrespuestas.data.length,
