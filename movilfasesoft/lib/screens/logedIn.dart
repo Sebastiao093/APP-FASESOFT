@@ -545,7 +545,7 @@ Widget validacionVotacion(BuildContext ctx) {
         
         if(now.isBefore(fecha) && fecha.isBefore(now.add(Duration(days: 5)))){
         
-           showDialog(
+          return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
