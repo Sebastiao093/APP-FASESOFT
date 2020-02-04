@@ -63,16 +63,15 @@ String nombre(user) {
 }
 
 class Logedin extends StatelessWidget {
-  static const routedname='/loged';
+  static const routedname = '/loged';
   UsuarioAres usuarioAres = new UsuarioAres();
   final String user = MyApp.correoUsuario;
   static String tipoRol;
   static Future<PerfilRol> futurePerfilRol;
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES');
-  
+  DateFormat dateFormat = DateFormat(" MMMM dd yyyy", 'es_ES');
+
   Widget build(BuildContext context) {
-    
     futurePerfilRol = cargarPerfilRol(user);
     return FutureBuilder(
       future: UserProvider().getUser(user),
@@ -80,9 +79,8 @@ class Logedin extends StatelessWidget {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         } else {
-        
           this.usuarioAres = snapshot.data;
-          if(MyApp.show) asambleaSoon(context);
+          if (MyApp.show) asambleaSoon(context);
           return Scaffold(
               appBar: AppBar(
                 title: ImageIcon(
@@ -110,14 +108,11 @@ class Logedin extends StatelessWidget {
         child: ListView(
       children: <Widget>[
         GestureDetector(
-          child:UserAccountsDrawerHeader(
-            accountName: Text(nombre(this.usuarioAres)),
-            accountEmail: Text(user),
-            currentAccountPicture: userPhoto(MyApp.correoUsuario)
-            ),
-          onTap: () => irPerfil(context, user)
-          ),
-        
+            child: UserAccountsDrawerHeader(
+                accountName: Text(nombre(this.usuarioAres)),
+                accountEmail: Text(user),
+                currentAccountPicture: userPhoto(MyApp.correoUsuario)),
+            onTap: () => irPerfil(context, user)),
         ListTile(
           leading: Icon(Icons.person, color: Colors.blue),
           title: Text('Detalle de perfil'),
@@ -156,7 +151,10 @@ class Logedin extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: Icon(Icons.power_settings_new,color: Colors.red,),
+          leading: Icon(
+            Icons.power_settings_new,
+            color: Colors.red,
+          ),
           title: Text(
             'Cerrar sesion',
             style: TextStyle(color: Colors.redAccent),
@@ -192,7 +190,7 @@ class Logedin extends StatelessWidget {
           String aporte = '';
           String monto = '';
           if (snapshot.data != null) {
-            return _Ahorros(context, snapshot.data,correo);
+            return _Ahorros(context, snapshot.data, correo);
           }
           return ListTile(
             title: Text('acumulado ' + monto),
@@ -205,139 +203,130 @@ class Logedin extends StatelessWidget {
     );
   }
 
-  Widget _Ahorros(BuildContext context, Ahorros ahorro,String correo) {
+  Widget _Ahorros(BuildContext context, Ahorros ahorro, String correo) {
     Size size = MediaQuery.of(context).size;
-    return    Container(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.blue,
-                ),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  elevation: 45.0,
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-                    child: Column(
-                      children: <Widget>[
-                        Image(
-                          image: AssetImage('assets/icons/ahorroLogo.png'),
-                          //Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
-                        ),
-                        Center(
-                            heightFactor: 3.0,
-                            child: Text('DETALLES DE CUENTA ')),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10.0),
-                          child: Column(
-                            children: <Widget>[
-                              Divider(),
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 10.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text('AHORROS')),
-                                    Align(
-                                        alignment: Alignment.topRight,
-                                        child: Text(
-                                          '\$ ' +
-                                              numberFormat(
-                                                  ahorro.monto.toDouble()),
-                                          style: TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                  ],
-                                ),
-                              ),
-                              Divider(),
-                              Container(
-                                margin: EdgeInsets.only(top: 10.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text('APORTE MENSUAL')),
-                                    Align(
-                                        alignment: Alignment.topRight,
-                                        child: Text(
-                                          '\$ ' +
-                                              numberFormat(
-                                                  ahorro.aporte.toDouble()),
-                                          style: TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                    Divider(),
-                                    Container(
-                                margin: EdgeInsets.symmetric(vertical: 10.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text('DEUDAS')),
-                                    Align(
-                                        alignment: Alignment.topRight,
-                                        child: _deuda(correo)
-                                        ),
-                                        Divider()
-                                  ],
-                                ),
-                              )
-                                   
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.blue,
+            ),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              elevation: 45.0,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                child: Column(
+                  children: <Widget>[
+                    Image(
+                      image: AssetImage('assets/icons/ahorroLogo.png'),
+                      //Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
                     ),
-                  ),
+                    Center(
+                        heightFactor: 3.0,
+                        child: Text('DETALLES DE CUENTA ',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 25.0,
+                            ))),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      child: Column(
+                        children: <Widget>[
+                          Divider(),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text('AHORROS')),
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      '\$ ' +
+                                          numberFormat(ahorro.monto.toDouble()),
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ],
+                            ),
+                          ),
+                          Divider(),
+                          Container(
+                            margin: EdgeInsets.only(top: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text('APORTE MENSUAL')),
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      '\$ ' +
+                                          numberFormat(
+                                              ahorro.aporte.toDouble()),
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                Divider(),
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text('DEUDAS')),
+                                      Align(
+                                          alignment: Alignment.topRight,
+                                          child: _deuda(correo)),
+                                      Divider()
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Container()
-            ],
+            ),
           ),
-        );
-      
-    
+          Container()
+        ],
+      ),
+    );
   }
 
-   Widget _deuda(String correo){
-        
-         FasAhorroProviders prov= FasAhorroProviders();
+  Widget _deuda(String correo) {
+    FasAhorroProviders prov = FasAhorroProviders();
 
-        return Container(
-              child: FutureBuilder(
-                      future: prov.getDeuda(correo),
-                      builder: (ctx,AsyncSnapshot<String> snap){
-                            if(snap.hasData){
-                                return Text(
-                                          '\$ ' +
-                                              numberFormat(
-                                                  double.parse(snap.data)),
-                                          style: TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold),
-                                        );
-                            }else{
-                              return CircularProgressIndicator();
-                            }
-
-                      },
-              ),
-        );
-
-
-   }
+    return Container(
+      child: FutureBuilder(
+        future: prov.getDeuda(correo),
+        builder: (ctx, AsyncSnapshot<String> snap) {
+          if (snap.hasData) {
+            return Text(
+              '\$ ' + numberFormat(double.parse(snap.data)),
+              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
+      ),
+    );
+  }
 
   static Future<PerfilRol> cargarPerfilRol(String correo) async {
     final perfilProvider = PerfilRolProvider();
@@ -392,22 +381,24 @@ class Logedin extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Image(
-                          image: AssetImage('assets/icons/iconomovimientos.png'),
+                          image:
+                              AssetImage('assets/icons/iconomovimientos.png'),
                         ),
-                        
                         Expanded(
-                          child:Center(
-                            heightFactor: 3.0,
-                            child: Text(
-                              'MOVIMIENTOS',
-                              style: TextStyle(color: Colors.blue,fontSize: 18),
-                            )), 
-
+                          child: Center(
+                              heightFactor: 3.0,
+                              child: Text('MOVIMIENTOS',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 25.0,
+                                  ))),
                         )
-                        
                       ],
                     ),
-                    Divider(color: Colors.blue,),
+                    Divider(
+                      color: Colors.blue,
+                    ),
                     Container(
                         height: 200,
                         child: FutureBuilder(
@@ -511,57 +502,51 @@ Widget validacionVotacion(BuildContext ctx) {
     },
   );
 }
- asambleaSoon(context)async{
-  
+
+asambleaSoon(context) async {
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES'); 
+  DateFormat dateFormat = DateFormat(" MMMM dd yyyy", 'es_ES');
   DateTime fecha;
-  DateTime now= DateTime.now();
+  DateTime now = DateTime.now();
   //final now = DateTime(2020, 01, 26);
-  
-  List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
-    for(var asamblea in asambleas){
-        
-        try{
-        fecha= dateConvert.parse(asamblea.fecha);
-        
-        }on FormatException{
-              
-        }
-        
-        if(now.isBefore(fecha) && fecha.isBefore(now.add(Duration(days: 5)))){
-        
-          return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return AlertDialog(
-            actions: <Widget>[
-            FlatButton(child: Text('cerrar'),onPressed: (){
-              MyApp.show=false;
-              Navigator.pop(context);
-            },),
-            //FlatButton(child: Text('No recordarme de nuevo'),onPressed: (){},)
-          ],
-          title: Text('HAY UNA ASAMBLEA PRONTO',style: TextStyle(color: Colors.redAccent)),
-          shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-          titleTextStyle: TextStyle(
-              fontSize: 22,
-              fontFamily: 'RobotoCondensed',
-              fontWeight: FontWeight.bold,
-            ),
-          content: Text('Fecha: '
-          + dateFormat.format(fecha)+'\nHora:'+asamblea.hora),
-          );
-          }
-        );
-    
-        }else{
-          
-        }
-        
 
-    }
+  List<Asamblea> asambleas = await AsambleaProviders().getAsambleas();
+  for (var asamblea in asambleas) {
+    try {
+      fecha = dateConvert.parse(asamblea.fecha);
+    } on FormatException {}
 
+    if (now.isBefore(fecha) && fecha.isBefore(now.add(Duration(days: 5)))) {
+      return showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return AlertDialog(
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Cerrar'),
+                  onPressed: () {
+                    MyApp.show = false;
+                    Navigator.pop(context);
+                  },
+                ),
+                //FlatButton(child: Text('No recordarme de nuevo'),onPressed: (){},)
+              ],
+              title: Text('HAY UNA ASAMBLEA PRONTO',
+                  style: TextStyle(color: Colors.redAccent)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              titleTextStyle: TextStyle(
+                fontSize: 22,
+                fontFamily: 'RobotoCondensed',
+                fontWeight: FontWeight.bold,
+              ),
+              content: Text('Fecha: ' +
+                  dateFormat.format(fecha) +
+                  '\nHora:' +
+                  asamblea.hora),
+            );
+          });
+    } else {}
   }
+}
