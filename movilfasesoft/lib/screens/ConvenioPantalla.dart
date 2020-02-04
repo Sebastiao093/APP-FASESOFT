@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/Convenio.dart';
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:movilfasesoft/models/TipoConvenio.dart';
+import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class ConvenioPantalla extends StatefulWidget {
   static const routedname = "/PantallaConvenios";
@@ -157,24 +157,31 @@ Widget contenido1(Future<List<dynamic>> elementos, BuildContext ctx) {
                 ));
             } else if (auxElementos.hasError) {
               return Container(
-                height: constrains.maxHeight * 0.5,
-                width: constrains.maxWidth,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0),color: Colors.blue,),
-                child: Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                  elevation: 15.0,
-                  child: Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        FittedBox(child: Text('No puedes conectarte con Fasesoft'),),
-                      ],
+                  height: constrains.maxHeight * 0.5,
+                  width: constrains.maxWidth,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.blue,
+                  ),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    elevation: 15.0,
+                    child: Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          FittedBox(
+                            child: ConexionError(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                )
-              );
+                );
+              
             } 
             return CircularProgressIndicator();
           },

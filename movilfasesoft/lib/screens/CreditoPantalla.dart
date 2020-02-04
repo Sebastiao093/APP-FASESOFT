@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:movilfasesoft/models/Credito.dart';
+import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class CreditoPantalla extends StatefulWidget {
   static const routedname = "/PantallaCreditos";
@@ -137,22 +138,26 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                 );
               } else if (auxElementos.hasError) {
                 return Container(
-                  height: constrains.maxHeight * 0.5,
-                  width: constrains.maxWidth,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0),color: Colors.blue,),
-                  child: Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                    elevation: 15.0,
-                    child: Padding(padding: EdgeInsets.all(1.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          FittedBox(
-                            child: Center(
-                              child: Text('No puedes conectarte con Fasesoft')
-                            ),
-                          ),
+                    height: constrains.maxHeight * 0.5,
+                    width: constrains.maxWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.blue,
+                    ),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      elevation: 15.0,
+                      child: Padding(
+                        padding: EdgeInsets.all(1.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            FittedBox(
+                              child: Center(
+                                  child: ConexionError()),
+                            ),  
                         ],
                       ),
                     ),
