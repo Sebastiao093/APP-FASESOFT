@@ -301,8 +301,9 @@ Widget botonEnvio(bool condicion, BuildContext context,
     List<Map<String, Object>> jsonEnvio, Function enviarCancelar, bool cancel) {
   return condicion & !cancel
       ? RaisedButton(
+        
           child: Text(
-            'enviar respuestas',
+            'Enviar respuestas',
             textAlign: TextAlign.center,
           ),
           color: Theme.of(context).primaryColor,
@@ -319,7 +320,7 @@ Widget botonEnvio(bool condicion, BuildContext context,
               textAlign: TextAlign.center,
             )
           : Text(
-              "ya respondio todo",
+              "Ya respondió todas las preguntas",
               textAlign: TextAlign.center,
             );
 }

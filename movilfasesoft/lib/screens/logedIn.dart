@@ -190,7 +190,7 @@ class Logedin extends StatelessWidget {
                       //Iconos diseñados por <a href="https://www.flaticon.es/autores/itim2101" title="itim2101">itim2101</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
                     Center(
                       heightFactor: 3.0,
-                      child: Text('DETALLES DE CUENTA ')
+                      child: Text('DETALLES DE CUENTA ',  style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w800,fontSize: 25.0,))
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10.0),
@@ -341,7 +341,7 @@ class Logedin extends StatelessWidget {
                         Expanded(
                           child:Center(
                             heightFactor: 3.0,
-                            child: Text('MOVIMIENTOS', style: TextStyle(color: Colors.blue,fontSize: 18),)
+                            child: Text('MOVIMIENTOS',  style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w800,fontSize: 25.0,))
                           ),
                         ) 
                       ],
@@ -460,7 +460,7 @@ asambleaSoon(context) async {
         builder: (context) {
           return AlertDialog(
             actions: <Widget>[
-              FlatButton(child: Text('cerrar'),onPressed: (){
+              FlatButton(child: Text('Cerrar'),onPressed: (){
                 MyApp.show=false;
                 Navigator.pop(context);
               },),
