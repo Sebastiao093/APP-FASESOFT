@@ -9,30 +9,20 @@ class AsambleaProviders {
 
   final String pathServicio='fasasambleas/asambleactual';
 
-
-    Future<List<Asamblea>> getAsambleas() async{
-    List<Asamblea> asambleas;
-    final url= Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio);
-    final resp = await http.get(url);
-    
-    if (resp.statusCode==HttpStatus.ok){
-      final List<dynamic> decodedData= json.decode(utf8.decode(resp.bodyBytes));
-       asambleas=List();
+  Future<List<Asamblea>> getAsambleas() async{
+  List<Asamblea> asambleas;
+  final url= Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio);
+  final resp = await http.get(url);
+  
+  if (resp.statusCode==HttpStatus.ok){
+    final List<dynamic> decodedData= json.decode(utf8.decode(resp.bodyBytes));
+    asambleas=List();
     decodedData.forEach((item){
-        asambleas.add(Asamblea.fromJsonItem(item));
+      asambleas.add(Asamblea.fromJsonItem(item));
     });
-
-   }else{
-       throw new MiException( errorCode: 200);
-   }
-
-    return asambleas;
-
- 
+  }else{
+    throw new MiException( errorCode: 200);
   }
-
-
+  return asambleas;
+  }
 }
-
-
-

@@ -4,21 +4,17 @@ import 'package:movilfasesoft/providers/asamblea_providers.dart';
 import 'package:intl/intl.dart';
 
 class AsambleaPantalla extends StatelessWidget {
- DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+  DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
   DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES'); 
   DateTime fecha;
-
 
   static const routedname = "/PantallaAsamblea";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ImageIcon(
-                AssetImage('assets/icons/fasesoftLogoBarra.png'),
-                size: 150.0,),
+        title: ImageIcon(AssetImage('assets/icons/fasesoftLogoBarra.png'),size: 150.0,),
         centerTitle: true,
-       
       ),
       body: _WidgetlstAsambleas(),
     );
@@ -30,7 +26,6 @@ class AsambleaPantalla extends StatelessWidget {
       future: asambleaProviders.getAsambleas(),
       builder: (ctx, AsyncSnapshot<List<Asamblea>> snap) {
         if (snap.hasData) {
-        
           if (snap.data.length > 0) {
             return _asambleaItem(snap.data[0]);
           } else {
@@ -68,7 +63,8 @@ class AsambleaPantalla extends StatelessWidget {
             ),
             child: Card(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
+                borderRadius: BorderRadius.circular(10.0)
+              ),
               elevation: 45.0,
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
@@ -80,34 +76,24 @@ class AsambleaPantalla extends StatelessWidget {
                           Row(
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 5.0),
-                                child: Icon(
-                                  Icons.people,
-                                  size: 45.0,
-                                  color: Colors.blue,
-                                ),
+                                padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                                child: Icon(Icons.people,size: 45.0,color: Colors.blue,),
                               ),
                               Expanded(
                                 child: Center(
-                                    child: Text('ASAMBLEA',
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 25.0,
-                                        ))),
+                                  child: Text('ASAMBLEA',
+                                    style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w800,fontSize: 25.0,)
+                                  )
+                                ),
                               ),
                             ],
                           ),
                           Divider(color: Colors.blue,),
-                          _informacion('Lugar: ', Icons.account_balance,
-                              item.nombreLugar),
+                          _informacion('Lugar: ', Icons.account_balance,item.nombreLugar),
                           Divider(),
-                          _informacion(
-                              'Dirección: ', Icons.location_on, item.lugar),
+                          _informacion('Dirección: ', Icons.location_on, item.lugar),
                           Divider(),
-                          _informacion('Fecha: ', Icons.calendar_today,
-                             dateFormat.format(dateConvert.parse(item.fecha))),
+                          _informacion('Fecha: ', Icons.calendar_today, dateFormat.format(dateConvert.parse(item.fecha))),
                           Divider(),
                           _informacion('Hora: ', Icons.alarm, item.hora),
                         ],
@@ -126,27 +112,14 @@ class AsambleaPantalla extends StatelessWidget {
   Widget _informacion(String parametro, IconData icono, String informacion) {
     return Row(
       children: <Widget>[
-        Icon(
-          icono,
-          color: Colors.blue,
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
+        Icon(icono, color: Colors.blue,),
+        SizedBox(width: 10.0,),
         Expanded(
           child: Container(
-            // decoration: BoxDecoration(
-            //   border: Border.all(color: Colors.blue),
-            //   borderRadius: BorderRadius.circular(15.0),
-            // ),
             child: ListTile(
-                title: Text(parametro),
-                subtitle: Text(
-                  informacion,
-                  textScaleFactor: 1.2,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                )),
+              title: Text(parametro),
+              subtitle: Text(informacion,textScaleFactor: 1.2,style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,)
+            ),
           ),
         )
       ],

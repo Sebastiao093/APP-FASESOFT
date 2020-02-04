@@ -20,13 +20,13 @@ class TipoConvenio {
 
   factory TipoConvenio.fromJson(Map<String, dynamic> json) {
     return TipoConvenio(
-      idTipoConvenio: json['idTipoConvenio'],
-      tipo: json['tipo'],
-      descripcion: json['descripcion'],
-      estado: json['estado'],
-      urlConvenio: json['urlConvenio'],
-      tasa: json['tasa'],
-      cuotasMaximas: json['cuotasMaximas'],
+      idTipoConvenio  : json['idTipoConvenio'],
+      tipo            : json['tipo'],
+      descripcion     : json['descripcion'],
+      estado          : json['estado'],
+      urlConvenio     : json['urlConvenio'],
+      tasa            : json['tasa'],
+      cuotasMaximas   : json['cuotasMaximas'],
     );
   }
 }

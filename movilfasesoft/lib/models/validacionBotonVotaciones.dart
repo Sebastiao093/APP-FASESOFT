@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class ValidacionBotonVotaciones{
@@ -13,15 +11,11 @@ class ValidacionBotonVotaciones{
     @required this.asistio
   });
 
-  
 factory ValidacionBotonVotaciones.fromJson(Map<String, dynamic> json) {
     return ValidacionBotonVotaciones(
-      hayAsamblea: json['hayAsamblea'],
-      preguntasPorContestar: json['preguntasPorContestar'],
-      asistio: json['asistio']
+      hayAsamblea           : json['hayAsamblea'],
+      preguntasPorContestar : json['preguntasPorContestar'],
+      asistio               : json['asistio']
     );
   }
-
-
-
 }

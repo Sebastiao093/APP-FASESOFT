@@ -4,7 +4,6 @@ import 'dart:async';
 
 class PantallaWeb extends StatefulWidget {
   static const routedname = "/PantallaWeb";
-
   @override
   _PantallaWebState createState() => _PantallaWebState();
 }
@@ -23,8 +22,9 @@ class _PantallaWebState extends State<PantallaWeb> {
         initialUrl: 'https://apps.asesoftware.com/ares',
         onWebViewCreated: (WebViewController webViewController){
           _controller.complete(webViewController);
-        },javascriptMode: JavascriptMode.unrestricted,
-        ),
+        },
+        javascriptMode: JavascriptMode.unrestricted,
+      ),
     );
   }
 }

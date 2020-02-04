@@ -6,7 +6,6 @@ import 'package:movilfasesoft/models/Credito.dart';
 
 class CreditoPantalla extends StatefulWidget {
   static const routedname = "/PantallaCreditos";
-  
 
   @override
   _CreditoPantallaState createState() => _CreditoPantallaState();
@@ -14,13 +13,11 @@ class CreditoPantalla extends StatefulWidget {
 
 Future<List<dynamic>> obtenerData(String correo) async {
   String _url = 'sarapdev.eastus.cloudapp.azure.com:7001';
-  final urlfin = Uri.http(_url,
-      'fasesoft-web/webresources/servicios/fascreditos/historial/' + correo);
+  final urlfin = Uri.http(_url,'fasesoft-web/webresources/servicios/fascreditos/historial/' + correo);
   final response = await http.get(urlfin);
 
   if (response.statusCode == 200) {
     final decodedData = json.decode(response.body);
-
     return decodedData;
   } else {
     throw Exception('error');
@@ -34,18 +31,13 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
     Future<List<dynamic>> userData = obtenerData(usuarioCorreo);
     return Scaffold(
       appBar:  AppBar(
-          title: Text('Créditos'),
-          centerTitle: true,
-          actions: <Widget>[
-            Container(
-                child: ImageIcon(
-              AssetImage('assets/icons/fasesoftLogo.png'),
-              size: 100.0,
-            ))
-          ],
-        ),
-      body: Center(
-        child: contenido1(userData, context),
+        title: Text('Créditos'),
+        centerTitle: true,
+        actions: <Widget>[
+          Container(child: ImageIcon(AssetImage('assets/icons/fasesoftLogo.png'),size: 100.0,))
+        ],
+      ),
+      body: Center(child: contenido1(userData, context),
       ),
     );
   }
@@ -56,16 +48,13 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
         return Card(
           elevation: 10.0,
           margin: EdgeInsets.symmetric(
-              vertical: constrains.maxHeight * 0.1,
-              horizontal: constrains.maxWidth * 0.05),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            vertical: constrains.maxHeight * 0.1,
+            horizontal: constrains.maxWidth * 0.05),
+          shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Container(
             width: constrains.maxWidth,
             height: constrains.maxHeight,
-            margin: EdgeInsets.symmetric(
-                horizontal: constrains.maxWidth * 0.02,
-                vertical: constrains.maxHeight * 0.05),
+            margin: EdgeInsets.symmetric(horizontal: constrains.maxWidth * 0.02, vertical: constrains.maxHeight * 0.05),
             child: Column(
               children: <Widget>[
                 Row(
@@ -76,11 +65,11 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                       width: constrains.maxWidth * 0.5,
                       height: constrains.maxHeight * 0.7,
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(elemento.nombretipodecredito,style: TextStyle(fontWeight: FontWeight.bold),),
-                            Text(elemento.fechaSolicitud.substring(0, 10))
-                          ]),
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(elemento.nombretipodecredito,style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text(elemento.fechaSolicitud.substring(0, 10))
+                        ]),
                     ),
                     Container(
                       width: constrains.maxWidth * 0.3,
@@ -90,12 +79,9 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                         elevation: 7.0,
                         child: Text(elemento.estado),
                         textColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                         color: getColor(elemento.estado.toString()),
-                        onPressed: () {
-                          mostrarAlerta(ctx, elemento);
-                        },
+                        onPressed: () {mostrarAlerta(ctx, elemento);},
                       ),
                     ),
                   ],
@@ -118,68 +104,60 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
               if (auxElementos.hasData) {
                 return  !auxElementos.data.isEmpty?ListView.builder(
                   itemCount: auxElementos.data.length,
-                  itemBuilder: (context, index) {
-                    var elemento = new Credito.fromJson(auxElementos.data
-                        .elementAt(index) as Map<String, dynamic>);
-
+                  itemBuilder: (context, index) {var elemento = new Credito.fromJson(auxElementos.data.elementAt(index) as Map<String, dynamic>);
                     return Container(
-                        width: constrains.maxWidth,
-                        height: constrains.maxHeight * 0.25,
-                        child: ElementosCartas(elemento, ctx));
+                      width: constrains.maxWidth,
+                      height: constrains.maxHeight * 0.25,
+                      child: ElementosCartas(elemento, ctx)
+                    );
                   },
                 ):Container(
-                    height: constrains.maxHeight * 0.5,
-                    width: constrains.maxWidth,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.blue,
-                    ),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      elevation: 15.0,
-                      child: Padding(
-                        padding: EdgeInsets.all(1.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            FittedBox(
-                              child: Center(
-                                  child: Text(
-                                      'No tienes Créditos con Fasesoft')),
+                  height: constrains.maxHeight * 0.5,
+                  width: constrains.maxWidth,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0),color: Colors.blue,),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                    elevation: 15.0,
+                    child: Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          FittedBox(
+                            child: Center(
+                              child: Text('No tienes Créditos con Fasesoft')
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ));
+                    ),
+                  )
+                );
               } else if (auxElementos.hasError) {
                 return Container(
-                    height: constrains.maxHeight * 0.5,
-                    width: constrains.maxWidth,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.blue,
-                    ),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      elevation: 15.0,
-                      child: Padding(
-                        padding: EdgeInsets.all(1.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            FittedBox(
-                              child: Center(
-                                  child: Text(
-                                      'No puedes conectarte con Fasesoft')),
+                  height: constrains.maxHeight * 0.5,
+                  width: constrains.maxWidth,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0),color: Colors.blue,),
+                  child: Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                    elevation: 15.0,
+                    child: Padding(padding: EdgeInsets.all(1.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          FittedBox(
+                            child: Center(
+                              child: Text('No puedes conectarte con Fasesoft')
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ));
+                    ),
+                  )
+                );
               }
               return CircularProgressIndicator();
             },
@@ -206,59 +184,53 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
 
   void mostrarAlerta(BuildContext ctx, Credito elemento) {
     showDialog(
-        context: ctx,
-        barrierDismissible: true,
-        builder: (context) {
-          return AlertDialog(
-              title: Text(
-                elemento.nombretipodecredito,
-                style: TextStyle(color: Colors.blue),
-              ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              titleTextStyle: TextStyle(
-                fontSize: 24,
-                fontFamily: 'RobotoCondensed',
-                fontWeight: FontWeight.bold,
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Cerrar'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
+      context: ctx,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(elemento.nombretipodecredito,style: TextStyle(color: Colors.blue),),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          titleTextStyle: TextStyle(
+            fontSize: 24,
+            fontFamily: 'RobotoCondensed',
+            fontWeight: FontWeight.bold,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cerrar'),
+              onPressed: () {Navigator.of(context).pop();},
+            )
+          ],
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                          'Fecha: ' + elemento.fechaSolicitud.substring(0, 10)),
-                    ],
-                  ),
-                  Divider(color: Colors.blue),
-                  Container(
-                    child: Column(children: <Widget>[
-                      ListTile(
-                        title: Text('Descripción: ' + elemento.descripcion),
-                        subtitle:
-                            Text('Estado: ' + elemento.estado.toLowerCase()),
-                      )
-                    ]),
-                  ),
-                  Divider(color: Colors.blue),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text('Tasa: ' + elemento.tasaReal.toString()),
-                    ],
-                  )
+                  Text('Fecha: ' + elemento.fechaSolicitud.substring(0, 10)),
                 ],
-              ));
-        });
+              ),
+              Divider(color: Colors.blue),
+              Container(
+                child: Column(children: <Widget>[
+                  ListTile(
+                    title: Text('Descripción: ' + elemento.descripcion),
+                    subtitle: Text('Estado: ' + elemento.estado.toLowerCase()),
+                  )
+                ]),
+              ),
+              Divider(color: Colors.blue),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text('Tasa: ' + elemento.tasaReal.toString()),
+                ],
+              )
+            ],
+          )
+        );
+      }
+    );
   }
 }

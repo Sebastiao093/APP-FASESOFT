@@ -371,7 +371,7 @@ class _PantallaQrState extends State<PantallaQr> {
       'idUsuario'       : infoAsistente.idUsuario,
       'identificacion'  : infoAsistente.identificacion,
       'nombre'          : infoAsistente.nombre,
-      'telefono'       : infoAsistente.telefono,
+      'telefono'        : infoAsistente.telefono,
     };
     _enviarCambioEstadoPut(mapAsistente);
     return infoAsistente;

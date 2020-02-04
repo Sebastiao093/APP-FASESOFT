@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:movilfasesoft/models/Pregunta.dart';
 import 'package:movilfasesoft/models/Respuesta.dart';
 import 'package:movilfasesoft/models/RespuestaContestadas.dart';
-import 'package:movilfasesoft/utils/miExcepcion.dart';
 import '../main.dart';
 import '../providers/votaciones_providers.dart';
 
@@ -24,8 +23,7 @@ class WidgetPreguntaServicio extends StatefulWidget {
 class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   Map<int, String> _respuestasMarcadas = Map<int, String>();
   List<Map<String, Object>> _jsonEnvio = List<Map<String, Object>>();
-  Map<String, TextEditingController> _textosDeIngreso =
-      Map<String, TextEditingController>();
+  Map<String, TextEditingController> _textosDeIngreso = Map<String, TextEditingController>();
   bool contesto = false;
   int _numeroPreguntas = 0;
   void _seleccionarRespuesta(int idPregunta, String respuesta, int idAs) {
@@ -49,9 +47,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   void cancelarBoton(List<Map<String, Object>> jsonEnvio, BuildContext ctx) {
     bool error=true;
     for (var i = 0; i < jsonEnvio.length; i++) {
-      Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i))
-          .then((aux) {})
-          .catchError((e) {
+      Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i)).then((aux) {}).catchError((e) {
               
        if(error){showDialog(
             context: ctx,
@@ -374,13 +370,12 @@ Widget validacionRespuestasOpciones(
     int idAsistente) {
   return LayoutBuilder(
     builder: (ctx, constraints) {
-      return condicion
-          ? InkWell(
+      return  InkWell(
               onTap: () => seleccionarRespuesta(
                   idPregunta, respuestaUnitaria.id.toString(), idAsistente),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: condicion ?Colors.white:color,
                   borderRadius: BorderRadius.circular(100),
                 ),
                 margin:
@@ -393,20 +388,7 @@ Widget validacionRespuestasOpciones(
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-            )
-          : Container(
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              margin:
-                  EdgeInsets.symmetric(vertical: constraints.maxHeight * 0.2),
-              padding:
-                  EdgeInsets.symmetric(vertical: constraints.maxHeight * 0.2),
-              child: Text(respuestaUnitaria.respuesta,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            );
+            ) ;
     },
   );
 }

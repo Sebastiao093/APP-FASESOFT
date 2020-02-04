@@ -30,18 +30,18 @@ class Credito {
 
   factory Credito.fromJson(Map<String, dynamic> json) {
     return Credito(
-      idCredito: json['idCredito'],
-      tasaReal: json['tasaReal'],
-      monto: json['monto'],
-      saldo: json['saldo'],
-      estado: json['estadoCredito'],
-      correo: json['correo'],
-      nombretipodecredito: json['tipo'],
-      idtipodecredito: json['tipoId'],
-      descripcion: json['descripcion'],
-      fechaSolicitud: json['fechaSolicitud'],
-      mora: json['mora'],
-      numeroCuotas: json['cuotas'],
+      idCredito           : json['idCredito'],
+      tasaReal            : json['tasaReal'],
+      monto               : json['monto'],
+      saldo               : json['saldo'],
+      estado              : json['estadoCredito'],
+      correo              : json['correo'],
+      nombretipodecredito : json['tipo'],
+      idtipodecredito     : json['tipoId'],
+      descripcion         : json['descripcion'],
+      fechaSolicitud      : json['fechaSolicitud'],
+      mora                : json['mora'],
+      numeroCuotas        : json['cuotas'],
     );
   }
 }

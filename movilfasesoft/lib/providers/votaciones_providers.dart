@@ -7,10 +7,7 @@ import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
 import 'package:movilfasesoft/utils/miExcepcion.dart';
 
-
-
 class Votaciones_providers{
-
 
   static Future<ValidacionBotonVotaciones> getValidacionBotonVotaciones(String correo) async {
     String fecha = DateFormat.y().format(DateTime.now());
@@ -23,12 +20,10 @@ class Votaciones_providers{
     if (respuestaHttp.statusCode == 200) {
       final decodedData = json.decode(respuestaHttp.body);
       validacionBotonVotaciones = ValidacionBotonVotaciones.fromJson(decodedData);
-
     } else {
       throw Exception('error');
     }
     return validacionBotonVotaciones;
-
   }
 
   static Future<List<dynamic>> solicitarRespuestasContestadas(String idasistente) async {
@@ -42,7 +37,6 @@ class Votaciones_providers{
     }
   }
 
-
   static Future<List<dynamic>> solicitarPreguntasPorVotacion(String idAsamblea) async {
     final String pathFasVotaciones ="fasVotaciones/consultaId/" + idAsamblea;
     final url = Uri.http(ProviderConfig.url, ProviderConfig.path+ pathFasVotaciones);
@@ -54,8 +48,7 @@ class Votaciones_providers{
     }
   }
 
- static Future<List<dynamic>> solicitarRespuestasPorPregunta(
-      String idPregunta) async {
+ static Future<List<dynamic>> solicitarRespuestasPorPregunta(String idPregunta) async {
     String pathFasRespuestas = "fasRespuestas/consultaId/" +idPregunta;
     final url = Uri.http(ProviderConfig.url, ProviderConfig.path+ pathFasRespuestas);
     final response = await http.get(url);
@@ -68,11 +61,8 @@ class Votaciones_providers{
 
   static Future<dynamic> enviarRespuestasPost(Map<String, dynamic> datoAenviar) async {
     String pathRespuestasUsuario ="respuestaUsuario/agregar";
-    
-    final url = "http://"+ProviderConfig.url+"/"+ProviderConfig.path+ pathRespuestasUsuario;
-    
-    final response = await http
-        .post(Uri.encodeFull(url), body: json.encode(datoAenviar), headers: {
+    final url = "http://"+ProviderConfig.url+"/"+ProviderConfig.path+ pathRespuestasUsuario;   
+    final response = await http.post(Uri.encodeFull(url), body: json.encode(datoAenviar), headers: {
       "content-type": "application/json",
       "accept": "application/json",
     });
@@ -82,6 +72,4 @@ class Votaciones_providers{
       throw new MiException( errorCode: 200 );
     }
   }
-
-
 }
