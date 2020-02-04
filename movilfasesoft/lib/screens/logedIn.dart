@@ -62,14 +62,14 @@ String nombre(user) {
 }
 
 class Logedin extends StatelessWidget {
-  static const routedname='/loged';
+  static const routedname = '/loged';
   UsuarioAres usuarioAres = new UsuarioAres();
   final String user = MyApp.correoUsuario;
   static String tipoRol;
   static Future<PerfilRol> futurePerfilRol;
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES');
-  
+  DateFormat dateFormat = DateFormat(" MMMM dd yyyy", 'es_ES');
+
   Widget build(BuildContext context) {
     futurePerfilRol = cargarPerfilRol(user);
     return FutureBuilder(
@@ -79,7 +79,7 @@ class Logedin extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } else {
           this.usuarioAres = snapshot.data;
-          if(MyApp.show) asambleaSoon(context);
+          if (MyApp.show) asambleaSoon(context);
           return Scaffold(
             appBar: AppBar(
               title: ImageIcon(AssetImage('assets/icons/fasesoftLogoBarra.png'),size: 150.0,),
@@ -158,7 +158,7 @@ class Logedin extends StatelessWidget {
           String aporte = '';
           String monto = '';
           if (snapshot.data != null) {
-            return _Ahorros(context, snapshot.data,correo);
+            return _Ahorros(context, snapshot.data, correo);
           }
           return ListTile(
             title: Text('acumulado ' + monto),
@@ -171,7 +171,7 @@ class Logedin extends StatelessWidget {
     );
   }
 
-  Widget _Ahorros(BuildContext context, Ahorros ahorro,String correo) {
+  Widget _Ahorros(BuildContext context, Ahorros ahorro, String correo) {
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(20.0),
@@ -277,7 +277,8 @@ class Logedin extends StatelessWidget {
             return Text('\$ ' + numberFormat(double.parse(snap.data)),
               style: TextStyle(
                 color: Colors.blue,
-                fontWeight: FontWeight.bold),
+                fontWeight: FontWeight.bold
+              ),
             );
           }else{
             return CircularProgressIndicator();
@@ -345,7 +346,9 @@ class Logedin extends StatelessWidget {
                         ) 
                       ],
                     ),
-                    Divider(color: Colors.blue,),
+                    Divider(
+                      color: Colors.blue,
+                    ),
                     Container(
                       height: 200,
                       child: FutureBuilder(
@@ -439,10 +442,10 @@ Widget validacionVotacion(BuildContext ctx) {
     },
   );
 }
- 
-asambleaSoon(context)async{
+
+asambleaSoon(context) async {
   DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES'); 
+  DateFormat dateFormat = DateFormat(" MMMM dd yyyy", 'es_ES');
   DateTime fecha;
   DateTime now= DateTime.now();
   List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
