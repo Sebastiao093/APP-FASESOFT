@@ -68,20 +68,7 @@ class _PantallaQrState extends State<PantallaQr> {
         return _alertaSinBoton('No se encontraron datos del usuario', Icons.person, Colors.red);
       } else {
         if (this._varErrorConexion == true) {
-          return AlertDialog(
-          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
-          title: Text('Alerta',textScaleFactor: 1.5,style: TextStyle(color: Colors.blue)),
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Divider(color: Colors.white,height: 20.0,),
-              Text('No te puedes conectar con FASESOFT',textScaleFactor: 1.3,),
-              Divider(color: Colors.white,height: 50.0,),
-              ImageIcon( AssetImage('assets/icons/fasesoftLogo.png'),color: Colors.red, size: 70.0,)
-            ],
-          ),
-        );
+          return _alertaSinBoton('Error de conexion', Icons.signal_wifi_off,Colors.red); 
         } else {
           return  FutureBuilder(
             future: _cargarInfoUsuario(datos),
@@ -354,7 +341,7 @@ class _PantallaQrState extends State<PantallaQr> {
             children: <Widget>[
               Text('Error de conexion',textScaleFactor: 1.3,),
               Divider(color: Colors.white,height: 40.0,),
-              Icon(Icons.network_wifi,color: Colors.red,size: 70,)
+              Icon(Icons.signal_wifi_off,color: Colors.red,size: 70,)
             ],
           );
         }
@@ -428,7 +415,6 @@ class _PantallaQrState extends State<PantallaQr> {
         qRScannerColor: Colors.yellow,
 	      flashlightEnable: true
       );
-<<<<<<< HEAD
       setState(() => this._datosObtenidos = futureString);
     } catch (e) {
       futureString = e.toString();
@@ -445,51 +431,6 @@ class _PantallaQrState extends State<PantallaQr> {
         });
       } else {
         if (aux.estado == 'SIASI') {   
-=======
-       } catch (e) {
-           futureString = e.toString();
-        }
-      
-        
-      
-      InfoAsistenteProvider().getInfoAsistente(futureString).then((aux){
-        
-        if (futureString == aux.correo){
-          this.correo= aux.correo;
-          if (aux.estado == 'NOASI') {
-            setState(() {
-              _alerta('Datos del usuario cargados','¡Exitosamente!', Icons.check, Colors.green);
-              this.estado='Asistencia no registrada';
-              this.colorContainer=Colors.red;
-              this.colorTexto=Colors.white;
-              this._varBloqueoBoton = true;
-            });
-          } else {
-            if (aux.estado == 'SIASI') {   
-              setState(() {
-                _alerta('Usuario ya registrado','', Icons.person, Colors.green);
-                this.estado='Asistencia registrada';
-                this.colorContainer=Colors.green;
-                this.colorTexto=Colors.white;
-                this._varBloqueoBoton = false;
-              });
-            }
-          }
-        }else{
-          setState(() {
-            this._varBloqueoBoton = false;
-            this._varError = true;
-          });
-        } 
-      }).catchError(
-        (MiException e){
-          //print('errore $e');
-           //print(e.errorCode);
-          if (e== '') {
-            
-          } else {
-          }
->>>>>>> c7d32ecbb9f3b3f2e027549eb48b20b0d2cb0164
           setState(() {
             _alerta('Usuario ya registrado','', Icons.person, Colors.green);
             this.estado='Asistencia registrada';
@@ -501,7 +442,6 @@ class _PantallaQrState extends State<PantallaQr> {
       }
     }).catchError((e){
       if (e.errorCode == 100) {
-        print('entro2');
         setState(() {
           this._varBloqueoBotonRegistrar = false;
           this._varErrorDatos = true;
