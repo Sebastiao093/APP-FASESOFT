@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:movilfasesoft/main.dart';
 import 'package:movilfasesoft/models/Asamblea.dart';
 import 'package:movilfasesoft/models/PerfilRol.dart';
 import 'package:movilfasesoft/models/ahorro.dart';
-import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 import 'package:movilfasesoft/providers/asamblea_providers.dart';
 import 'package:movilfasesoft/providers/azure_login_provider.dart';
 import 'package:movilfasesoft/providers/fas_ahorro_providers.dart';
-import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/providers/perfilrol_provider.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
@@ -23,12 +20,7 @@ import 'package:movilfasesoft/screens/CreditoPantalla.dart';
 import 'package:movilfasesoft/screens/PerfilPantalla.dart';
 import 'package:movilfasesoft/screens/Votaciones.dart';
 import 'package:movilfasesoft/screens/PantallaWeb.dart';
-import 'package:movilfasesoft/screens/codigoQr.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:movilfasesoft/utils/numberFormat.dart';
-
-import '../providers/asamblea_providers.dart';
 import '../providers/asamblea_providers.dart';
 
 void irVotaciones(BuildContext ctx, bool preguntasPorContestar) {
@@ -148,10 +140,7 @@ class Logedin extends StatelessWidget {
             Icons.center_focus_weak,
             color: Colors.blue,
           ),
-          title: Text(
-            'Generar QR ',
-            style: TextStyle(color: Colors.blueAccent),
-          ),
+          title: Text('Generar QR'),
           onTap: () {
             Navigator.of(context).pushNamed('/qr');
           },
@@ -161,16 +150,13 @@ class Logedin extends StatelessWidget {
             Icons.people,
             color: Colors.blue,
           ),
-          title: Text(
-            'Asamblea',
-            style: TextStyle(color: Colors.blueAccent),
-          ),
+          title: Text('Asamblea'),
           onTap: () {
             irAsambleas(context);
           },
         ),
         ListTile(
-          leading: Icon(Icons.close),
+          leading: Icon(Icons.power_settings_new,color: Colors.red,),
           title: Text(
             'Cerrar sesion',
             style: TextStyle(color: Colors.redAccent),
@@ -179,7 +165,7 @@ class Logedin extends StatelessWidget {
             UserLogin().logOut(context);
           },
         ),
-        Container(
+        /* Container(
           padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.28),
           child: ListTile(
 
@@ -192,7 +178,7 @@ class Logedin extends StatelessWidget {
               irWeb(context);
             },
           ),
-        ),
+        ), */
       ],
     ));
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/PerfilRol.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
+import 'package:movilfasesoft/utils/miExcepcion.dart';
 
 class PerfilRolProvider {
   final String dominio='sarapdev.eastus.cloudapp.azure.com:7001';
@@ -17,10 +18,10 @@ class PerfilRolProvider {
     final respuestaHttp = await http.get(url);
 
     if (respuestaHttp.statusCode == 200) {
-      final decodedData = json.decode(respuestaHttp.body);
+      final decodedData = json.decode(utf8.decode(respuestaHttp.bodyBytes));
       perfilRol = PerfilRol.fromJson(decodedData[0]);
     } else {
-      throw Exception('error');
+      throw new MiException( errorCode: 200);
     }
     return perfilRol;
   }

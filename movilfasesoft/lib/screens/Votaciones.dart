@@ -14,7 +14,12 @@ class PantallaVotaciones extends StatefulWidget {
 }
 
 class _PantallaVotacionesState extends State<PantallaVotaciones> {
-  void redraw() {}
+  void redraw() {
+
+    setState(() {
+      
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +63,8 @@ Widget inicializacionPantalla(
                 auxAsistentes.idAsamblea.toString()),
             listaRespuestas);
       } else if (listaRespuestasContestadasAux.hasError) {
-        return Text(
-            'error inicializacion ${listaRespuestasContestadasAux.error}');
+        return mensajeNoInternet(
+            'Hay un Problema  \n con la Conexión a internet',context);
       }
       return Center(child: CircularProgressIndicator());
     },
@@ -76,9 +81,35 @@ Widget condicionInicial(AppBar appBar, bool preguntasPorVotar) {
         return inicializacionPantalla(
             auxAsistentes.data, appBar, preguntasPorVotar);
       } else if (auxAsistentes.hasError) {
-        return Text('error en asistentes ${auxAsistentes.error}');
+        return mensajeNoInternet(' Hay un Problema  \n con la Conexión a internet',context);
       }
       return Center(child: CircularProgressIndicator());
     },
+  );
+}
+
+Widget mensajeNoInternet(String mensaje, BuildContext context){
+
+  return  Center(
+    child: Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    child: SafeArea(
+                                          child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        elevation: 15.0,
+                        child: Padding(
+                          padding: EdgeInsets.all(1.0),
+                          child:  FittedBox(
+                                child: Text(mensaje,textAlign: TextAlign.center,),
+                              ),
+                        ),
+                      ),
+                    )),
   );
 }

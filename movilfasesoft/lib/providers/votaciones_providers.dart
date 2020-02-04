@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
+import 'package:movilfasesoft/utils/miExcepcion.dart';
 
 
 
@@ -15,7 +16,6 @@ class Votaciones_providers{
     String fecha = DateFormat.y().format(DateTime.now());
     final String pathValidacion='fasVotaciones/ValidacionBotonVotaciones/'+fecha+'/'+correo;
     final url = Uri.http(ProviderConfig.url, ProviderConfig.path+pathValidacion);
-    print(url);
     ValidacionBotonVotaciones validacionBotonVotaciones=new ValidacionBotonVotaciones(asistio: false,hayAsamblea: false,preguntasPorContestar: false);
 
     final respuestaHttp = await http.get(url);
@@ -24,11 +24,9 @@ class Votaciones_providers{
       final decodedData = json.decode(respuestaHttp.body);
       validacionBotonVotaciones = ValidacionBotonVotaciones.fromJson(decodedData);
 
-      //return decodedData;
     } else {
       throw Exception('error');
     }
-    print(validacionBotonVotaciones.hayAsamblea);
     return validacionBotonVotaciones;
 
   }
@@ -40,7 +38,7 @@ class Votaciones_providers{
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('error');
+      throw new MiException( errorCode: 200);
     }
   }
 
@@ -50,9 +48,9 @@ class Votaciones_providers{
     final url = Uri.http(ProviderConfig.url, ProviderConfig.path+ pathFasVotaciones);
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return json.decode(utf8.decode(response.bodyBytes));
     } else {
-      throw Exception('error');
+      throw new MiException( errorCode: 200 );
     }
   }
 
@@ -62,22 +60,27 @@ class Votaciones_providers{
     final url = Uri.http(ProviderConfig.url, ProviderConfig.path+ pathFasRespuestas);
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return json.decode(utf8.decode(response.bodyBytes));
     } else {
-      throw Exception('error');
+      throw new MiException( errorCode: 200 );
     }
   }
 
-  static void enviarRespuestasPost(Map<String, dynamic> datoAenviar) async {
+  static Future<dynamic> enviarRespuestasPost(Map<String, dynamic> datoAenviar) async {
     String pathRespuestasUsuario ="respuestaUsuario/agregar";
     
     final url = "http://"+ProviderConfig.url+"/"+ProviderConfig.path+ pathRespuestasUsuario;
     
-   await http
+    final response = await http
         .post(Uri.encodeFull(url), body: json.encode(datoAenviar), headers: {
       "content-type": "application/json",
       "accept": "application/json",
     });
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw new MiException( errorCode: 200 );
+    }
   }
 
 
