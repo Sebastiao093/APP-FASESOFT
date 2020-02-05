@@ -114,8 +114,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
         future: preguntas,
         builder: (context, auxPreguntas) {
           if (auxPreguntas.hasData) {
-            return SingleChildScrollView(
-              child: Column(
+            return  Column(
                 children: <Widget>[
                   Container(
                     height: (MediaQuery.of(context).size.height - widget.appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.85,
@@ -142,7 +141,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                     ),
                   )
                 ],
-              ),
+              
             );
           } else if (auxPreguntas.hasError) {
             return Text('${auxPreguntas.error}'); //Text('recargue por favor'); //
@@ -171,12 +170,14 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
           ),
           child: Card(
             elevation: 20,
-            child: SingleChildScrollView(
-              child: Column(
+            child:Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    height: constrains.maxHeight * 0.15,
+                  constraints: BoxConstraints(
+                    maxHeight:constrains.maxHeight * 0.2,
+                    minHeight: constrains.maxHeight * 0.1
+                     ),
                     width: constrains.maxWidth,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -244,7 +245,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                   )
                 ],
               ),
-            ),
+            
           ),
         );
       },
