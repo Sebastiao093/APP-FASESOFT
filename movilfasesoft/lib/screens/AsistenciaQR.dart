@@ -172,7 +172,7 @@ class _PantallaQrState extends State<PantallaQr> {
         Divider(color: Colors.blue),
         _informacion('Identificacion:',Icons.fingerprint,user.identificacion.toString()),
         Divider(color: Colors.blue),
-        _informacion('Afiliacion:',Icons.portrait,user.estadoUsuario),
+        _informacion('Afiliacion:',Icons.portrait,mayusIni(user.estadoUsuario)),
         Divider(color: Colors.blue),
         _estadoRegistro(colorContainer,colorTexto),
         Divider(color: Colors.blue),
@@ -422,23 +422,43 @@ class _PantallaQrState extends State<PantallaQr> {
     }
     InfoAsistenteProvider().getInfoAsistente(futureString).then((aux){
       this.correo= aux.correo;
-      if (aux.estado == 'NOASI') {
+      if (aux.estado == 'DESAF') {
         setState(() {
           _alertaConBoton('Datos del usuario cargados','¡Exitosamente!', Icons.check, Colors.green);
-          this.estado='Asistencia no registrada';
+          this.estado='Usuario dasafiliado';
           this.colorContainer=Colors.red;
           this.colorTexto=Colors.white;
-          this._varBloqueoBotonRegistrar = true;
+          this._varBloqueoBotonRegistrar = false;
         });
       } else {
-        if (aux.estado == 'SIASI') {   
+        if (aux.estado == 'DELEG') {   
           setState(() {
-            _alertaConBoton('Usuario ya registrado','', Icons.person, Colors.green);
-            this.estado='Asistencia registrada';
-            this.colorContainer=Colors.green;
+            _alertaConBoton('Datos del usuario cargados','¡Exitosamente!', Icons.check, Colors.green);
+            this.estado='Delego su asistencia';
+            this.colorContainer=Colors.orange;
             this.colorTexto=Colors.white;
             this._varBloqueoBotonRegistrar = false;
           });
+        }else{
+          if (aux.estado == 'NOASI') {
+            setState(() {
+              _alertaConBoton('Datos del usuario cargados','¡Exitosamente!', Icons.check, Colors.green);
+              this.estado='Asistencia no registrada';
+              this.colorContainer=Colors.red;
+              this.colorTexto=Colors.white;
+              this._varBloqueoBotonRegistrar = true;
+            });
+          }else{
+            if (aux.estado == 'SIASI') {
+              setState(() {
+                _alertaConBoton('Usuario ya registrado','', Icons.person, Colors.green);
+                this.estado='Asistencia registrada';
+                this.colorContainer=Colors.green;
+                this.colorTexto=Colors.white;
+                this._varBloqueoBotonRegistrar = false;
+              });
+            }
+          }
         }
       }
     }).catchError((e){
