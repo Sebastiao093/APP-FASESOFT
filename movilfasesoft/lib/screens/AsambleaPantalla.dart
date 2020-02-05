@@ -29,7 +29,6 @@ class AsambleaPantalla extends StatelessWidget {
       builder: (ctx, AsyncSnapshot<List<Asamblea>> snap) {
           if(snap.hasError){
             print(snap.error.toString());
-
             return Container(
             padding: EdgeInsets.symmetric(vertical:100.0),
             child: ConexionError(),

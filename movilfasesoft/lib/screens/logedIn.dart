@@ -267,17 +267,16 @@ class Logedin extends StatelessWidget {
         builder: (ctx, AsyncSnapshot<String> snap) {
           if (snap.hasData) {
             return Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
-                child: Column(children: <Widget>[
-                  Align(alignment: Alignment.topLeft, child: Text('DEUDAS')),
-                  Align(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                        '\$ ' + numberFormat(double.parse(snap.data)),
-                        style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
-                      ))
-                ]));
+              margin: EdgeInsets.symmetric(vertical: 10.0),
+              child: Column(children: <Widget>[
+                Align(alignment: Alignment.topLeft, child: Text('DEUDAS')),
+                Align(alignment: Alignment.topRight,child: Text('\$ ' + numberFormat(double.parse(snap.data)),
+                  style: TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.bold
+                  ),
+                ))
+              ])
+            );
           } else {
             return CircularProgressIndicator();
           }
@@ -316,7 +315,6 @@ class Logedin extends StatelessWidget {
 
   Widget _movimientosAportes(context, String correo) {
     FasAhorroProviders provider = FasAhorroProviders();
-
     return FutureBuilder(
       future: provider.getMovimientosAporte(correo),
       builder: (context, AsyncSnapshot<List<Ahorros>> snap) {

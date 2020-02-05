@@ -65,7 +65,7 @@ login(context) async {
     result != 'error' &&
     result != 'NR' &&
     result != 'NA' &&
-    result!=null) {
+    result != null) {
     Navigator.pushReplacementNamed(context, '/loged');
   }
   if (result == 'NA') {

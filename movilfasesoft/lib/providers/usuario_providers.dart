@@ -17,8 +17,8 @@ class UserProvider {
         return onValue2.identificacion;
     });
   }
+  
   Future<UsuarioAres> getUser(String user1) async{
-    
     UsuarioAres user;
     final url= Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio+user1);
     final resp = await http.get(url);

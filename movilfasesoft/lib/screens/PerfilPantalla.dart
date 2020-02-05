@@ -135,9 +135,10 @@ Widget _informacion(String parametro,IconData icono,String informacion){
             border: Border.all(color: Colors.blue),
             borderRadius: BorderRadius.circular(30.0),
           ),
-        child:ListTile(
-          title: Text(parametro),
-          subtitle: Text(informacion,textScaleFactor: 1.2,style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,)),
+          child:ListTile(
+            title: Text(parametro),
+            subtitle: Text(informacion,textScaleFactor: 1.2,style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,)
+          ),
         ),
       )
     ],
