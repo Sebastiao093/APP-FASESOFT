@@ -195,7 +195,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                        Container(
                         
                          width: constrains.maxWidth*0.7,
-                         child:Text(preguntaUnit.pregunta.toUpperCase()+'ljhgkfkhfkhgfkhgfkhgfkhgfkhgfkhgfkgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhfkhgfkhgfkhhgfkhgfkhgfkhgf',textScaleFactor: 1,style: TextStyle(fontWeight: FontWeight.bold))
+                         child:Text(preguntaUnit.pregunta.toUpperCase(),textScaleFactor: 1,style: TextStyle(fontWeight: FontWeight.bold))
                          )
                       ],
                     ),
