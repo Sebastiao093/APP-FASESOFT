@@ -24,6 +24,7 @@ import 'package:movilfasesoft/utils/dateFormat.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
 import 'package:movilfasesoft/widgets/ConexionError.dart';
 import '../providers/asamblea_providers.dart';
+import 'package:movilfasesoft/utils/inicialLetrasMayusculas.dart';
 
 void irVotaciones(BuildContext ctx, bool preguntasPorContestar) {
   Navigator.of(ctx).pushNamed(PantallaVotaciones.routedname,arguments: preguntasPorContestar);
@@ -106,7 +107,7 @@ class Logedin extends StatelessWidget {
         children: <Widget>[
           GestureDetector(
             child:UserAccountsDrawerHeader(
-              accountName: Text(nombre(this.usuarioAres)),
+              accountName: Text(mayusIni(nombre(this.usuarioAres))),
               accountEmail: Text(user),
               currentAccountPicture: userPhoto(MyApp.correoUsuario)
             ),
