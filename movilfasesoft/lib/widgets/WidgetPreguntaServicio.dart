@@ -227,8 +227,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                                   preguntaUnit.id,
                                   respuestaUnitaria,
                                   _seleccionarRespuesta,
-                                  _textosDeIngreso[
-                                      preguntaUnit.id.toString()],
+                                  _textosDeIngreso[preguntaUnit.id.toString()],
                                   _submitTexto,
                                   idAsistente
                                 ),
@@ -253,31 +252,17 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
 }
 
 Widget botonEnvio(bool condicion, BuildContext context,
-    List<Map<String, Object>> jsonEnvio, Function enviarCancelar, bool cancel) {
-  return condicion & !cancel
-      ? RaisedButton(
-        
-          child: Text(
-            'Enviar respuestas',
-            textAlign: TextAlign.center,
-          ),
-          color: Theme.of(context).primaryColor,
-          onPressed: () {
-            enviarCancelar(jsonEnvio, context);
-          },
-          disabledColor: Theme.of(context).primaryColorLight,
-          elevation: 20,
-          disabledElevation: 10,
-        )
-      : !cancel
-          ? Text(
-              ' Por favor \n responder todas las preguntas',
-              textAlign: TextAlign.center,
-            )
-          : Text(
-              "Ya respondió todas las preguntas",
-              textAlign: TextAlign.center,
-            );
+  List<Map<String, Object>> jsonEnvio, Function enviarCancelar, bool cancel) {
+  return condicion & !cancel ? RaisedButton(
+    child: Text('Enviar respuestas',textAlign: TextAlign.center,),
+    color: Theme.of(context).primaryColor,
+    onPressed: () {enviarCancelar(jsonEnvio, context);},
+    disabledColor: Theme.of(context).primaryColorLight,
+    elevation: 20,
+    disabledElevation: 10,
+  ): !cancel? 
+  Text(' Por favor \n responder todas las preguntas',textAlign: TextAlign.center,
+  ): Text("Ya respondió todas las preguntas",textAlign: TextAlign.center,);
 }
 
 Widget mostrarRespuesta(
@@ -301,7 +286,7 @@ Widget respuestaOpciones(
   int idPregunta,
   Respuesta respuestaUnitaria,
   Function seleccionarRespuesta,
-  int idAsistente) {
+  int idAsistente){
     Color colorVal = Colors.white;
     if (respuestasMarcadas[idPregunta] == respuestaUnitaria.id.toString()) {
       colorVal = Theme.of(ctx).primaryColorLight;
@@ -314,20 +299,19 @@ Widget respuestaOpciones(
       colorVal,
       idAsistente
     );
-}
+  }
 
 Widget validacionRespuestasOpciones(
-    bool condicion,
-    int idPregunta,
-    Respuesta respuestaUnitaria,
-    Function seleccionarRespuesta,
-    Color color,
-    int idAsistente) {
+  bool condicion,
+  int idPregunta,
+  Respuesta respuestaUnitaria,
+  Function seleccionarRespuesta,
+  Color color,
+  int idAsistente) {
   return LayoutBuilder(
     builder: (ctx, constraints) {
       return  InkWell(
-        onTap: () => seleccionarRespuesta(
-            idPregunta, respuestaUnitaria.id.toString(), idAsistente),
+        onTap: () => seleccionarRespuesta(idPregunta, respuestaUnitaria.id.toString(), idAsistente),
         child: Container(
           decoration: BoxDecoration(color: condicion ?Colors.white:color, borderRadius: BorderRadius.circular(100),),
           margin:EdgeInsets.symmetric(vertical: constraints.maxHeight * 0.2),
