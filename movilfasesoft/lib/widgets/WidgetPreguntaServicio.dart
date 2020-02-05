@@ -117,7 +117,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
             return  Column(
                 children: <Widget>[
                   Container(
-                    height: (MediaQuery.of(context).size.height - widget.appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.85,
+                    //height: (MediaQuery.of(context).size.height - widget.appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.85,
+                    height: MediaQuery.of(context).size.height-widget.appBar.preferredSize.height - MediaQuery.of(context).padding.top-75,
                     width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
                       itemCount: auxPreguntas.data.length,
@@ -125,7 +126,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                         _numeroPreguntas = auxPreguntas.data.length;
                         var preguntaUnitaria = new Pregunta.fromJson(auxPreguntas.data.elementAt(index) as Map<String, dynamic>);
                         return Container(
-                          height: (MediaQuery.of(context).size.height - widget.appBar.preferredSize.height -MediaQuery.of(context).padding.top) * 0.4,
+                          //height: (MediaQuery.of(context).size.height - widget.appBar.preferredSize.height -MediaQuery.of(context).padding.top) * 0.4,
+                          height: 300,
                           width: MediaQuery.of(context).size.width,
                           child: imprimirVotos(_numeroPreguntas, index,preguntaUnitaria, context, idAsistente),
                         );
@@ -133,7 +135,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                     ),
                   ),
                   Container(
-                    height: (MediaQuery.of(context).size.height - widget.appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.1,
+                   //constraints: BoxConstraints(minHeight: 20,maxHeight:50),
+                   height: 40,
                     width: MediaQuery.of(context).size.width,
                     child: botonEnvio(
                       _respuestasMarcadas.length == _numeroPreguntas && _respuestasMarcadas.length > 0,
@@ -174,23 +177,25 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                  constraints: BoxConstraints(
-                    maxHeight:constrains.maxHeight * 0.2,
-                    minHeight: constrains.maxHeight * 0.1
-                     ),
+                  // constraints: BoxConstraints(        
+                  //   maxHeight:constrains.maxHeight * 0.4,
+                  //   ),
+                     
                     width: constrains.maxWidth,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Container(
+                          alignment: Alignment.centerLeft,
                           width: constrains.maxWidth * 0.1,
-                          child: Text('${index + 1}/$numTotalPreguntas', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),
+                          child: Text('${index + 1}/$numTotalPreguntas', textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                      
                        Container(
-                         constraints: BoxConstraints(maxWidth:  constrains.maxWidth*0.6),
-                         child:Text(preguntaUnit.pregunta,textScaleFactor: 1,)
+                        
+                         width: constrains.maxWidth*0.7,
+                         child:Text(preguntaUnit.pregunta.toUpperCase()+'ljhgkfkhfkhgfkhgfkhgfkhgfkhgfkhgfkgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhgfkhfkhgfkhgfkhhgfkhgfkhgfkhgf',textScaleFactor: 1,style: TextStyle(fontWeight: FontWeight.bold))
                          )
                       ],
                     ),
@@ -200,10 +205,11 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                     future: respuestas,
                     builder: (context, auxrespuestas) {
                       if (auxrespuestas.hasData) {
-                        return Container(
-                          height: constrains.maxHeight * 0.7,
-                          width: constrains.maxWidth,
+                        return Expanded(
+                          // height: constrains.maxHeight *.5,
+                          // width: constrains.maxWidth,
                           child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: auxrespuestas.data.length,
                             itemBuilder: (context, index) {
                               var respuestaUnitaria = new Respuesta.fromJson(auxrespuestas.data.elementAt(index) as Map<String, dynamic>);
@@ -212,11 +218,12 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                                 _textosDeIngreso[preguntaUnit.id.toString()] = textoIngreso;
                               }
                               return Container(
-                                height: auxrespuestas.data.length == 1
-                                ? constrains.maxHeight * 0.5
-                                : 0.7 *
-                                (constrains.maxHeight) /
-                                auxrespuestas.data.length,
+                                // height: auxrespuestas.data.length == 1
+                                // ? constrains.maxHeight * 0.5
+                                // : 0.7 *
+                                // (constrains.maxHeight) /
+                                // auxrespuestas.data.length,
+                                height: constrains.maxHeight*.2,
                                 width: constrains.maxWidth,
                                 child: mostrarRespuesta(
                                   auxrespuestas.data.length == 1,
@@ -324,13 +331,19 @@ Widget validacionRespuestasOpciones(
   return LayoutBuilder(
     builder: (ctx, constraints) {
       return  InkWell(
+        
         onTap: () => seleccionarRespuesta(
             idPregunta, respuestaUnitaria.id.toString(), idAsistente),
         child: Container(
-          decoration: BoxDecoration(color: condicion ?Colors.white:color, borderRadius: BorderRadius.circular(100),),
-          margin:EdgeInsets.symmetric(vertical: constraints.maxHeight * 0.2),
-          padding:EdgeInsets.symmetric(vertical: constraints.maxHeight * 0.2),
-          child: Text(respuestaUnitaria.respuesta, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),
+          decoration: BoxDecoration(
+            color: condicion ?Colors.white:color,
+             borderRadius: BorderRadius.circular(100),
+              border: Border.all(
+              color: Colors.blue, 
+              width: 1.0,)),
+          margin:EdgeInsets.symmetric(horizontal: constraints.maxWidth*0.2,vertical: constraints.maxHeight * 0.1),
+          
+          child: Center(child:Text(respuestaUnitaria.respuesta, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
       ) ;
