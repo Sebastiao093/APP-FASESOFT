@@ -23,7 +23,7 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
   Widget build(BuildContext context) {
     final bool _preguntasPorVotar = ModalRoute.of(context).settings.arguments;
     final appBar = AppBar(
-      title: Text('Pantalla Votaciones'),
+      title: Text('Votaciones'),
       actions: <Widget>[
         IconButton(icon: Icon(Icons.refresh), onPressed: redraw,
         ),

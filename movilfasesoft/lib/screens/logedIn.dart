@@ -360,6 +360,8 @@ class Logedin extends StatelessWidget {
                     Divider(
                       color: Colors.blue,
                     ),
+
+
                     Container(
                       height: 200,
                       child: _detallesMovimientosAportes(list),
@@ -376,6 +378,13 @@ class Logedin extends StatelessWidget {
   }
 
   Widget _detallesMovimientosAportes(List<Ahorros> movimientos) {
+    
+    if(movimientos.length==0){
+
+      return Center( child: Text('No hay movimientos de aportes disponibles'));
+    }
+      
+    
     Widget list = ListView.builder(
       itemCount: movimientos.length,
       itemBuilder: (ctx, posicion) {
@@ -388,27 +397,27 @@ class Logedin extends StatelessWidget {
             sinFecha = 'Fecha: ' + movimientos[posicion].fechaInicio;
           }
         }
-        return Column(
-          children: <Widget>[
-            Card(
-              child: ListTile(
-                leading: Icon(
-                  Icons.monetization_on,
-                  color: Colors.green,
-                ),
-                subtitle: Text(
-                  sinFecha +'\n \$ ' + numberFormat(movimientos[posicion].aporte.toDouble(),),
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
-                ),
-                title: Text(
-                  movimientos[posicion].tipoAhorro,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+                    return Column(
+                      children: <Widget>[
+                        Card(
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.monetization_on,
+                              color: Colors.green,
+                            ),
+                            subtitle: Text(
+                              sinFecha +'\n \$ ' + numberFormat(movimientos[posicion].aporte.toDouble(),),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                            ),
+                            title: Text(
+                              movimientos[posicion].tipoAhorro,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
     );
     return list;
   }
