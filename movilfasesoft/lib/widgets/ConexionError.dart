@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget ConexionError(){
+Widget conexionError(){
   return Container(
     child: Center(
       child: Column(

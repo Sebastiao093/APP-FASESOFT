@@ -46,7 +46,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   void cancelarBoton(List<Map<String, Object>> jsonEnvio, BuildContext ctx) {
     bool error=true;
     for (var i = 0; i < jsonEnvio.length; i++) {
-      Votaciones_providers.enviarRespuestasPost(jsonEnvio.elementAt(i)).then((aux) {}).catchError((e) {      
+      VotacionesProviders.enviarRespuestasPost(jsonEnvio.elementAt(i)).then((aux) {}).catchError((e) {      
         if(error){showDialog(
           context: ctx,
           barrierDismissible: true,
@@ -154,7 +154,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
   }
 
   Widget imprimirVotos(int numTotalPreguntas, int index, Pregunta preguntaUnit,BuildContext ctx, int idAsistente) {
-    Future<List<dynamic>> respuestas =Votaciones_providers.solicitarRespuestasPorPregunta('${preguntaUnit.id}');
+    Future<List<dynamic>> respuestas =VotacionesProviders.solicitarRespuestasPorPregunta('${preguntaUnit.id}');
     return LayoutBuilder(
       builder: (ctx, constrains) {
         return Container(

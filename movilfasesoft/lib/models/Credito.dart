@@ -14,19 +14,20 @@ class Credito {
   final String fechaSolicitud;
   final num mora;
 
-  Credito(
-      {@required this.idCredito,
-      this.tasaReal,
-      this.monto,
-      this.saldo,
-      this.estado,
-      @required this.correo,
-      @required this.nombretipodecredito,
-      @required this.idtipodecredito,
-      this.descripcion,
-      this.fechaSolicitud,
-      this.mora,
-      this.numeroCuotas});
+  Credito({
+    @required this.idCredito,
+    this.tasaReal,
+    this.monto,
+    this.saldo,
+    this.estado,
+    @required this.correo,
+    @required this.nombretipodecredito,
+    @required this.idtipodecredito,
+    this.descripcion,
+    this.fechaSolicitud,
+    this.mora,
+    this.numeroCuotas
+  });
 
   factory Credito.fromJson(Map<String, dynamic> json) {
     return Credito(

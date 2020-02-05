@@ -38,7 +38,7 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
 
 Widget inicializacionPantalla(InfoAsistente auxAsistentes, AppBar appBar, bool preguntasPorVotar) {
   return FutureBuilder<List<dynamic>>(
-    future: Votaciones_providers.solicitarRespuestasContestadas(auxAsistentes.idAsistente.toString()),
+    future: VotacionesProviders.solicitarRespuestasContestadas(auxAsistentes.idAsistente.toString()),
     builder: (context, listaRespuestasContestadasAux) {
       if (listaRespuestasContestadasAux.hasData) {
         List<RespuestasContestadas> listaRespuestas = List<RespuestasContestadas>();
@@ -49,9 +49,10 @@ Widget inicializacionPantalla(InfoAsistente auxAsistentes, AppBar appBar, bool p
           auxAsistentes.idAsamblea.toString(),
           auxAsistentes.idAsistente,
           appBar,
-          Votaciones_providers.solicitarPreguntasPorVotacion(auxAsistentes.idAsamblea.toString()),listaRespuestas);
+          VotacionesProviders.solicitarPreguntasPorVotacion(auxAsistentes.idAsamblea.toString()),listaRespuestas
+        );
       } else if (listaRespuestasContestadasAux.hasError) {
-        return ConexionError();
+        return conexionError();
       }
       return Center(child: CircularProgressIndicator());
     },
@@ -66,7 +67,7 @@ Widget condicionInicial(AppBar appBar, bool preguntasPorVotar) {
       if (auxAsistentes.hasData) {
         return inicializacionPantalla(auxAsistentes.data, appBar, preguntasPorVotar);
       } else if (auxAsistentes.hasError) {
-        return ConexionError();
+        return conexionError();
       }
       return Center(child: CircularProgressIndicator());
     },

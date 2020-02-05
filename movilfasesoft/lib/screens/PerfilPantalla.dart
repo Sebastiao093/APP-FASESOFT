@@ -8,7 +8,6 @@ import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class PerfilPantalla extends StatelessWidget {
   static const routedname = "/PantallaPerfil";
-  String correo;
   final appbarIos= CupertinoNavigationBar(middle:Text('Perfil'));
   final appBarAndroid= AppBar(
     title: Text('Perfil'),
@@ -30,29 +29,26 @@ class PerfilPantalla extends StatelessWidget {
 
   Widget _infoUsuario(BuildContext context, String correo) {
     return Scaffold(
-        appBar: appBarAndroid,
-        body: FutureBuilder(
-          future: cargarUsuario(correo),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-           
-            if(snapshot.hasError){
+      appBar: appBarAndroid,
+      body: FutureBuilder(
+        future: cargarUsuario(correo),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if(snapshot.hasError){
             return Container(
-            padding: EdgeInsets.symmetric(vertical:100.0),
-            child: ConexionError(),
-          );
-
-
-            }
-
-            if (snapshot.hasData) {
-              return _detalleUsuario(snapshot.data,context);
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ));
+              padding: EdgeInsets.symmetric(vertical:100.0),
+              child: conexionError(),
+            );
+          }
+          if (snapshot.hasData) {
+            return _detalleUsuario(snapshot.data,context);
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      )
+    );
   }
 
   Future<UsuarioAres> cargarUsuario(String correo) async {

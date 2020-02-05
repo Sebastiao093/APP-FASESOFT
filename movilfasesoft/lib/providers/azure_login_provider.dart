@@ -44,7 +44,6 @@ class UserLogin {
       var correo = decodedToken.getClaim('upn');
       MyApp.token=accessToken;
       final url = Uri.http(ProviderConfig.url,ProviderConfig.path+servicioPath+correo);
-
       final resp = await http.get(url);
       if (resp.statusCode == HttpStatus.ok) {
         final decodedData = json.decode(resp.body);
@@ -60,6 +59,7 @@ class UserLogin {
         }
       }
     }
+    return null;
   }//solicitar inicio de sesion
 
   logOut(context) {

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:async';
 import 'package:intl/intl.dart';
@@ -7,7 +6,7 @@ import 'package:movilfasesoft/models/validacionBotonVotaciones.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
 import 'package:movilfasesoft/utils/miExcepcion.dart';
 
-class Votaciones_providers{
+class VotacionesProviders{
 
   static Future<ValidacionBotonVotaciones> getValidacionBotonVotaciones(String correo) async {
     String fecha = DateFormat.y().format(DateTime.now());

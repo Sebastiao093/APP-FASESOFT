@@ -31,8 +31,7 @@ class _PrimeraPantallaState extends State<PrimeraPantalla> {
                     children: <Widget>[
                       Image(image: AssetImage('assets/icons/fasesoftLogoBarra.png'), width: MediaQuery.of(context).size.width*.8,),
                       Padding(padding: EdgeInsets.only(top: 10.0),),
-                      Text('Mobile',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 26.0),
-                      ),
+                      Text('Mobile',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 26.0),),
                     ],
                   ),
                 ),

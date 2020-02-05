@@ -5,9 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class AsambleaPantalla extends StatelessWidget {
-  DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES'); 
-  DateTime fecha;
+  final DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+  final DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES'); 
+ 
 
   static const routedname = "/PantallaAsamblea";
   @override
@@ -18,23 +18,22 @@ class AsambleaPantalla extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: _WidgetlstAsambleas(),
+      body: _widgetlstAsambleas(),
     );
   }
 
-  Widget _WidgetlstAsambleas() {
+  Widget _widgetlstAsambleas() {
     AsambleaProviders asambleaProviders = new AsambleaProviders();
     return FutureBuilder(
       future: asambleaProviders.getAsambleas(),
       builder: (ctx, AsyncSnapshot<List<Asamblea>> snap) {
-          if(snap.hasError){
-            print(snap.error.toString());
-            return Container(
+        if(snap.hasError){
+          print(snap.error.toString());
+          return Container(
             padding: EdgeInsets.symmetric(vertical:100.0),
-            child: ConexionError(),
+            child: conexionError(),
           );
-          }
-
+        }
         if (snap.hasData) {
           if (snap.data.length > 0) {
             return _asambleaItem(snap.data[0]);
@@ -48,15 +47,6 @@ class AsambleaPantalla extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-      },
-    );
-  }
-
-  Widget _listItems(List<Asamblea> asamblea) {
-    return ListView.builder(
-      itemCount: asamblea.length,
-      itemBuilder: (ctx, posicion) {
-        return _asambleaItem(asamblea[posicion]);
       },
     );
   }
@@ -91,8 +81,7 @@ class AsambleaPantalla extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Center(
-                                  child: Text('ASAMBLEA',
-                                    style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w800,fontSize: 25.0,)
+                                  child: Text('ASAMBLEA', style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w800,fontSize: 25.0,)
                                   )
                                 ),
                               ),

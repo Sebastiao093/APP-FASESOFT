@@ -43,14 +43,15 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
     );
   }
 
-  Widget ElementosCartas(Credito elemento, BuildContext ctx) {
+  Widget elementosCartas(Credito elemento, BuildContext ctx) {
     return LayoutBuilder(
       builder: (ctx, constrains) {
         return Card(
           elevation: 10.0,
           margin: EdgeInsets.symmetric(
             vertical: constrains.maxHeight * 0.1,
-            horizontal: constrains.maxWidth * 0.05),
+            horizontal: constrains.maxWidth * 0.05
+          ),
           shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Container(
             width: constrains.maxWidth,
@@ -70,7 +71,8 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                         children: <Widget>[
                           Text(elemento.nombretipodecredito,style: TextStyle(fontWeight: FontWeight.bold),),
                           Text(elemento.fechaSolicitud.substring(0, 10))
-                        ]),
+                        ]
+                      ),
                     ),
                     Container(
                       width: constrains.maxWidth * 0.3,
@@ -103,13 +105,13 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
             future: elementos,
             builder: (context, auxElementos) {
               if (auxElementos.hasData) {
-                return  !auxElementos.data.isEmpty?ListView.builder(
+                return  auxElementos.data.isNotEmpty?ListView.builder(
                   itemCount: auxElementos.data.length,
                   itemBuilder: (context, index) {var elemento = new Credito.fromJson(auxElementos.data.elementAt(index) as Map<String, dynamic>);
                     return Container(
                       width: constrains.maxWidth,
                       height: constrains.maxHeight * 0.25,
-                      child: ElementosCartas(elemento, ctx)
+                      child: elementosCartas(elemento, ctx)
                     );
                   },
                 ):Container(
@@ -145,18 +147,16 @@ class _CreditoPantallaState extends State<CreditoPantalla> {
                     color: Colors.blue,
                   ),
                   child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                     elevation: 15.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(1.0),
+                    child: Padding(padding: EdgeInsets.all(1.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           FittedBox(
                             child: Center(
-                              child: ConexionError()
+                              child: conexionError()
                             ),
                           ),  
                         ],

@@ -14,9 +14,9 @@ class PerfilRol {
      
   factory PerfilRol.fromJson( Map<String, dynamic> json){
     return PerfilRol(
-      idPerfil    : json['idPerfil'],
-      idUsuario   : json['idUsuario'],
-      tipo        : json['tipo'],
+      idPerfil  : json['idPerfil'],
+      idUsuario : json['idUsuario'],
+      tipo      : json['tipo'],
     );
   }
 }

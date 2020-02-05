@@ -5,11 +5,9 @@ import 'package:movilfasesoft/models/ahorro.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
 import 'package:movilfasesoft/utils/miExcepcion.dart';
 
-class FasAhorroProviders {
-  
+class FasAhorroProviders { 
   final String pathServicio='fasahorros/';
   Future<Ahorros> getAhorroPermanente(String correo) async {
- 
     final String pathAhorros = 'aportespermanentes';
     final uri = Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio+ pathAhorros, {'correo': correo});
     final respuestaHttp = await http.get(uri);
@@ -57,9 +55,8 @@ class FasAhorroProviders {
             int saldo =data['saldo'];
             if('DESEMBOLSADO'.toUpperCase()==estado.toUpperCase()){
               deu+=saldo;
-            };
+            }
           }catch (ParseException){
-            return '0';
           }
         });
         return deu.toString();

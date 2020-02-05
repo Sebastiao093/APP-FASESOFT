@@ -12,9 +12,7 @@ class PerfilRolProvider {
   Future<PerfilRol> getPerfilRol(String correo) async {
     final String pathPerfilRol = '' + correo;
     final url = Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio + pathPerfilRol);
-    
     PerfilRol perfilRol;
-
     final respuestaHttp = await http.get(url);
 
     if (respuestaHttp.statusCode == 200) {

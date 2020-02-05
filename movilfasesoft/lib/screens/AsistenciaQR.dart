@@ -58,7 +58,7 @@ class _PantallaQrState extends State<PantallaQr> {
       body:_infoContenido(_datosObtenidos),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _crearBotones(_datosObtenidos),
-      bottomNavigationBar: BottomAppBar(child: _titulos(),),
+      bottomNavigationBar: BottomAppBar(child: _titulosBotones(),),
     );
   }
 
@@ -111,7 +111,7 @@ class _PantallaQrState extends State<PantallaQr> {
     return infoAsistente;
   }
 
-  Widget _titulos(){
+  Widget _titulosBotones(){
     if (_varBloqueoBotonRegistrar == false) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -173,7 +173,7 @@ class _PantallaQrState extends State<PantallaQr> {
         Divider(color: Colors.blue),
         _informacion('Afiliacion:',Icons.portrait,user.estadoUsuario),
         Divider(color: Colors.blue),
-        _estado(colorContainer,colorTexto),
+        _estadoRegistro(colorContainer,colorTexto),
         Divider(color: Colors.blue),
       ],
     ));
@@ -199,7 +199,7 @@ class _PantallaQrState extends State<PantallaQr> {
     );
   }
 
-  Widget _estado(Color colorContainer,Color colorTexto){ 
+  Widget _estadoRegistro(Color colorContainer,Color colorTexto){ 
     return Row(
       children: <Widget>[
         Icon(Icons.person,color: Colors.blue,),
@@ -220,7 +220,7 @@ class _PantallaQrState extends State<PantallaQr> {
     );
   }
  
-  void _alerta(String info1,String info2, IconData icono,Color color){
+  void _alertaConBoton(String info1,String info2, IconData icono,Color color){
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -267,19 +267,19 @@ class _PantallaQrState extends State<PantallaQr> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Divider(color: Colors.white,height: 20.0,),
-              _alertWidget(),
+              _alertaVariable(),
               Divider(color: Colors.white,height: 30.0,)
             ],
           ),
           actions: <Widget>[
-            _alertBoton(),
+            _alertaVariableBoton(),
           ],
         );
       }
     );
   }
 
-  Widget _alertBoton(){
+  Widget _alertaVariableBoton(){
     return FutureBuilder(
       future: _postConsulta(),
       builder: (ctx,AsyncSnapshot<String> snap){
@@ -314,7 +314,7 @@ class _PantallaQrState extends State<PantallaQr> {
     );
   }
 
-  Widget _alertWidget(){
+  Widget _alertaVariable(){
     return FutureBuilder(
       future: _postConsulta(),
       builder: (ctx,AsyncSnapshot<String> snap){
@@ -423,7 +423,7 @@ class _PantallaQrState extends State<PantallaQr> {
       this.correo= aux.correo;
       if (aux.estado == 'NOASI') {
         setState(() {
-          _alerta('Datos del usuario cargados','¡Exitosamente!', Icons.check, Colors.green);
+          _alertaConBoton('Datos del usuario cargados','¡Exitosamente!', Icons.check, Colors.green);
           this.estado='Asistencia no registrada';
           this.colorContainer=Colors.red;
           this.colorTexto=Colors.white;
@@ -432,7 +432,7 @@ class _PantallaQrState extends State<PantallaQr> {
       } else {
         if (aux.estado == 'SIASI') {   
           setState(() {
-            _alerta('Usuario ya registrado','', Icons.person, Colors.green);
+            _alertaConBoton('Usuario ya registrado','', Icons.person, Colors.green);
             this.estado='Asistencia registrada';
             this.colorContainer=Colors.green;
             this.colorTexto=Colors.white;

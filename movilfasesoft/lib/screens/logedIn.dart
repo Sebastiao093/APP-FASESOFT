@@ -63,13 +63,13 @@ String nombre(user) {
 }
 
 class Logedin extends StatelessWidget {
-  static const routedname = '/loged';
+  static  const routedname = '/loged';
   UsuarioAres usuarioAres = new UsuarioAres();
   final String user = MyApp.correoUsuario;
   static String tipoRol;
   static Future<PerfilRol> futurePerfilRol;
-  DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  DateFormat dateFormat = DateFormat(" MMMM dd yyyy", 'es_ES');
+  final DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+  final DateFormat dateFormat = DateFormat(" MMMM dd yyyy", 'es_ES');
 
   Widget build(BuildContext context) {
     futurePerfilRol = cargarPerfilRol(user);
@@ -91,7 +91,7 @@ class Logedin extends StatelessWidget {
             ),
             body: ListView(
               children: <Widget>[
-                _DetallesAhorro(user),
+                _detallesAhorro(user),
                 _movimientosAportes(context, user),
               ],
             )
@@ -150,7 +150,7 @@ class Logedin extends StatelessWidget {
     ); 
   }
 
-  Widget _DetallesAhorro(String correo) {
+  Widget _detallesAhorro(String correo) {
     FasAhorroProviders provider = FasAhorroProviders();
     return FutureBuilder(
       future: provider.getAhorroPermanente(correo),
@@ -158,13 +158,11 @@ class Logedin extends StatelessWidget {
         if (snapshot.hasError) {
           return Container();
         }
-
         if (snapshot.hasData) {
           String aporte = '';
           String monto = '';
-
           if (snapshot.data != null) {
-            return _Ahorros(context, snapshot.data, correo);
+            return _ahorros(context, snapshot.data, correo);
           }
           return ListTile(
             title: Text('acumulado ' + monto),
@@ -177,8 +175,7 @@ class Logedin extends StatelessWidget {
     );
   }
 
-  Widget _Ahorros(BuildContext context, Ahorros ahorro, String correo) {
-    Size size = MediaQuery.of(context).size;
+  Widget _ahorros(BuildContext context, Ahorros ahorro, String correo) {
     return Container(
       padding: EdgeInsets.all(20.0),
       child: Column(
@@ -271,9 +268,7 @@ class Logedin extends StatelessWidget {
               child: Column(children: <Widget>[
                 Align(alignment: Alignment.topLeft, child: Text('DEUDAS')),
                 Align(alignment: Alignment.topRight,child: Text('\$ ' + numberFormat(double.parse(snap.data)),
-                  style: TextStyle(
-                    color: Colors.blue, fontWeight: FontWeight.bold
-                  ),
+                  style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                 ))
               ])
             );
@@ -321,10 +316,9 @@ class Logedin extends StatelessWidget {
         if (snap.hasError) {
           return Container(
             padding: EdgeInsets.symmetric(vertical:100.0),
-            child: ConexionError(),
+            child: conexionError(),
           );
         }
-
         if (snap.hasData) {
           return _movimientoAportesWidget(snap.data);
         } else {
@@ -422,7 +416,7 @@ class Logedin extends StatelessWidget {
 
 Widget validacionVotacion(BuildContext ctx) {
   return FutureBuilder<ValidacionBotonVotaciones>(
-    future: Votaciones_providers.getValidacionBotonVotaciones(MyApp.correoUsuario),
+    future: VotacionesProviders.getValidacionBotonVotaciones(MyApp.correoUsuario),
     builder: (ctx, validacionAux) {
       if (validacionAux.hasData) {
         if (validacionAux.data.hayAsamblea == null ||
@@ -459,7 +453,7 @@ asambleaSoon(context) async {
   List<Asamblea> asambleas= await AsambleaProviders().getAsambleas();
   for(var asamblea in asambleas){
     try{
-    fecha= dateConvert.parse(asamblea.fecha);
+    fecha = dateConvert.parse(asamblea.fecha);
     }on FormatException{}
     if(now.isBefore(fecha) && fecha.isBefore(now.add(Duration(days: 5)))){
       return showDialog(
