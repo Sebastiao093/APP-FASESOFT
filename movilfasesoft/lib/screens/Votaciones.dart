@@ -4,6 +4,7 @@ import 'package:movilfasesoft/models/RespuestaContestadas.dart';
 import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/providers/votaciones_providers.dart';
+import 'package:movilfasesoft/widgets/ConexionError.dart';
 import 'package:movilfasesoft/widgets/WidgetPreguntaServicio.dart';
 
 class PantallaVotaciones extends StatefulWidget {
@@ -50,7 +51,7 @@ Widget inicializacionPantalla(InfoAsistente auxAsistentes, AppBar appBar, bool p
           appBar,
           Votaciones_providers.solicitarPreguntasPorVotacion(auxAsistentes.idAsamblea.toString()),listaRespuestas);
       } else if (listaRespuestasContestadasAux.hasError) {
-        return mensajeNoInternet('Hay un Problema  \n con la Conexión a internet',context);
+        return ConexionError();
       }
       return Center(child: CircularProgressIndicator());
     },
@@ -65,7 +66,7 @@ Widget condicionInicial(AppBar appBar, bool preguntasPorVotar) {
       if (auxAsistentes.hasData) {
         return inicializacionPantalla(auxAsistentes.data, appBar, preguntasPorVotar);
       } else if (auxAsistentes.hasError) {
-        return mensajeNoInternet(' Hay un Problema  \n con la Conexión a internet',context);
+        return ConexionError();
       }
       return Center(child: CircularProgressIndicator());
     },
