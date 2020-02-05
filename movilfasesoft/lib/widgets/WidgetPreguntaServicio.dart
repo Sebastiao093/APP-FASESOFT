@@ -187,14 +187,11 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                           child: Text('${index + 1}/$numTotalPreguntas', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Container(
-                          width: constrains.maxWidth * 0.6,
-                          child: FittedBox(
-                            child: Column(
-                              children: partirPalabra(preguntaUnit.pregunta, 7),
-                            ) 
-                          ),
-                        ),
+                     
+                       Container(
+                         constraints: BoxConstraints(maxWidth:  constrains.maxWidth*0.6),
+                         child:Text(preguntaUnit.pregunta,textScaleFactor: 1,)
+                         )
                       ],
                     ),
                   ),
