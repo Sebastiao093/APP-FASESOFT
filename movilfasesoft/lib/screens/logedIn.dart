@@ -20,6 +20,7 @@ import 'package:movilfasesoft/screens/CreditoPantalla.dart';
 import 'package:movilfasesoft/screens/PerfilPantalla.dart';
 import 'package:movilfasesoft/screens/Votaciones.dart';
 import 'package:movilfasesoft/screens/PantallaWeb.dart';
+import 'package:movilfasesoft/utils/dateFormat.dart';
 import 'package:movilfasesoft/utils/numberFormat.dart';
 import 'package:movilfasesoft/widgets/ConexionError.dart';
 import '../providers/asamblea_providers.dart';
@@ -68,8 +69,6 @@ class Logedin extends StatelessWidget {
   final String user = MyApp.correoUsuario;
   static String tipoRol;
   static Future<PerfilRol> futurePerfilRol;
-  final DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  final DateFormat dateFormat = DateFormat(" MMMM dd yyyy", 'es_ES');
 
   Widget build(BuildContext context) {
     futurePerfilRol = cargarPerfilRol(user);

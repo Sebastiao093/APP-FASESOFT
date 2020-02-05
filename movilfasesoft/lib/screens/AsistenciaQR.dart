@@ -7,6 +7,7 @@ import 'package:movilfasesoft/models/infoAsistente.dart';
 import 'package:movilfasesoft/providers/info_asistente_providers.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
 import 'package:movilfasesoft/providers/providers_config.dart';
+import 'package:movilfasesoft/utils/inicialLetrasMayusculas.dart';
 
 class PantallaQr extends StatefulWidget {
   static const routedname = "/PantallaQr";
@@ -165,7 +166,7 @@ class _PantallaQrState extends State<PantallaQr> {
             maxRadius: 50.0,
           ),
         ),
-        _informacion('Nombre:',Icons.account_circle,user.nombre + ' ' + user.apellido),
+        _informacion('Nombre:',Icons.account_circle,mayusIni(user.nombre) + ' ' + mayusIni(user.apellido)),
         Divider(color: Colors.blue),
         _informacion('Correo:',Icons.email,user.correo),
         Divider(color: Colors.blue),

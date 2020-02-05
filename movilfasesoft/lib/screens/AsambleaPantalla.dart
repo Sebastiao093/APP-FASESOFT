@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movilfasesoft/models/Asamblea.dart';
 import 'package:movilfasesoft/providers/asamblea_providers.dart';
-import 'package:intl/intl.dart';
+import 'package:movilfasesoft/utils/dateFormat.dart';
 import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class AsambleaPantalla extends StatelessWidget {
-  final DateFormat dateConvert = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  final DateFormat dateFormat = DateFormat(" MMMM dd yyyy",'es_ES'); 
  
-
   static const routedname = "/PantallaAsamblea";
   @override
   Widget build(BuildContext context) {

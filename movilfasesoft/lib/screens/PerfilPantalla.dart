@@ -4,6 +4,7 @@ import 'package:movilfasesoft/models/usuario.dart';
 import 'package:movilfasesoft/providers/photoProvider.dart';
 import 'package:movilfasesoft/providers/usuario_providers.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:movilfasesoft/utils/inicialLetrasMayusculas.dart';
 import 'package:movilfasesoft/widgets/ConexionError.dart';
 
 class PerfilPantalla extends StatelessWidget {
@@ -103,7 +104,7 @@ class PerfilPantalla extends StatelessWidget {
                 maxRadius: 100.0,
               ),
               Divider(color:Colors.white10),
-              _informacion('Nombre', Icons.person, user.nombre+ ' ' + user.apellido),
+              _informacion('Nombre', Icons.person,mayusIni(user.nombre) + ' ' + mayusIni(user.apellido)),
               Divider(color: Colors.blue),
               _informacion('Identificación:',Icons.fingerprint, user.identificacion),
               Divider(color: Colors.blue),
