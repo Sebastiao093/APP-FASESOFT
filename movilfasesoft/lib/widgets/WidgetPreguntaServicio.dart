@@ -99,6 +99,7 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
 
   @override
   Widget build(BuildContext context) {
+
     for (var i = 0; i < widget._respuestasContestadas.length; i++) {
       _respuestasMarcadas[widget._respuestasContestadas.elementAt(i).fkVotacion] =
       widget._respuestasContestadas.elementAt(i).idrespuesta == "SI"
@@ -220,7 +221,8 @@ class _WidgetPreguntaState extends State<WidgetPreguntaServicio> {
                                 _seleccionarRespuesta,
                                 _textosDeIngreso[preguntaUnit.id.toString()],
                                 _submitTexto,
-                                idAsistente
+                                idAsistente,
+                                 widget._respuestasContestadas.length>0
                               ),
                             ); //
                           },
@@ -264,10 +266,11 @@ Widget mostrarRespuesta(
   Function seleccionarRespuesta,
   TextEditingController textoIngreso,
   Function submitData,
-  int idAsistente) {
+  int idAsistente,
+  bool yaRespondioAntes) {
   return tipoRespuesta ? respuestaAbierta(ctx, textoIngreso, submitData, respuestasMarcadas,
   respuestaUnitaria, idPregunta, idAsistente): respuestaOpciones(ctx, respuestasMarcadas, idPregunta,
-  respuestaUnitaria, seleccionarRespuesta, idAsistente);
+  respuestaUnitaria, seleccionarRespuesta, idAsistente,yaRespondioAntes);
 }
 
 Widget respuestaOpciones(
@@ -276,7 +279,9 @@ Widget respuestaOpciones(
   int idPregunta,
   Respuesta respuestaUnitaria,
   Function seleccionarRespuesta,
-  int idAsistente){
+  int idAsistente,
+  bool yarespondio
+  ){
     Color colorVal = Colors.white;
     if (respuestasMarcadas[idPregunta] == respuestaUnitaria.id.toString()) {
       colorVal = Theme.of(ctx).primaryColorLight;
@@ -287,7 +292,8 @@ Widget respuestaOpciones(
       respuestaUnitaria,
       seleccionarRespuesta,
       colorVal,
-      idAsistente
+      idAsistente,
+      yarespondio
     );
   }
 
@@ -297,8 +303,27 @@ Widget validacionRespuestasOpciones(
   Respuesta respuestaUnitaria,
   Function seleccionarRespuesta,
   Color color,
-  int idAsistente) {
-  return LayoutBuilder(
+  int idAsistente,
+  bool yarespondio
+  ) {
+  return yarespondio?
+  LayoutBuilder(
+    builder: (ctx, constraints) {
+      return Container(
+          decoration: BoxDecoration(
+            color: condicion ?Colors.white:color,
+            borderRadius: BorderRadius.circular(100),
+            border: Border.all(
+            color: Colors.blue, 
+            width: 1.0,
+            )
+          ),
+          margin:EdgeInsets.symmetric(horizontal: constraints.maxWidth*0.2,vertical: constraints.maxHeight * 0.1),
+          child: Center(child:Text(respuestaUnitaria.respuesta, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold))),
+        ) ;
+    },
+  ) 
+  :LayoutBuilder(
     builder: (ctx, constraints) {
       return  InkWell(
         onTap: () => seleccionarRespuesta(idPregunta, respuestaUnitaria.id.toString(), idAsistente),
