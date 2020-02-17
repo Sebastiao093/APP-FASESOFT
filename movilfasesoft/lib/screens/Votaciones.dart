@@ -37,19 +37,23 @@ class _PantallaVotacionesState extends State<PantallaVotaciones> {
 }
 
 Widget inicializacionPantalla(InfoAsistente auxAsistentes, AppBar appBar, bool preguntasPorVotar) {
+  Map<int, String> respuestasMarcadasVal = Map<int, String>();
   return FutureBuilder<List<dynamic>>(
     future: VotacionesProviders.solicitarRespuestasContestadas(auxAsistentes.idAsistente.toString()),
     builder: (context, listaRespuestasContestadasAux) {
       if (listaRespuestasContestadasAux.hasData) {
-        List<RespuestasContestadas> listaRespuestas = List<RespuestasContestadas>();
         for (var i = 0; i < listaRespuestasContestadasAux.data.length; i++) {
-          listaRespuestas.add(RespuestasContestadas.fromJson(listaRespuestasContestadasAux.data.elementAt(i)));
+          RespuestasContestadas respuesta=(RespuestasContestadas.fromJson(listaRespuestasContestadasAux.data.elementAt(i)));
+          respuestasMarcadasVal[respuesta.fkVotacion] =
+      respuesta.idrespuesta == "SI"
+      ? "1"
+      : "2";
         }
         return WidgetPreguntaServicio(
           auxAsistentes.idAsamblea.toString(),
           auxAsistentes.idAsistente,
           appBar,
-          VotacionesProviders.solicitarPreguntasPorVotacion(auxAsistentes.idAsamblea.toString()),listaRespuestas
+          VotacionesProviders.solicitarPreguntasPorVotacion(auxAsistentes.idAsamblea.toString()),respuestasMarcadasVal
         );
       } else if (listaRespuestasContestadasAux.hasError) {
         return conexionError();
