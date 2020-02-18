@@ -44,7 +44,7 @@ Widget noConectionScreen(context,texto){
                   OutlineButton(
                     child: Text('Regresar'),
                     onPressed: (){
-                      if(texto == 'El usuario no esta afiliado a Fasesoft' ){ 
+                      if(texto != 'Error en la conexión' ){ 
                         UserLogin().logOut(context);
                       }
                       Navigator.pushNamed(context,'/');
