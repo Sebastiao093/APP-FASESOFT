@@ -57,7 +57,7 @@ void irWeb(BuildContext ctx) {
 String nombre(user) {
   String resultado;
   try {
-    resultado = user.nombre;
+    resultado = user.nombre +' '+ user.apellido;
     return resultado;
   } catch (e) {
     return 'error';
