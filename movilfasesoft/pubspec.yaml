@@ -14,21 +14,38 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  flutter_money_formatter: ^0.8.3
   flutter:
     sdk: flutter
   http: ^0.12.0+4
+  intl: ^0.15.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   majascan: ^0.3.5
+  webview_flutter: ^0.3.18
 
+  aad_oauth: "^0.1.7"
+  corsac_jwt: ^0.1.2
+  connectivity: ^0.4.6+2
+  msgraph: ^0.0.1
+  qr_flutter: ^3.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.4"
+
+flutter_icons:
+  image_path:
+    - "assets/images/fasesoftLogo.png"
+    - "assets/images/mov.png"
+#  image_path_android: "assets/images/icon-710x599-android.png"
+  android: true # can specify file name here e.g. "ic_launcher"
+  
 
 
 # For information on the generic Dart part of this file, see the
