@@ -40,10 +40,11 @@ class FasAhorroProviders {
   }
 
   Future<String> getDeuda(String correo) async {
+    int deuda=0;
     final String pathDeuda="fasafiliados/datosDeudas";
     final uri = Uri.http(ProviderConfig.url,ProviderConfig.path+pathDeuda , {'correo': correo});
     final respuestaHttp = await http.get(uri);
-    String deuda='0';
+    
     if (respuestaHttp.statusCode == HttpStatus.ok) {
       final data = respuestaHttp.body;
       List listaDeudas = json.decode(data);
@@ -56,15 +57,48 @@ class FasAhorroProviders {
             if('DESEMBOLSADO'.toUpperCase()==estado.toUpperCase()){
               deu+=saldo;
             }
+            deuda=deu;
           }catch (ParseException){
           }
         });
-        return deu.toString();
-      }else{ 
-        return deuda;
+      }
+
+    }else {
+      throw new MiException( errorCode: 200);
+    }
+
+    final String pathDeudaCon="fasafiliados/datosDeudasCon";
+    final uriCon = Uri.http(ProviderConfig.url,ProviderConfig.path+pathDeudaCon , {'correo': correo});
+    final respuestaConHttp = await http.get(uriCon);
+    if (respuestaConHttp.statusCode == HttpStatus.ok) {
+      final dataCon = respuestaConHttp.body;
+      List listaDeudasCon = json.decode(dataCon);
+      if(listaDeudasCon.length>0){
+        int deuCon=0;
+        listaDeudasCon.forEach((dataCon){        
+          String estado = dataCon['estado'];
+          try{
+            int saldo =dataCon['saldo'];
+            if('APROBADO'.toUpperCase()==estado.toUpperCase()){
+              deuCon+=saldo;
+            }
+            deuda+=deuCon;
+          }catch (ParseException){
+          }
+        });
       }
     }else {
       throw new MiException( errorCode: 200);
     }
+
+    if (deuda != 0) {
+      return deuda.toString();
+    } else {
+      deuda = 0;
+      return deuda.toString();
+    }
+    
+    
   }
+
 }
