@@ -7,6 +7,7 @@ import 'package:movilfasesoft/utils/miExcepcion.dart';
 
 class FasAhorroProviders { 
   final String pathServicio='fasahorros/';
+  
   Future<Ahorros> getAhorroPermanente(String correo) async {
     final String pathAhorros = 'aportespermanentes';
     final uri = Uri.http(ProviderConfig.url,ProviderConfig.path+pathServicio+ pathAhorros, {'correo': correo});
@@ -16,11 +17,16 @@ class FasAhorroProviders {
       final data = respuestaHttp.body;
       List list = json.decode(data);
       list.forEach((item) {ahorro = Ahorros.fromJson(item);});
+      int monto=await ahorrosTotales(correo);
+      ahorro.monto=monto;
+     
     } else {
       throw new MiException( errorCode: 200);
     }
     return ahorro;
   }
+
+ 
 
   Future<List<Ahorros>> getMovimientosAporte(String correo) async {
     final String pathAhorros = 'movimientosAportes';
@@ -37,6 +43,32 @@ class FasAhorroProviders {
      throw new MiException( errorCode: 200);
     }
     return mov;
+  }
+
+   Future<int> ahorrosTotales(String correo) async {
+    final String pathAhorros="fasafiliados/datosAhroros";
+    final uri = Uri.http(ProviderConfig.url,ProviderConfig.path+pathAhorros , {'correo': correo});
+    final respuestaHttp = await http.get(uri);
+     if (respuestaHttp.statusCode == HttpStatus.ok) {
+         final data = respuestaHttp.body;
+         List listaAhorrosPermaYvol = json.decode(data);
+        if(listaAhorrosPermaYvol.length>0){
+        int monto=0;
+        listaAhorrosPermaYvol.forEach((item){        
+         try{
+             monto +=item['monto'];
+          }catch (ParseException){
+
+          }
+        });
+        return monto;
+      }else{
+        return 0;
+      } 
+     }else{
+          throw new MiException( errorCode: 200);
+     }
+    
   }
   
   Future<String> getDeuda(String correo) async {
