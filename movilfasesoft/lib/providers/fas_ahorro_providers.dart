@@ -38,13 +38,12 @@ class FasAhorroProviders {
     }
     return mov;
   }
-
+  
   Future<String> getDeuda(String correo) async {
     int deuda=0;
     final String pathDeuda="fasafiliados/datosDeudas";
     final uri = Uri.http(ProviderConfig.url,ProviderConfig.path+pathDeuda , {'correo': correo});
     final respuestaHttp = await http.get(uri);
-    
     if (respuestaHttp.statusCode == HttpStatus.ok) {
       final data = respuestaHttp.body;
       List listaDeudas = json.decode(data);
@@ -62,7 +61,6 @@ class FasAhorroProviders {
           }
         });
       }
-
     }else {
       throw new MiException( errorCode: 200);
     }
@@ -79,7 +77,7 @@ class FasAhorroProviders {
           String estado = dataCon['estado'];
           try{
             int saldo =dataCon['saldo'];
-            if('APROBADO'.toUpperCase()==estado.toUpperCase()){
+            if('ACTIVO'.toUpperCase()==estado.toUpperCase()){
               deuCon+=saldo;
             }
             deuda+=deuCon;
@@ -90,15 +88,11 @@ class FasAhorroProviders {
     }else {
       throw new MiException( errorCode: 200);
     }
-
     if (deuda != 0) {
       return deuda.toString();
     } else {
       deuda = 0;
       return deuda.toString();
     }
-    
-    
   }
-
 }
