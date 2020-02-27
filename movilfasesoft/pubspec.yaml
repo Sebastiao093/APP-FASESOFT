@@ -42,10 +42,9 @@ dev_dependencies:
 flutter_icons:
   image_path:
     - "assets/images/fasesoftLogo.png"
-    - "assets/images/mov.png"
 #  image_path_android: "assets/images/icon-710x599-android.png"
   android: true # can specify file name here e.g. "ic_launcher"
-  
+  ios: true
 
 
 # For information on the generic Dart part of this file, see the
